@@ -7,14 +7,12 @@ A full-stack JavaScript project showcasing the latest tech gadgets and accessori
 - Add products to the cart and checkout
 - User authentication (Signup/Login)
 - Admin panel to manage products
-- API integration for real-time updates
 
 ## 🚀 Tech Stack
-- **Frontend**: React.js / Next.js, Tailwind CSS
+- **Frontend**: Tailwind CSS
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB
 - **Authentication**: JWT (JSON Web Tokens)
-- **Hosting**: Vercel (Frontend), Render/Heroku (Backend)
 - **Version Control**: Git & GitHub
 
 ## 📦 Installation
