@@ -9,7 +9,7 @@ A full-stack JavaScript project showcasing the latest tech gadgets and accessori
 - Admin panel to manage products
 
 ## 🚀 Tech Stack
-- **Frontend**: Tailwind CSS
+- **Frontend**: HTML, EJS, Tailwind CSS
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB
 - **Authentication**: JWT (JSON Web Tokens)
