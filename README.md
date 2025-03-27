@@ -19,3 +19,9 @@ A full-stack JavaScript project showcasing the latest tech gadgets and accessori
 1. Clone the repository:
    ```sh
    git clone https://github.com/yourusername/tech-gadgets-accessories.git
+
+2. Run the project:
+   You can run the project by running the following command:
+      node app.js
+      npm start
+      nodemon app.js (recommended if you want to make changes in the project and automatically refresh the project in the background)
