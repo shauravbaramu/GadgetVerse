@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 
 // Connect to MongoDB (adjust the URL as needed)
 mongoose
-  .connect('mongodb://localhost:27017/gadgetVerse', { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(`${process.env.DB_CONNECTION}://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.error(err));
 
