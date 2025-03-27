@@ -4,21 +4,24 @@ const path = require('path');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
-// const studentRoutes = require('./routes/student');
-// const courseRoutes = require('./routes/course');
-
 const app = express();
-
 const PORT = process.env.PORT || 3000;
 
-// Connect to MongoDB (adjust the URL as needed)
+const adminRoute = require('./routes/admin/admin');
+const usersRoute = require('./routes/admin/users');
+const productCategoriesRoute = require('./routes/admin/productCategories');
+const productsRoute = require('./routes/admin/products');
+
+// Connect to MongoDB
 mongoose
-  .connect(`${process.env.DB_CONNECTION}://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(`${process.env.DB_CONNECTION}://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
   .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.error(err));
 
-
-// Middleware for parsing request bodies
+// Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -26,17 +29,15 @@ app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Serve static files (CSS, images, etc.)
+// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Register routes for students and courses
-// app.use('/students', studentRoutes);
-// app.use('/courses', courseRoutes);
+// Register admin routes
+app.use('/admin', adminRoute);
 
-// Home route redirecting to students page
+// Home route
 app.get('/', (req, res) => {
-//   res.redirect('/students');
-res.send("Welcome to GadgetVerse!");
+  res.send("Welcome to GadgetVerse!");
 });
 
 // Start the server
