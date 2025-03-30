@@ -98,8 +98,8 @@ input:focus {
     justify-content: space-between;
     align-items: center;
     height: 100vh; /* Full viewport height */
-    padding: 2rem;
-    background-color: white; /* Background color for the entire page */
+    padding: 0;
+    background-color: white; 
 }
 
 /* Login form section */
@@ -175,7 +175,7 @@ input:focus {
     justify-content: space-between;
     width: 100%;
     max-width: 400px;
-    margin: 0 auto auto; /* Center the container and add spacing below */
+    margin: 0 auto 1rem auto; /* Center the container and add spacing below */
 }
 
 .name-container input {
@@ -224,7 +224,7 @@ input:focus {
 @media screen and (max-width: 768px) {
     .login-container {
         flex-direction: column; /* Stack the form and image vertically */
-        padding: 1rem;
+        padding: 0;
     }
 
     .login-form-section,
