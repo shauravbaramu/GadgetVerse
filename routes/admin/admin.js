@@ -1,10 +1,9 @@
 const express = require('express');
+const dashboardController = require('../../controllers/admin/DashboardController');
 const router = express.Router();
 
 // Dashboard route
-router.get('/', (req, res) => {
-  res.render('admin/dashboard', { activePage: 'dashboard' });
-});
+router.get('/', (req, res) => dashboardController.index(req, res));
 
 // Mount Users routes
 router.use('/users', require('./users'));

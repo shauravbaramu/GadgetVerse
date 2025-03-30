@@ -82,7 +82,7 @@ include('../partials/topnav') %>
     var table = $("#data-table").DataTable({
       processing: true,
       serverSide: true,
-      ajax: "users/", // Adjust to your AJAX URL for fetching user data
+      ajax: "/admin/users/",
       columns: [
         { data: "id", name: "DT_RowIndex" },
         { data: "first_name", name: "first_name" },
