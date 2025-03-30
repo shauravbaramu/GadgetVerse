@@ -1,0 +1,51 @@
+<div class="form-group row">
+    <div class="col-6">
+      <label for="first_name">First Name <span class="text-danger">*</span></label>
+      <input type="text" required class="form-control required-field" name="first_name" value="<%= old.first_name || (item ? item.first_name : '') %>" placeholder="Enter First Name">
+    </div>
+    <div class="col-6">
+      <label for="last_name">Last Name</label>
+      <input type="text" class="form-control" name="last_name" value="<%= old.last_name || (item ? item.last_name : '') %>" placeholder="Enter Last Name">
+    </div>
+  </div>
+  
+  <div class="form-group row">
+    <div class="col-6">
+      <label for="email">Email <span class="text-danger">*</span></label>
+      <input type="email" required class="form-control required-field" name="email" value="<%= old.email || (item ? item.email : '') %>" placeholder="Enter Email">
+    </div>
+    <div class="col-6">
+      <label for="phone">Phone <span class="text-danger">*</span></label>
+      <input type="tel" required class="form-control required-field" name="phone" value="<%= old.phone || (item ? item.phone : '') %>" placeholder="Enter Phone">
+    </div>
+  </div>
+  
+  <div class="form-group row">
+    <div class="col-6">
+      <label for="address">Address <span class="text-danger">*</span></label>
+      <input type="text" required class="form-control required-field" name="address" value="<%= old.address || (item ? item.address : '') %>" placeholder="Enter Address">
+    </div>
+    <div class="col-6">
+      <label for="password">Password <% if(!item){ %><span class="text-danger">*</span><% } %></label>
+      <div style="position: relative">
+        <input type="password" name="password" class="form-control pr-5" placeholder="Enter Password" autocomplete="current-password" <%= item ? '' : 'required' %> id="password">
+        <span class="far fa-eye" id="togglePassword" style="position: absolute; top: 13px; right: 13px; cursor: pointer;"></span>
+        <% if(item){ %>
+          <span class="text-muted">Leave Blank To Remain Unchanged</span>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  
+  <div class="form-group row">
+    <div class="col-md-6">
+      <label for="image">Image</label>
+      <input type="file" name="image" class="form-control">
+      <% if(item && item.image) { %>
+        <div class="mt-2">
+          <img src="<%= item.image %>" alt="image" width="300px" height="300px">
+        </div>
+      <% } %>
+    </div>
+  </div>
+  

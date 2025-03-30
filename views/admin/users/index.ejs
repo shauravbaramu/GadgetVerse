@@ -1,0 +1,95 @@
+<%- include('../partials/header', { title: crudInfo.title }) %>
+<%- include('../partials/sidebar', { activePage: 'admin/users/index' }) %>
+<%- include('../partials/topnav') %>
+
+<!-- Inline Styles to adjust spacing -->
+<style>
+  /* Remove extra white background from the content-wrapper */
+  .content-wrapper {
+    background: #f4f6f9; 
+    margin-top: 0;
+  }
+  /* Add some space between the topnav and the content */
+  .content {
+    margin-top: 20px; /* Adjust as needed */
+  }
+</style>
+
+<div class="content-wrapper">
+  <!-- Main Content -->
+  <div class="content mt-5">
+    <% if(success) { %>
+      <div class="alert alert-success alert-block p-3">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <%= success %>
+      </div>
+    <% } %>
+    <div class="row">
+      <section class="col-12 content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title"><%= crudInfo.title %> | Index</h3>
+                  <div class="float-right">
+                    <a href="/<%= crudInfo.route %>create" class="btn btn-primary btn-sm float-right">
+                      <i class="fa fa-plus"></i>
+                      <span class="kt-hidden-mobile"> Add</span>
+                    </a>
+                  </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table" id="data-table">
+                      <thead>
+                        <tr class="text-left text-capitalize">
+                          <th>#id</th>
+                          <th>First Name</th>
+                          <th>Email</th>
+                          <th>Phone</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                    </table>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
+
+<!-- Styles for DataTables -->
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css" />
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
+<script>
+  $(function () {
+    var table = $('#data-table').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: "admin/users/index", // Adjust to your AJAX URL for fetching user data
+      columns: [
+        { data: 'id', name: 'DT_RowIndex' },
+        { data: 'first_name', name: 'first_name' },
+        { data: 'email', name: 'email' },
+        { data: 'phone', name: 'phone' },
+        { data: 'action', name: 'action' },
+      ],
+    });
+  });
+  setTimeout(function(){
+    $('.alert').hide();
+  },3000);
+</script>

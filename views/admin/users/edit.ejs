@@ -1,0 +1,40 @@
+<%- include('../partials/header', { title: 'Edit ' + crudInfo.title }) %>
+
+<!-- Content Header -->
+<section class="content-header">
+  <div class="container-fluid">
+    <h1>Edit <%= crudInfo.title %></h1>
+  </div>
+</section>
+
+<!-- Main Content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"><%= crudInfo.title %> | Edit</h3>
+      </div>
+      <!-- Form Start -->
+      <form class="form repeater" id="form" action="/<%= crudInfo.route %>update/<%= item._id %>" method="post" enctype="multipart/form-data">
+        <div class="card-body">
+          <input type="hidden" name="_method" value="PUT">
+          <% if (errors && errors.length) { %>
+            <% errors.forEach(function(error) { %>
+              <div class="alert alert-danger" role="alert"><%= error.msg %></div>
+            <% }); %>
+          <% } %>
+          <!-- Include the form partial with item data -->
+          <%- include('form', { item: item, old: item }) %>
+        </div>
+        <div class="card-footer">
+          <button type="submit" id="button_submit" class="btn btn-primary">Submit</button>
+          <a href="javascript:history.back();" class="btn btn-default float-right">Cancel</a>
+        </div>
+      </form>
+    </div>
+    <%- add_content || '' %>
+    <%- form_content1 || '' %>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

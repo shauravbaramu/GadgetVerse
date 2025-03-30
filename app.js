@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const bodyParser = require('body-parser');
+const session = require('express-session');
+const flash = require('connect-flash');
 require('dotenv').config();
 
 const app = express();
@@ -26,6 +28,16 @@ mongoose
   })
   .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.error(err));
+
+  // Set up sessions middleware (configure as needed)
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+}));
+
+// Set up flash middleware
+app.use(flash());
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
