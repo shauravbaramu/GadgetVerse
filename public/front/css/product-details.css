@@ -1,0 +1,86 @@
+/* Style for images in the zoom container */
+.xzoom-container img {
+    border-radius: 8px;
+    border: 2px solid #cf6308;
+}
+
+/* Style for thumbnail images */
+.xzoom-thumbs img {
+    border: 2px solid #ddd;
+    margin-right: 5px;
+    border-radius: 4px;
+}
+
+/* Highlight thumbnail on hover */
+.xzoom-thumbs img:hover {
+    border: 2px solid #cf6308;
+}
+
+/* Padding for product info aside section */
+.product-info-aside {
+    padding: 20px;
+}
+
+/* Primary and secondary button styles */
+.btn-primary,
+.btn-secondary {
+    background-color: #cf6308;
+    border-color: #cf6308;
+}
+
+/* Button hover effects */
+.btn-primary:hover,
+.btn-secondary:hover {
+    border-color: #cf6308;
+}
+
+/* Style for social sharing links */
+.a2a_kit a {
+    color: #cf6308;
+}
+
+/* Hover effect for social sharing links */
+.a2a_kit a:hover {
+    color: #cf6308;
+}
+
+/* Margin for audio player */
+.audio-player {
+    margin-top: 20px;
+}
+
+/* Style for audio player element */
+.audio-player audio {
+    width: 100%;
+    outline: none;
+}
+
+/* Margin for breadcrumbs section */
+.breadcrumbs {
+    margin-top: 2rem;
+}
+
+/* Style for breadcrumbs links */
+.breadcrumbs a {
+    color: #cf6308;
+    text-decoration: none;
+}
+
+/* Hover effect for breadcrumbs links */
+.breadcrumbs a:hover {
+    text-decoration: underline;
+}
+
+/* Style for the loading overlay */
+.loading-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
