@@ -46,24 +46,14 @@ class BaseController {
     }
   }
 
-  // Show form for creating a new item
-  create(req, res) {
-    let crudInfo = this.crudInfo();
-    crudInfo.routeName = "Create";
-    return res.render(`${this.route}create`, {
-      crudInfo,
-      errors: req.flash("errors"),
-    });
-  }
-
   // Store a new item in the database
   async store(req, res) {
-    const { validationResult } = require("express-validator");
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      req.flash("errors", errors.array());
-      return res.redirect(`/${this.route}create`);
-    }
+    // const { validationResult } = require("express-validator");
+    // const errors = validationResult(req);
+    // if (!errors.isEmpty()) {
+    //   req.flash("errors", errors.array());
+    //   return res.render(`${this.route}create`, { crudInfo: this.crudInfo(), errors: errors.array(), old: req.body });
+    // }
     try {
       const item = new this.Model(req.body);
       await item.save();
@@ -71,7 +61,7 @@ class BaseController {
       return res.redirect(`/${this.title.toLowerCase()}`);
     } catch (err) {
       req.flash("errors", [{ msg: err.message }]);
-      return res.redirect(`/${this.route}create`);
+      return res.redirect(`/${this.route}index`);
     }
   }
 
@@ -124,7 +114,7 @@ class BaseController {
       return res.redirect(`/${this.title.toLowerCase()}`);
     } catch (err) {
       req.flash("errors", [{ msg: err.message }]);
-      return res.redirect(`/${this.route}edit/${req.params.id}`);
+      return res.redirect(`/${this.route}index`);
     }
   }
 

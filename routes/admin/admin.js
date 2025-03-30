@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 router.use('/users', require('./users'));
 
 // Mount Product Categories routes
-router.use('/product-categories', require('./productCategories'));
+router.use('/productCategories', require('./productCategories'));
 
 // Mount Products routes
 router.use('/products', require('./products'));

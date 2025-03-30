@@ -1,0 +1,93 @@
+<%- include('../partials/header', { title: 'Add ' + crudInfo.title }) %> <%-
+include('../partials/topnav') %> <%- include('../partials/sidebar', {
+activePage: 'admin/productCategories/create' }) %>
+
+<div class="content-wrapper">
+  <!-- Content Header -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Create <%= crudInfo.title %></h1>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><%= crudInfo.title %> | Create</h3>
+            </div>
+            <!-- Form Start -->
+            <form
+              class="form repeater" id="form" name="myForm"
+              action="/<%= crudInfo.route %>store"
+              method="post"
+              enctype="multipart/form-data"
+            >
+              <div class="card-body">
+                <% if (errors && errors.length) { %> <%
+                errors.forEach(function(error) { %>
+                <div class="alert alert-danger" role="alert">
+                  <%= error.msg %>
+                </div>
+                <% }); %> <% } %>
+                <input
+                  type="hidden"
+                  name="add_more"
+                  id="add-more"
+                  value="false"
+                />
+                <!-- Include the form partial for product categories -->
+                <%- include('form', { item: null, old: {} }) %>
+              </div>
+              <div class="card-footer">
+                <button
+                  type="submit"
+                  id="button_submit"
+                  class="btn btn-primary"
+                  name="action"
+                  value="submit"
+                >
+                  Submit
+                </button>
+                <% if(typeof addMoreButton !== 'undefined' && addMoreButton) {
+                %>
+                <button
+                  type="submit"
+                  id="button_submit_add"
+                  class="btn btn-primary"
+                  name="action"
+                  value="add"
+                >
+                  Submit & Add new
+                </button>
+                <% } %>
+                <a
+                  href="javascript:history.back();"
+                  class="btn btn-default float-right"
+                  >Cancel</a
+                >
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<%- include('../partials/footer') %>
+
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.0/jquery.validate.min.js"></script>
+<script>
+  $("#button_submit").click(function (e) {
+    e.preventDefault();
+    $("#form").submit();
+  });
+</script>

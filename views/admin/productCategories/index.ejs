@@ -1,0 +1,102 @@
+<%- include('../partials/header', { title: crudInfo.title }) %>
+<%- include('../partials/sidebar', { activePage: 'admin/productCategories/index' }) %>
+<%- include('../partials/topnav') %>
+
+<div class="content-wrapper">
+  <!-- Content Header -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1><%= crudInfo.title %> List</h1>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Main Content -->
+  <section class="content">
+    <div class="container-fluid">
+      <% if (typeof success !== 'undefined' && success) { %>
+        <div class="alert alert-success alert-block p-3">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <%= success %>
+        </div>
+      <% } %>
+      <div class="row">
+        <section class="col-12 content">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title"><%= crudInfo.title %> | Index</h3>
+                    <% if (typeof hideCreate === 'undefined' || !hideCreate) { %>
+                      <div class="float-right">
+                        <a href="/<%= crudInfo.route %>create" class="btn btn-primary btn-sm float-right">
+                          <i class="fa fa-plus"></i>
+                          <span class="kt-hidden-mobile"> Add</span>
+                        </a>
+                      </div>
+                    <% } %>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-striped" id="data-table">
+                        <thead>
+                          <tr class="text-left text-capitalize">
+                            <th>#id</th>
+                            <th>Name</th>
+                            <th>Image</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                      </table>
+                    </div>
+                  </div>
+                  <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../partials/footer') %>
+
+<!-- DataTables CSS and Scripts -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap4.min.js"></script>
+<script>
+  $(function () {
+    var table = $('#data-table').DataTable({
+      processing: true,
+      serverSide: true,
+      searchable: true,
+      ajax: "/admin/productCategories/", // Adjust to your AJAX URL for fetching data
+      columns: [
+        { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+        { data: 'name', name: 'name' },
+        { data: 'image', name: 'image', orderable: false, searchable: false },
+        { data: 'action', name: 'action', orderable: false, searchable: false }
+      ]
+    });
+
+    // Bind the custom search input to DataTables global search
+    
+
+  });
+  
+  setTimeout(function(){
+    $('.alert').hide();
+  },3000);
+</script>

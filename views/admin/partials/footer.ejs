@@ -11,5 +11,38 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
   <!-- AdminLTE App -->
   <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+
+  <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.0/jquery.validate.min.js"></script>
+
+<script>
+  // Wait until DOM is ready
+  document.addEventListener("DOMContentLoaded", function () {
+    var imageInput = document.getElementById("imageInput");
+    var imagePreview = document.getElementById("imagePreview");
+    var previewImg = document.getElementById("previewImg");
+    var removePreview = document.getElementById("removePreview");
+
+    // When file input changes, show preview
+    imageInput.addEventListener("change", function (event) {
+      var file = event.target.files[0];
+      if (file) {
+        previewImg.src = URL.createObjectURL(file);
+        imagePreview.style.display = "block";
+      }
+    });
+
+    // Remove preview and clear file input when remove button is clicked
+    removePreview.addEventListener("click", function () {
+      imageInput.value = "";
+      previewImg.src = "";
+      imagePreview.style.display = "none";
+    });
+
+    $("#button_submit").click(function (e) {
+      e.preventDefault();
+      $("#form").submit();
+    });
+  });
+</script>
 </body>
 </html>

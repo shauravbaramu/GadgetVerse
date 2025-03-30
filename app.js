@@ -20,6 +20,11 @@ const usersRoute = require('./routes/admin/users');
 const productCategoriesRoute = require('./routes/admin/productCategories');
 const productsRoute = require('./routes/admin/products');
 
+app.use(express.json());
+
+// Middleware to parse URL-encoded bodies (for form submissions)
+app.use(express.urlencoded({ extended: true }))
+
 // Connect to MongoDB
 mongoose
   .connect(`${process.env.DB_CONNECTION}://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`, {
@@ -38,14 +43,11 @@ app.use(session({
 
 // Set up flash middleware
 app.use(flash());
-
-// Middleware
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
 // Set EJS as templating engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));

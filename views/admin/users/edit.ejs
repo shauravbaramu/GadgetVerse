@@ -1,65 +1,57 @@
-<%- include('../partials/header', { title: 'Edit ' + crudInfo.title }) %>
+<%- include('../partials/header', { title: 'Edit ' + crudInfo.title }) %> <%-
+include('../partials/topnav') %> <%- include('../partials/sidebar', {
+activePage: 'admin/users/edit' }) %>
 
-<!-- Inline Styles to adjust spacing -->
-<style>
-  /* Remove extra white background from the content-wrapper */
-  .content-wrapper {
-    background: #f4f6f9; 
-    margin-top: 0;
-  }
-  /* Add some space between the topnav and the content */
-  .content {
-    margin-top: 20px; /* Adjust as needed */
-  }
-</style>
-
-<!-- Content Header -->
-<section class="content-header">
+<section class="content">
   <div class="container-fluid">
-    <h1>Edit <%= crudInfo.title %></h1>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"><%= crudInfo.title %> | Edit</h3>
+      </div>
+      <!-- /.card-header -->
+      <form
+        class="form repeater"
+        id="form"
+        action="/<%= crudInfo.route %>update/<%= item._id %>"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <div class="card-body">
+          <!-- For method override -->
+          <input type="hidden" name="_method" value="PUT" />
+          <% if (errors && errors.length) { %> <% errors.forEach(function(error)
+          { %>
+          <div class="alert alert-danger" role="alert"><%= error.msg %></div>
+          <% }); %> <% } %>
+          <!-- Include the form partial with item data -->
+          <%- include('form', { item: item, old: item }) %>
+        </div>
+        <div class="card-footer">
+          <button type="submit" id="button_submit" class="btn btn-primary">
+            Submit
+          </button>
+          <a
+            href="javascript:history.back();"
+            class="btn btn-default float-right"
+            >Cancel</a
+          >
+        </div>
+      </form>
+    </div>
   </div>
 </section>
 
-<div class="content-wrapper">
-  <!-- Main Content -->
-  <section class="content">
-    <div class="container-fluid">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title"><%= crudInfo.title %> | Edit</h3>
-        </div>
-        <!-- Form Start -->
-        <form
-          class="form repeater"
-          id="form"
-          action="/<%= crudInfo.route %>update/<%= item._id %>"
-          method="post"
-          enctype="multipart/form-data"
-        >
-          <div class="card-body">
-            <input type="hidden" name="_method" value="PUT" />
-            <% if (errors && errors.length) { %> <%
-            errors.forEach(function(error) { %>
-            <div class="alert alert-danger" role="alert"><%= error.msg %></div>
-            <% }); %> <% } %>
-            <!-- Include the form partial with item data -->
-            <%- include('form', { item: item, old: item }) %>
-          </div>
-          <div class="card-footer">
-            <button type="submit" id="button_submit" class="btn btn-primary">
-              Submit
-            </button>
-            <a
-              href="javascript:history.back();"
-              class="btn btn-default float-right"
-              >Cancel</a
-            >
-          </div>
-        </form>
-      </div>
-      <%- add_content || '' %> <%- form_content1 || '' %>
-    </div>
-  </section>
-</div>
-
 <%- include('../partials/footer') %>
+
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.0/jquery.validate.min.js"></script>
+<script>
+  var loadFile = function (event) {
+    var image = document.getElementById("output");
+    image.src = URL.createObjectURL(event.target.files[0]);
+  };
+
+  $("#button_submit").click(function (e) {
+    e.preventDefault();
+    $("#form").submit();
+  });
+</script>
