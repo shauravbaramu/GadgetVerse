@@ -52,7 +52,8 @@ class ProductCategoryController extends BaseController {
         // Regular page load: render the view
         const items = await this.Model.find();
         let crudInfo = this.crudInfo();
-        return res.render(`${this.route}index`, { crudInfo, items});
+        const success = req.flash("success");
+        return res.render(`${this.route}index`, { crudInfo, items, success});
       }
     } catch (err) {
       return res.status(500).send(err.message);

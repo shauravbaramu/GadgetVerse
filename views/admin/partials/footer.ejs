@@ -14,35 +14,38 @@
 
   <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.0/jquery.validate.min.js"></script>
 
-<script>
-  // Wait until DOM is ready
-  document.addEventListener("DOMContentLoaded", function () {
-    var imageInput = document.getElementById("imageInput");
-    var imagePreview = document.getElementById("imagePreview");
-    var previewImg = document.getElementById("previewImg");
-    var removePreview = document.getElementById("removePreview");
+  <!-- Include SweetAlert2 -->
 
-    // When file input changes, show preview
-    imageInput.addEventListener("change", function (event) {
-      var file = event.target.files[0];
-      if (file) {
-        previewImg.src = URL.createObjectURL(file);
-        imagePreview.style.display = "block";
+  <script>
+    // Wait until DOM is ready
+    document.addEventListener("DOMContentLoaded", function () {
+      var imageInput = document.getElementById("imageInput");
+      var imagePreview = document.getElementById("imagePreview");
+      var previewImg = document.getElementById("previewImg");
+      var removePreview = document.getElementById("removePreview");
+  
+      // When file input changes, show preview
+      if (imageInput && imagePreview && removePreview && previewImg) {
+        imageInput.addEventListener("change", function (event) {
+          var file = event.target.files[0];
+          if (file) {
+            previewImg.src = URL.createObjectURL(file); // Set new preview image
+            imagePreview.style.display = "block"; // Show the preview container
+          } else {
+            // If no file is selected, reset the preview
+            previewImg.src = "";
+            imagePreview.style.display = "none";
+          }
+        });
+  
+        // Remove preview and clear file input when remove button is clicked
+        removePreview.addEventListener("click", function () {
+          imageInput.value = ""; // Clear the file input
+          previewImg.src = ""; // Reset the preview image
+          imagePreview.style.display = "none"; // Hide the preview container
+        });
       }
     });
-
-    // Remove preview and clear file input when remove button is clicked
-    removePreview.addEventListener("click", function () {
-      imageInput.value = "";
-      previewImg.src = "";
-      imagePreview.style.display = "none";
-    });
-
-    $("#button_submit").click(function (e) {
-      e.preventDefault();
-      $("#form").submit();
-    });
-  });
-</script>
+  </script>
 </body>
 </html>

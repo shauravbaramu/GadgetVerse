@@ -1,6 +1,6 @@
-<%- include('../partials/header', { title: 'Show ' + crudInfo.title }) %>
-<%- include('../partials/topnav') %>
-<%- include('../partials/sidebar') %>
+<%- include('../partials/header', { title: 'Show ' + crudInfo.title }) %> <%-
+include('../partials/topnav') %> <%- include('../partials/sidebar', {
+activePage: 'admin/productCategories/index' }) %>
 
 <div class="content-wrapper">
   <!-- Content Header -->
@@ -23,19 +23,47 @@
           <div class="card">
             <div class="card-header">
               <h3 class="card-title"><%= crudInfo.title %></h3>
-              <% if (!hideEdit) { %>
-                <a href="/<%= crudInfo.route %>edit/<%= item._id %>" class="btn btn-primary float-right">
-                  <i class="fa fa-edit"></i>
-                  <span class="kt-hidden-mobile">Edit</span>
-                </a>
+              <% if (typeof hideEdit === "undefined" || !hideEdit) { %>
+              <a
+                href="/<%= crudInfo.route %>edit/<%= item._id %>"
+                class="btn btn-primary float-right"
+              >
+                <i class="fa fa-edit"></i>
+                <span class="kt-hidden-mobile">Edit</span>
+              </a>
               <% } %>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <%- form_content %>
+              <div class="row my-4">
+                <div class="col-md-6">
+                  <label for=""><span class="show-text">Name:</span></label> <%=
+                  item.name ? item.name : "-" %>
+                </div>
+                <div class="col-md-6">
+                  <label for=""><span class="show-text">Image:</span></label><br /><img
+                    style="width: 150px; height: 150px; margin-left: 4%"
+                    src="<%= item.image ? item.image : '/admin/img/placeholder.png' %>"
+                    alt="Category Image"
+                  />
+                </div>
+              </div>
+              <div class="row my-4">
+                <div class="col-md-12">
+                  <label for=""
+                    ><span class="show-text">Description:</span></label
+                  >
+                  <hr>
+                  <%= item.description %><br />
+                </div>
+              </div>
             </div>
             <div class="card-footer">
-              <a href="javascript:history.back();" class="btn btn-default float-right">Cancel</a>
+              <a
+                href="javascript:history.back();"
+                class="btn btn-default float-right"
+                >Cancel</a
+              >
             </div>
           </div>
           <!-- /.card -->
@@ -53,7 +81,7 @@
 
 <script>
   $(document).ready(function () {
-    $('#form input').attr('readonly', true);
-    $('#form select').attr('disabled', true);
+    $("#form input").attr("readonly", true);
+    $("#form select").attr("disabled", true);
   });
 </script>

@@ -15,15 +15,16 @@
     <label for="image">Image</label>
     <input type="file" name="image" class="form-control" id="imageInput" accept="image/*"/>
     <!-- Preview Container -->
-    <div id="imagePreview" style="display: none; margin-top: 10px;">
-      <img id="previewImg" src="" alt="Preview" style="max-width: 300px; max-height:300px; object-fit: cover;"/>
+    <div id="imagePreview" style="<%= (item && item.image) ? 'margin-top: 10px;' : 'display: none; margin-top: 10px;' %>">
+      <img id="previewImg" src="<%= (item && item.image) ? item.image : '' %>" alt="Preview" style="max-width: 300px; max-height:300px; object-fit: cover;" />
       <button type="button" id="removePreview" class="btn btn-sm btn-danger" style="margin-left: 10px;">Remove</button>
     </div>
-    <% if(item && item.image) { %>
+    
+    <!-- <% if(item && item.image) { %>
       <div class="mt-2">
         <img src="<%= item.image %>" alt="Category Image" width="300" height="300">
       </div>
-    <% } %>
+    <% } %> -->
   </div>
 </div>
 <div class="form-group row">

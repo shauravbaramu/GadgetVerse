@@ -2,9 +2,9 @@
   class="fa fa-eye"></i></a>
 <a href="/admin/productCategories/edit/<%= item._id %>" class="btn btn-sm btn-clean btn-icon btn-hover-info"><i
   class="fa fa-pencil-alt"></i></a>
-<form style="display:inline;" action="/admin/productCategories/destroy/<%= item._id %>" method="POST">
+<form id="delete-form" style="display:inline;" action="/admin/productCategories/destroy/<%= item._id %>" method="POST">
   <input type="hidden" name="_method" value="DELETE">
-  <button type="submit" class="btn-delete btn btn-sm btn-clean btn-icon btn-hover-danger" onclick="return confirm('Are you sure?')"><i
+  <button type="submit" class="btn-delete btn btn-sm btn-clean btn-icon btn-hover-danger"><i
     class="fa fa-trash"></i></button>
 </form>
 
