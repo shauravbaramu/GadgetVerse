@@ -1,0 +1,83 @@
+/* Styles for section content */
+.section-content {
+    padding: 20px;
+    margin-top: 6%
+}
+
+/* Success message color */
+.text-success {
+    color: #28a745;
+}
+
+/* Error message color */
+.text-danger {
+    color: #dc3545;
+}
+
+/* General dark text color */
+.text-dark {
+    color: #343a40;
+}
+
+/* Bold text */
+.b {
+    font-weight: bold;
+}
+
+/* Outline primary button style */
+.btn-outline-primary {
+    border-color: #7F76E1;
+    color: #7F76E1;
+}
+
+/* Primary button style */
+.btn-primary {
+    background-color: #7F76E1 !important;
+    border-color: #7F76E1 !important;
+}
+
+/* Rounded corners for form controls */
+.form-control {
+    border-radius: 0.25rem;
+}
+
+/* Style for definition terms and descriptions */
+.dlist-align dt,
+.dlist-align dd {
+    margin-bottom: 10px;
+}
+
+/* Definition terms alignment */
+.dlist-align dt {
+    float: left;
+    width: 70%;
+    text-align: left;
+}
+
+/* Definition descriptions alignment */
+.dlist-align dd {
+    float: right;
+    width: 30%;
+    text-align: right;
+}
+
+/* Style for empty cart message container */
+.empty-cart {
+    text-align: center;
+    padding: 50px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+/* Heading style in the empty cart message */
+.empty-cart h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Paragraph text style in the empty cart message */
+.empty-cart p {
+    font-size: 16px;
+    margin-bottom: 30px;
+}
