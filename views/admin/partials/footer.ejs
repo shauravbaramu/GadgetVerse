@@ -17,34 +17,27 @@
   <!-- Include SweetAlert2 -->
 
   <script>
-    // Wait until DOM is ready
     document.addEventListener("DOMContentLoaded", function () {
-      var imageInput = document.getElementById("imageInput");
-      var imagePreview = document.getElementById("imagePreview");
-      var previewImg = document.getElementById("previewImg");
-      var removePreview = document.getElementById("removePreview");
-  
-      // When file input changes, show preview
-      if (imageInput && imagePreview && removePreview && previewImg) {
-        imageInput.addEventListener("change", function (event) {
-          var file = event.target.files[0];
-          if (file) {
-            previewImg.src = URL.createObjectURL(file); // Set new preview image
-            imagePreview.style.display = "block"; // Show the preview container
-          } else {
-            // If no file is selected, reset the preview
-            previewImg.src = "";
-            imagePreview.style.display = "none";
-          }
-        });
-  
-        // Remove preview and clear file input when remove button is clicked
-        removePreview.addEventListener("click", function () {
-          imageInput.value = ""; // Clear the file input
-          previewImg.src = ""; // Reset the preview image
-          imagePreview.style.display = "none"; // Hide the preview container
-        });
-      }
+      const imageInput = document.getElementById("imageInput");
+      const imagePreview = document.getElementById("imagePreview");
+      const previewImg = document.getElementById("previewImg");
+      const removePreview = document.getElementById("removePreview");
+    
+      // Show preview when a new image is selected
+      imageInput.addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        if (file) {
+          previewImg.src = URL.createObjectURL(file); // Set the new preview image
+          imagePreview.classList.remove("d-none"); // Show the preview container
+        }
+      });
+    
+      // Remove the preview and reset the input
+      removePreview.addEventListener("click", function () {
+        imageInput.value = ""; // Clear the file input
+        previewImg.src = ""; // Reset the preview image
+        imagePreview.classList.add("d-none"); // Hide the preview container
+      });
     });
   </script>
 </body>

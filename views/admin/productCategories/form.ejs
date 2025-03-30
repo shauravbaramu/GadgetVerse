@@ -15,7 +15,7 @@
     <label for="image">Image</label>
     <input type="file" name="image" class="form-control" id="imageInput" accept="image/*"/>
     <!-- Preview Container -->
-    <div id="imagePreview" style="<%= (item && item.image) ? 'margin-top: 10px;' : 'display: none; margin-top: 10px;' %>">
+    <div id="imagePreview" class="<%= (item && item.image) ? '' : 'd-none' %>" style="margin-top: 10px;">
       <img id="previewImg" src="<%= (item && item.image) ? item.image : '' %>" alt="Preview" style="max-width: 300px; max-height:300px; object-fit: cover;" />
       <button type="button" id="removePreview" class="btn btn-sm btn-danger" style="margin-left: 10px;">Remove</button>
     </div>
