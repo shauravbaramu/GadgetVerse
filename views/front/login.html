@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - GadgetVerse</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="../../public/front/css/styles.css">
+    <link rel="stylesheet" href="../../public/front/css/login-register.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+
+
+<main>
+
+
+    <!-- Main content container -->
+    <div class="login-container">
+        <!-- Login form section -->
+        <div class="login-form-section">
+            <div class="form-header">
+                <!-- Login form header -->
+                <span class="form-title">Login to</span>
+                <h3>GadgetVerse</h3>
+                <span>Don't have an account? <a href="register.html">Register</a></span>
+            </div>
+            <!-- Login form -->
+            <form id="loginForm">
+                <!-- Email input field -->
+                <input type="email" id="email" name="email" required placeholder="Enter your Email">
+
+                <!-- Password input field with show password icon -->
+                <div class="password-container">
+                    <input type="password" id="password" name="password" required placeholder="Enter your Password">
+                    <i class="fa fa-eye password-toggle" id="togglePassword"></i>
+                </div>
+
+                <!-- Submit button for the login form -->
+                <button type="submit" class="button login-button">Login</button>
+
+                <!-- Forgot Password button -->
+                <div class="forgot-password">
+                    <a href="forgot-password.html">Forgot Password?</a>
+                </div>
+            </form>
+            <!-- Message display area (e.g., for errors or notifications) -->
+            <div id="message"></div>
+        </div>
+        <!-- Image section -->
+        <div class="login-image-section">
+            <img src="../../public/front/img/login-img.svg" alt="Login Illustration">
+        </div>
+    </div>
+</main>
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', () => {
+            // Toggle the type attribute
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            // Toggle the eye icon
+            togglePassword.classList.toggle('fa-eye-slash');
+        });
+    });
+</script>
+
+</body>
+
+</html>
