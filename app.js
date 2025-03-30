@@ -7,6 +7,12 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+//front routes
+
+const homeRoute = require('./routes/front/home');
+
+
+// admin routes
 const adminRoute = require('./routes/admin/admin');
 const usersRoute = require('./routes/admin/users');
 const productCategoriesRoute = require('./routes/admin/productCategories');
@@ -36,9 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/admin', adminRoute);
 
 // Home route
-app.get('/', (req, res) => {
-  res.send("Welcome to GadgetVerse!");
-});
+app.use('/', homeRoute);
 
 // Start the server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
