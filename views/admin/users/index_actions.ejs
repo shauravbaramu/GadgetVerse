@@ -1,0 +1,6 @@
+<a href="/admin/users/show/<%= item._id %>" class="btn btn-sm btn-info">View</a>
+<a href="/admin/users/edit/<%= item._id %>" class="btn btn-sm btn-warning">Edit</a>
+<form style="display:inline;" action="/admin/users/destroy/<%= item._id %>" method="POST">
+  <input type="hidden" name="_method" value="DELETE">
+  <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+</form>

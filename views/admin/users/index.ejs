@@ -18,7 +18,7 @@
 <div class="content-wrapper">
   <!-- Main Content -->
   <div class="content mt-5">
-    <% if(success) { %>
+    <% if(typeof success !== 'undefined' && success) { %>
       <div class="alert alert-success alert-block p-3">
         <button type="button" class="close" data-dismiss="alert">×</button>
         <%= success %>
@@ -32,12 +32,14 @@
               <div class="card">
                 <div class="card-header">
                   <h3 class="card-title"><%= crudInfo.title %> | Index</h3>
+                  <% if(typeof hideCreate === 'undefined' && !hideCreate) { %>
                   <div class="float-right">
                     <a href="/<%= crudInfo.route %>create" class="btn btn-primary btn-sm float-right">
                       <i class="fa fa-plus"></i>
                       <span class="kt-hidden-mobile"> Add</span>
                     </a>
                   </div>
+                  <% } %>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -49,6 +51,7 @@
                           <th>First Name</th>
                           <th>Email</th>
                           <th>Phone</th>
+                          <th>Address</th>
                           <th>Action</th>
                         </tr>
                       </thead>
@@ -79,12 +82,13 @@
     var table = $('#data-table').DataTable({
       processing: true,
       serverSide: true,
-      ajax: "admin/users/index", // Adjust to your AJAX URL for fetching user data
+      ajax: "users/", // Adjust to your AJAX URL for fetching user data
       columns: [
         { data: 'id', name: 'DT_RowIndex' },
         { data: 'first_name', name: 'first_name' },
         { data: 'email', name: 'email' },
         { data: 'phone', name: 'phone' },
+        { data: 'address', name: 'address' },
         { data: 'action', name: 'action' },
       ],
     });

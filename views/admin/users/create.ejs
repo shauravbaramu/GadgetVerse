@@ -1,50 +1,103 @@
-<%- include('../partials/header', { title: 'Add ' + crudInfo.title }) %>
+<%- include('../partials/header', { title: 'Add ' + crudInfo.title }) %> <%-
+include('../partials/topnav') %> <%- include('../partials/sidebar', {
+activePage: 'admin/users/create' }) %>
 
-<!-- Content Header with Fixed Navbar -->
-<section class="content-header">
-  <div class="navbar bg-white p-2" id="head" style="border-radius: 2px">
-    <% if (!hideCancel) { %>
-      <a href="javascript:history.back();" class="btn btn-default btn-sm btn-cancel">
-        <i class="fas fa-arrow-left"></i> Back
-      </a>
-    <% } %>
-    <button type="submit" id="button_submit" class="button_submit btn btn-sm btn-primary" style="margin-right: 18%;" name="action" value="submit">
-      <i class="fas fa-plus"></i> Submit
-    </button>
-    <% if (addMoreButton) { %>
-      <button type="submit" id="button_submit_add" class="button_submit btn btn-primary" name="action" value="add">
-        <i class="fas fa-plus-circle"></i> Submit & Add new
-      </button>
-    <% } %>
-  </div>
-</section>
+<!-- Inline Styles to adjust spacing -->
+<style>
+  /* Remove extra white background from the content-wrapper */
+  .content-wrapper {
+    background: #f4f6f9; 
+    margin-top: 0;
+  }
+  /* Add some space between the topnav and the content */
+  .content {
+    margin-top: 20px; /* Adjust as needed */
+  }
+</style>
 
-<!-- Main Content -->
-<section class="content">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col">
-        <div class="card mx-4 mb-4">
-          <div class="card-header">
-            <h3 class="card-title"><%= crudInfo.title %> | Create</h3>
-          </div>
-          <!-- Form Start -->
-          <form class="form repeater" id="form" name="myForm" action="/<%= crudInfo.route %>store" method="post" enctype="multipart/form-data">
-            <div class="card-body">
-              <% if (errors && errors.length) { %>
-                <% errors.forEach(function(error) { %>
-                  <div class="alert alert-danger" role="alert"><%= error.msg %></div>
-                <% }); %>
-              <% } %>
-              <input name="add_more" type="hidden" id="add-more" value="false">
-              <!-- Include the form partial -->
-              <%- include('form', { item: null, old: {} }) %>
+<div class="content-wrapper">
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><%= crudInfo.title %></h3>
             </div>
-          </form>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form
+              class="form repeater"
+              id="form"
+              name="myForm"
+              action="/<%= crudInfo.route %>store"
+              method="post"
+              enctype="multipart/form-data"
+            >
+              <div class="card-body">
+                <% if (errors && errors.length) { %> <%
+                errors.forEach(function(error) { %>
+                <div class="alert alert-danger" role="alert">
+                  <%= error.msg %>
+                </div>
+                <% }); %> <% } %>
+                <input
+                  name="add_more"
+                  type="hidden"
+                  id="add-more"
+                  value="false"
+                />
+                <!-- Include the form partial -->
+                <%- include('form', { item: null, old: {} }) %>
+              </div>
+              <div class="card-footer">
+                <button
+                  type="submit"
+                  id="button_submit"
+                  class="button_submit btn btn-primary"
+                  name="action"
+                  value="submit"
+                >
+                  Submit
+                </button>
+                <% if(typeof addMoreButton !== 'undefined' && addMoreButton) {
+                %>
+                <button
+                  type="submit"
+                  id="button_submit_add"
+                  class="button_submit btn btn-primary"
+                  name="action"
+                  value="add"
+                >
+                  Submit & Add new
+                </button>
+                <% } %>
+                <a
+                  href="javascript:history.back();"
+                  class="btn btn-default float-right"
+                  >Cancel</a
+                >
+              </div>
+            </form>
+          </div>
+          <!-- /.card -->
         </div>
+        <!--/.col (left) -->
       </div>
+      <!-- /.row -->
     </div>
-  </div>
-</section>
+    <!-- /.container-fluid -->
+  </section>
+</div>
 
 <%- include('../partials/footer') %>
+
+<!-- Optional Scripts for validation -->
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.0/jquery.validate.min.js"></script>
+<script>
+  $("#button_submit").click(function (e) {
+    e.preventDefault();
+    $("#form").submit();
+  });
+</script>
