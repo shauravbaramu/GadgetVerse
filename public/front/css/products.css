@@ -1,0 +1,143 @@
+/* Styles for the search bar container */
+.search-bar {
+    position: relative; /* Enable positioning for the button */
+    margin-left: 20%;
+    width: 400px; /* Set a fixed width for the search bar */
+    max-width: 500px;
+}
+
+/* Styles for the input field within the search bar */
+.search-bar input {
+    padding: 10px 40px 10px 15px; /* Add padding to make space for the button */
+    width: 100%; /* Ensure the input takes the full width */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+
+/* Styles for the search button */
+.search-bar .search-button {
+    position: absolute; /* Position the button inside the search bar */
+    top: 50%; /* Center the button vertically */
+    right: 10px; /* Position the button on the right */
+    transform: translateY(-50%); /* Adjust for vertical alignment */
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #888; /* Default color for the icon */
+}
+
+/* Change button color on hover */
+.search-bar .search-button:hover {
+    color: #333;
+}
+/* Styles for the product category section */
+.product-category {
+    margin-bottom: 3rem;
+}
+
+/* Styles for the category title */
+.category-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding-bottom: 1.5rem;
+}
+
+/* Styles for the product list container */
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-gap: 20px;
+}
+
+/* Styles for each product item */
+.product {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Styles for product images */
+.product img {
+    height: 200px;
+    margin-bottom: 10px;
+}
+
+/* Styles for the product title */
+.product-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    padding-bottom: 0.5rem;
+}
+
+/* Styles for buttons inside product items */
+.product button {
+    margin-top: 1rem;
+    cursor: pointer;
+}
+
+/* Filter and Sorting Container */
+.filter-sort-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Individual Filter and Sort Options */
+.filter, .sort {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Dropdown Styling */
+.filter select, .sort select {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* Responsive styles for tablets (screen width 768px and below) */
+@media screen and (max-width: 768px) {
+    .filter-sort-container {
+        flex-direction: column; /* Stack filters and sorting vertically */
+        align-items: flex-start; /* Align items to the left */
+        gap: 15px; /* Add spacing between stacked items */
+    }
+
+    .filter, .sort {
+        width: 100%; /* Make each filter/sort option take full width */
+        justify-content: space-between; /* Space out label and dropdown */
+    }
+
+    .filter select, .sort select {
+        width: 60%; /* Reduce the width of dropdowns */
+    }
+}
+
+/* Responsive styles for mobile devices (screen width 480px and below) */
+@media screen and (max-width: 480px) {
+    .filter-sort-container {
+        padding: 10px 5px; /* Reduce padding for smaller screens */
+    }
+
+    .filter, .sort {
+        flex-direction: column; /* Stack label and dropdown vertically */
+        align-items: flex-start; /* Align items to the left */
+        gap: 5px; /* Reduce spacing between label and dropdown */
+    }
+
+    .filter select, .sort select {
+        width: 100%; /* Make dropdowns take full width */
+    }
+}
