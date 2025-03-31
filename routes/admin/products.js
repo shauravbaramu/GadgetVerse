@@ -1,32 +1,44 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('../../models/Product');
+const multer = require('multer');
+const path = require('path');
+const fs = require("fs");
+const ProductController = require('../../controllers/admin/ProductController');
+
+// Configure multer for product image uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const dir = 'uploads/products/';
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    cb(null, dir);
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+const upload = multer({ storage: storage });
 
 // List products
-router.get('/', async (req, res) => {
-  try {
-    const products = await Product.find().populate('category');
-    res.render('admin/products', { activePage: 'products', products });
-  } catch (err) {
-    res.status(500).send('Server Error');
-  }
-});
+router.get('/', (req, res) => ProductController.index(req, res));
 
-// New product form
-router.get('/new', (req, res) => {
-  res.render('admin/newProduct', { activePage: 'products' });
-});
+// Show create form
+router.get('/create', (req, res) => ProductController.create(req, res));
 
-// Create a new product
-router.post('/new', async (req, res) => {
-  try {
-    const { name, description, price, category } = req.body;
-    const newProduct = new Product({ name, description, price, category });
-    await newProduct.save();
-    res.redirect('/admin/products');
-  } catch (err) {
-    res.status(500).send('Server Error');
-  }
-});
+// Store product
+router.post('/store', upload.single('image'), (req, res) => ProductController.store(req, res));
+
+// Show product details
+router.get('/show/:id', (req, res) => ProductController.show(req, res));
+
+// Show edit form
+router.get('/edit/:id', (req, res) => ProductController.edit(req, res));
+
+// Update product
+router.post('/update/:id', upload.single('image'), (req, res) => ProductController.update(req, res));
+
+// Delete product
+router.post('/destroy/:id', (req, res) => ProductController.delete(req, res));
 
 module.exports = router;

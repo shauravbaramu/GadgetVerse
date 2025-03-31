@@ -1,0 +1,52 @@
+<div class="form-group row">
+  <div class="col-md-6">
+    <label for="name">Name <span class="text-danger">*</span></label>
+    <input type="text" name="name" id="name" class="form-control required-field"
+           value="<%= old.name || (item ? item.name : '') %>" placeholder="Enter Product Name" required>
+  </div>
+  <div class="col-md-6">
+    <label for="sku">SKU</label>
+    <input type="text" name="sku" id="sku" class="form-control"
+           value="<%= old.sku || (item ? item.sku : '') %>" placeholder="Enter SKU">
+  </div>
+</div>
+<div class="form-group row">
+  <div class="col-md-6">
+    <label for="price">Price <span class="text-danger">*</span></label>
+    <input type="number" name="price" id="price" class="form-control required-field"
+           value="<%= old.price || (item ? item.price : '') %>" placeholder="Enter Price" required>
+  </div>
+  <div class="col-md-6">
+    <label for="stock">Stock</label>
+    <input type="number" name="stock" id="stock" class="form-control"
+           value="<%= old.stock || (item ? item.stock : '') %>" placeholder="Enter Stock">
+  </div>
+</div>
+<div class="form-group row">
+  <div class="col-md-6">
+    <label for="category">Category <span class="text-danger">*</span></label>
+    <select name="category" id="category" class="form-control" required>
+      <option value="">Select Category</option>
+      <% if (categories) { %>
+        <% categories.forEach(function(cat) { %>
+          <option value="<%= cat._id %>" <%= (old && old.category == cat._id) || (item && item.category && (item.category._id.toString() === cat._id.toString())) ? 'selected' : '' %>><%= cat.name %></option>
+        <% }); %>
+      <% } %>
+    </select>
+  </div>
+  <div class="col-md-6">
+    <label for="image">Image</label>
+    <input type="file" name="image" class="form-control" id="imageInput" accept="image/*"/>
+    <!-- Preview Container -->
+    <div id="imagePreview" class="<%= (item && item.image) ? '' : 'd-none' %>" style="margin-top: 10px;">
+      <img id="previewImg" src="<%= (item && item.image) ? item.image : '' %>" alt="Preview" style="max-width: 300px; max-height:300px; object-fit: cover;" />
+      <button type="button" id="removePreview" class="btn btn-sm btn-danger" style="margin-left: 10px;">Remove</button>
+    </div>
+  </div>
+</div>
+<div class="form-group row">
+  <div class="col-md-12">
+    <label for="description">Description</label>
+    <textarea name="description" id="description" class="form-control" placeholder="Enter Product Description" rows="4"><%= old.description || (item ? item.description : '') %></textarea>
+  </div>
+</div>

@@ -1,0 +1,82 @@
+<%- include('../partials/header', { title: 'Show ' + crudInfo.title }) %> <%-
+include('../partials/topnav') %> <%- include('../partials/sidebar', {
+activePage: 'admin/products/show' }) %>
+
+<div class="content-wrapper">
+  <!-- Content Header -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>View <%= crudInfo.title %></h1>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title"><%= crudInfo.title %> | Show</h3>
+          <% if (typeof hideEdit === "undefined" || !hideEdit) { %>
+          <a
+            href="/<%= crudInfo.route %>edit/<%= item._id %>"
+            class="btn btn-primary float-right"
+          >
+            <i class="fa fa-edit"></i> Edit
+          </a>
+          <% } %>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 my-2">
+              <p><strong>Name:</strong> <%= item.name %></p>
+            </div>
+            <div class="col-md-6 my-2">
+              <p><strong>Price:</strong> <%= item.price %></p>
+            </div>
+            <div class="col-md-6 my-2">
+              <p><strong>Stock:</strong> <%= item.stock %></p>
+            </div>
+            <div class="col-md-6 my-2">
+              <p><strong>SKU:</strong> <%= item.sku %></p>
+            </div>
+            <div class="col-md-6 my-2">
+              <p><strong>Description:</strong> <%= item.description %></p>
+            </div>
+            <div class="col-md-6 my-2">
+              <p>
+                <strong>Category:</strong> <%= item.category ?
+                item.category.name : 'N/A' %>
+              </p>
+            </div>
+            <div class="col-md-6 my-2">
+              <p>
+                <strong>Image:</strong><br />
+              <% if(item.image){ %>
+              <img
+                src="<%= item.image %>"
+                alt="Product Image"
+                width="300"
+                height="300"
+                class="mt-2"
+              />
+              <% } %>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a
+            href="javascript:history.back();"
+            class="btn btn-default float-right"
+            >Cancel</a
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,125 @@
+<%- include('../partials/header', { title: crudInfo.title }) %>
+<%- include('../partials/sidebar', { activePage: 'admin/products/index' }) %>
+<%- include('../partials/topnav') %>
+
+<div class="content-wrapper">
+  <!-- Content Header -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1><%= crudInfo.title %> List</h1>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="content">
+    <div class="container-fluid">
+      <% if (typeof success !== 'undefined' && success.length > 0) { %>
+      <div class="alert alert-success alert-block p-3">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <%= success %>
+      </div>
+      <% } %>
+      <div class="row">
+        <section class="col-12 content">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title"><%= crudInfo.title %> | Index</h3>
+                    <% if (typeof hideCreate === 'undefined' || !hideCreate) {
+                    %>
+                    <div class="float-right">
+                      <a
+                        href="/<%= crudInfo.route %>create"
+                        class="btn btn-primary btn-sm float-right"
+                      >
+                        <i class="fa fa-plus"></i>
+                        <span class="kt-hidden-mobile"> Add</span>
+                      </a>
+                    </div>
+                    <% } %>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-striped" id="data-table">
+                        <thead>
+            <tr class="text-left text-capitalize">
+              <th>#id</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>SKU</th>
+              <th>Image</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+    </div>
+              </div>
+            </div>
+          </div>
+  </section>
+  </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
+
+<!-- DataTables CSS and Scripts -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  $(function () {
+    var table = $('#data-table').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: "/admin/products/",
+      columns: [
+        { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+        { data: 'name', name: 'name' },
+        { data: 'category', name: 'category', orderable: false, searchable: false },
+        { data: 'price', name: 'price' },
+        { data: 'stock', name: 'stock' },
+        { data: 'sku', name: 'sku' },
+        { data: 'image', name: 'image', orderable: false, searchable: false },
+        { data: 'action', name: 'action', orderable: false, searchable: false }
+      ]
+    });
+
+    // SweetAlert confirmation for delete
+    $(document).on("click", ".btn-delete", function (e) {
+      e.preventDefault();
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $(document).find("#delete-form").submit();
+        } else if (result.isDismissed) {
+          return false;
+        }
+      });
+    });
+
+  });
+  setTimeout(function(){
+    $('.alert').hide();
+  },3000);
+</script>

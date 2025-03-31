@@ -9,7 +9,7 @@ const ProductSchema = new mongoose.Schema(
     category: { type: mongoose.Schema.Types.ObjectId, ref: 'ProductCategory', required: true },
     stock: { type: Number, default: 0 },
     sku: { type: String, trim: true },
-    images: { type: String }
+    image: { type: String }
   },
   { timestamps: true }
 );
