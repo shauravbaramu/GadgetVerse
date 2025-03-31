@@ -80,10 +80,10 @@ app.use((req, res, next) => {
 });
 
 // Global error handler
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something went wrong! Please try again later.");
-});
+// app.use((err, req, res, next) => {
+//   console.error(err.stack);
+//   res.status(500).send("Something went wrong! Please try again later.");
+// });
 
 // Start the server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

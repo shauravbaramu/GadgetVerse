@@ -17,43 +17,48 @@
   <!-- Main Content -->
   <section class="content">
     <div class="container-fluid">
-      <div class="row">
-        <!-- left column -->
-        <div class="col">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title"><%= crudInfo.title %></h3>
-              <% if (!hideEdit) { %>
-                <a href="/<%= crudInfo.route %>edit/<%= item._id %>" class="btn btn-primary float-right">
-                  <i class="fa fa-edit"></i>
-                  <span class="kt-hidden-mobile">Edit</span>
-                </a>
-              <% } %>
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title"><%= crudInfo.title %> | Show</h3>
+          <% if (typeof hideEdit === "undefined" || !hideEdit) { %>
+          <a
+            href="/<%= crudInfo.route %>edit/<%= item._id %>"
+            class="btn btn-primary float-right"
+          >
+            <i class="fa fa-edit"></i> Edit
+          </a>
+          <% } %>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 my-2">
+              <p><strong>First Name:</strong> <%= item.first_name %></p>
             </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <%- form_content %>
+            <div class="col-md-6 my-2">
+              <p><strong>Last Name:</strong> <%= item.last_name || 'N/A' %></p>
             </div>
-            <div class="card-footer">
-              <a href="javascript:history.back();" class="btn btn-default float-right">Cancel</a>
+            <div class="col-md-6 my-2">
+              <p><strong>Email:</strong> <%= item.email %></p>
+            </div>
+            <div class="col-md-6 my-2">
+              <p><strong>Phone:</strong> <%= item.phone %></p>
+            </div>
+            <div class="col-md-6 my-2">
+              <p><strong>Address:</strong> <%= item.address %></p>
             </div>
           </div>
-          <!-- /.card -->
         </div>
-        <!-- /.col (left) -->
+        <div class="card-footer">
+          <a
+            href="javascript:history.back();"
+            class="btn btn-default float-right"
+          >
+            Cancel
+          </a>
+        </div>
       </div>
-      <!-- /.row -->
     </div>
-    <!-- /.container-fluid -->
   </section>
 </div>
-<!-- /.content-wrapper -->
 
 <%- include('../partials/footer') %>
-
-<script>
-  $(document).ready(function () {
-    $('#form input').attr('readonly', true);
-    $('#form select').attr('disabled', true);
-  });
-</script>

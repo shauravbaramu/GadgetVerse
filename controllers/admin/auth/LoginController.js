@@ -60,8 +60,6 @@ class LoginController {
         // Default session expiration time
         req.session.cookie.expires = false; // Session expires when the browser is closed
       }
-
-      req.flash("success", "Login successful");
       return res.redirect("/admin");
     } catch (err) {
       errors.push({ msg: err.message });

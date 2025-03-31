@@ -1,5 +1,5 @@
-<a href="/admin/users/show/<%= item._id %>" class="btn btn-sm btn-info">View</a>
-<a href="/admin/users/edit/<%= item._id %>" class="btn btn-sm btn-warning">Edit</a>
+<a href="/admin/users/show/<%= item._id %>" class="btn btn-sm btn-clean btn-icon btn-hover-primary"><i
+  class="fa fa-eye"></i></a>
 <form id="delete-form" style="display:inline;" action="/admin/users/destroy/<%= item._id %>" method="POST">
   <input type="hidden" name="_method" value="DELETE">
   <button type="submit" class="btn-delete btn btn-sm btn-clean btn-icon btn-hover-danger"><i

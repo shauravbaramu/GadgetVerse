@@ -1,6 +1,7 @@
-// controllers/UserController.js
 const BaseController = require('./BaseController');
 const User = require('../../models/User');
+const path = require("path");
+const ejs = require('ejs');
 
 class UserController extends BaseController {
   constructor() {
@@ -14,15 +15,11 @@ class UserController extends BaseController {
 
   async index(req, res) {
     try {
-      // If the request is AJAX, return JSON for DataTables
       if (req.xhr || req.headers.accept.indexOf('json') > -1) {
-        const items = await this.Model.find().lean();
-        
-        // Process each item to include rendered action HTML
+        const items = await this.Model.find({"role": "user"}).lean();
         const data = await Promise.all(items.map(async (item, index) => {
-          // Render the index_actions partial for each item
           const actionHtml = await ejs.renderFile(
-            path.join(__dirname, '../views/admin/users/index_actions.ejs'),
+            path.join(__dirname, '../../views/admin/users/index_actions.ejs'),
             { item }
           );
           return {
@@ -35,18 +32,55 @@ class UserController extends BaseController {
             action: actionHtml
           };
         }));
-        
         return res.json({ data });
       } else {
-        // Otherwise, render the normal view
         const items = await this.Model.find();
         let crudInfo = this.crudInfo();
-        return res.render(`${this.route}index`, { crudInfo, items, hideCreate: true });
+        return res.render(`${this.route}index`, { 
+          crudInfo, 
+          items, 
+          hideCreate: true,
+          success: req.flash("success"),
+          error: req.flash("error"),
+         });
       }
     } catch (err) {
       return res.status(500).send(err.message);
     }
   }
+
+  // Show method to display user details
+  async show(req, res) {
+    try {
+      const item = await this.Model.findById(req.params.id).lean();
+      if (!item) {
+        return res.status(404).send("User not found");
+      }
+      let crudInfo = this.crudInfo();
+      return res.render(`${this.route}show`, { crudInfo, item, hideEdit: true });
+    } catch (err) {
+      return res.status(500).send(err.message);
+    }
+  }
+
+  // Delete method to remove a user
+  async delete(req, res) {
+      try {
+        const item = await this.Model.findById(req.params.id);
+        if (!item) return res.status(404).send("Not found");
+  
+        // Check if the user is an admin
+        if (item.role === 'admin') {
+          req.flash("error", "Admins cannot be deleted.");
+          return res.redirect(`/${this.route}`);
+        }
+        await this.Model.findByIdAndDelete(req.params.id);
+        req.flash("success", `${this.title} deleted successfully.`);
+        return res.redirect(`/${this.route}`);
+      } catch (err) {
+        return res.status(500).send(err.message);
+      }
+    }
 }
 
 module.exports = new UserController();

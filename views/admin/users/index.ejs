@@ -16,12 +16,18 @@ include('../partials/topnav') %>
 
   <!-- Main Content -->
   <div class="content">
-    <% if(typeof success !== 'undefined' && success) { %>
+    <% if(typeof success !== 'undefined' && success.length > 0) { %>
     <div class="alert alert-success alert-block p-3">
       <button type="button" class="close" data-dismiss="alert">×</button>
       <%= success %>
     </div>
     <% } %>
+    <% if(typeof error !== 'undefined' && error.length > 0) { %>
+      <div class="alert alert-danger alert-block p-3">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <%= error %>
+      </div>
+      <% } %>
     <div class="row">
       <section class="col-12 content">
         <div class="container-fluid">
