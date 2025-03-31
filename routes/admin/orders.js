@@ -24,4 +24,6 @@ router.post('/update/:id', (req, res) => orderController.update(req, res));
 // Delete order
 router.post('/destroy/:id', (req, res) => orderController.delete(req, res));
 
+router.post("/update-status", orderController.updateStatus.bind(orderController));
+
 module.exports = router;

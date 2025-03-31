@@ -203,6 +203,9 @@ class ProductCategoryController extends BaseController {
           fs.unlinkSync(filePath);
         }
       }
+      
+      await Product.deleteMany({ user: item._id });
+
       await this.Model.findByIdAndDelete(req.params.id);
       req.flash("success", `${this.title} deleted successfully.`);
       return res.redirect(`/${this.route}`);
