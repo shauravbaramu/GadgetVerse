@@ -60,7 +60,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use((req, res, next) => {
-  console.log("Session Data:", req.session);
+  res.locals.admin = req.session.user || null; // Pass the logged-in admin's data to all views
+  console.log('admin', req.session.user);
   next();
 });
 

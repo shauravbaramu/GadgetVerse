@@ -1,4 +1,5 @@
 const User = require("../../models/User");
+const bcrypt = require("bcrypt");
 
 class ProfileController {
   // View Profile
@@ -58,6 +59,69 @@ class ProfileController {
     } catch (err) {
       errors.push({ msg: err.message });
       return res.render("admin/profile/view", { user: req.body, errors });
+    }
+  }
+
+  // Render Change Password Page
+  async changePasswordPage(req, res) {
+    try {
+      return res.render("admin/profile/change-password", {
+        errors: req.flash("errors"),
+        success: req.flash("success"),
+      });
+    } catch (err) {
+      return res.status(500).send(err.message);
+    }
+  }
+
+  // Handle Change Password Logic
+  async changePassword(req, res) {
+    const { old_password, new_password, confirm_password } = req.body;
+    let errors = [];
+
+    // Validate input
+    if (!old_password || !new_password || !confirm_password) {
+      errors.push({ msg: "All fields are required" });
+    }
+    if (new_password !== confirm_password) {
+      errors.push({ msg: "New password and confirm password do not match" });
+    }
+
+    if (new_password.length < 8) {
+      errors.push({ msg: "New password must be at least 8 characters long" });
+    }
+    
+
+    if (errors.length > 0) {
+      req.flash("errors", errors);
+      return res.redirect("/admin/change-password");
+    }
+
+    try {
+      // Find the logged-in user
+      const user = await User.findById(req.user.id);
+      if (!user) {
+        req.flash("errors", [{ msg: "User not found" }]);
+        return res.redirect("/admin/change-password");
+      }
+
+      // Check if the old password matches
+      const isMatch = await bcrypt.compare(old_password, user.password);
+      if (!isMatch) {
+        req.flash("errors", [{ msg: "Old password is incorrect" }]);
+        return res.redirect("/admin/change-password");
+      }
+
+      // Hash the new password and update it
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(new_password, salt);
+      await user.save();
+
+      req.flash("success", "Password changed successfully");
+      return res.redirect("/admin/change-password");
+    } catch (err) {
+      req.flash("errors", [{ msg: err.message }]);
+      return res.redirect("/admin/change-password");
     }
   }
 }

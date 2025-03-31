@@ -21,13 +21,13 @@
           class="img-size-32 img-circle mr-2"
           style="width: 32px; height: 32px"
         />
-        <span>Admin</span>
+        <span><%= admin ? admin.first_name : 'Admin' %></span>
       </a>
       <div class="dropdown-menu dropdown-menu-right">
-        <a href="/admin/view-profile" class="dropdown-item <%= (typeof activePage !== 'undefined' && activePage === 'admin/view-profile') ? 'active' : '' %>">
+        <a href="/admin/view-profile" class="dropdown-item <%= (typeof activePage !== 'undefined' && activePage === 'admin/view-profile') ? 'active bg-primary text-white' : '' %>">
           <i class="fas fa-user mr-2"></i> View Profile
         </a>
-        <a href="/admin/change-password" class="dropdown-item">
+        <a href="/admin/change-password" class="dropdown-item <%= (typeof activePage !== 'undefined' && activePage === 'admin/change-password') ? 'active  bg-primary text-white' : '' %>">
           <i class="fas fa-lock mr-2"></i> Change Password
         </a>
         <div class="dropdown-divider"></div>
