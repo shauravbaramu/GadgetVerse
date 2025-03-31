@@ -14,4 +14,7 @@ router.use('/productCategories', require('./productCategories'));
 // Mount Products routes
 router.use('/products', require('./products'));
 
+// Mount Orders routes
+router.use('/orders', require('./orders'));
+
 module.exports = router;

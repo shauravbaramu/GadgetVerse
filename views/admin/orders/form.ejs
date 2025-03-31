@@ -1,0 +1,35 @@
+<div class="form-group row">
+  <div class="col-md-6">
+    <label for="name">Name <span class="text-danger">*</span></label>
+    <input
+      type="text"
+      name="name"
+      id="name"
+      class="form-control required-field"
+      value="<%= old.name || (item ? item.name : '') %>"
+      placeholder="Enter Category Name"
+      required
+    />
+  </div>
+  <div class="col-md-6">
+    <label for="image">Image</label>
+    <input type="file" name="image" class="form-control" id="imageInput" accept="image/*"/>
+    <!-- Preview Container -->
+    <div id="imagePreview" class="<%= (item && item.image) ? '' : 'd-none' %>" style="margin-top: 10px;">
+      <img id="previewImg" src="<%= (item && item.image) ? item.image : '' %>" alt="Preview" style="max-width: 300px; max-height:300px; object-fit: cover;" />
+      <button type="button" id="removePreview" class="btn btn-sm btn-danger" style="margin-left: 10px;">Remove</button>
+    </div>
+  </div>
+</div>
+<div class="form-group row">
+  <div class="col-md-12">
+    <label for="description">Description</label>
+    <textarea
+      name="description"
+      id="description"
+      class="form-control"
+      placeholder="Enter Category Description"
+      rows="4"
+    ><%= old.description || (item ? item.description : '') %></textarea>
+  </div>
+</div>

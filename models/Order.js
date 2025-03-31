@@ -1,5 +1,3 @@
-const mongoose = require('mongoose');
-
 // models/Order.js
 const mongoose = require('mongoose');
 
