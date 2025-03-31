@@ -140,37 +140,11 @@
                 </aside>
                 <!-- Checkout and Address Section -->
                 <aside class="col-lg-3">
-                    <!-- Address Card -->
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <!-- Button to change delivery address (opens modal) -->
-                            <button data-toggle="modal" data-target="#address-modal" type="button"
-                                class="btn btn-sm btn-outline-primary float-right">
-                                Change <i class="fas fa-pencil-alt"></i>
-                            </button>
-                            <!-- Address Information -->
-                            <div class="form-group">
-                                <p class="ml-2"><strong>Deliver To</strong></p>
-                            </div>
-                            <p id="current-address" class="mr-3">14 Tollgate Mews, Scarborough, Ontario</p>
-                        </div>
-                    </div>
 
                     <!-- Checkout Summary Card -->
                     <div class="card">
                         <div class="card-body">
                             <div id="amount-info">
-                                <!-- Coupon Code Input -->
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <input id="coupon_code" type="text" class="form-control" name="code"
-                                            placeholder="Coupon code" value="">
-                                        <span class="input-group-append">
-                                            <button type="button" id="apply-coupon"
-                                                class="btn btn-primary">Apply</button>
-                                        </span>
-                                    </div>
-                                </div>
                                 <!-- Checkout Form -->
                                 <form id="checkout-form" method="POST" action="/checkout">
                                     <!-- Price Information -->
@@ -190,19 +164,12 @@
                                         <dt>Total:</dt>
                                         <dd class="text-right text-dark"><strong id="total">$0.00</strong></dd>
                                     </dl>
-                                    <hr>
-                                    <!-- Hidden Inputs for Checkout -->
-                                    <input id="checkout-items" hidden name="items">
-                                    <input id="checkout-coupon" hidden name="coupon">
-                                    <!-- Minimum Order Warning (shown if below minimum amount) -->
-                                    <p class="text-danger" id="min-amount-warning">
-                                        Checkout unavailable.<br>Minimum order amount is $20.00
-                                    </p>
                                     <!-- Checkout and Continue Shopping Buttons -->
                                     <button type="submit" id="checkout-button"
                                         class="btn btn-primary btn-block">Checkout
                                     </button>
-                                    <button class="btn btn-light btn-block shopping">Continue Shopping</button>
+                                    <button class="btn btn-light btn-block shopping" href="/products">Continue
+                                        Shopping</button>
                                 </form>
                             </div>
                         </div>
@@ -436,211 +403,95 @@
     <script src="../js/scripts.js"></script>
     <script>
         $(document).ready(function () {
-            // Initialize variables for discounts and delivery charges
-            var discount = 0.00;
-            var deliveryCharge = 10.00;
-            var couponDiscount = 0;
-
-            // Define available coupon codes and their respective discounts
-            var coupons = {
-                'SAVE10': 10.00,
-                'SAVE20': 20.00,
-                'SAVE30': 30.00
-            };
-
-            // Retrieve the cart products from local storage or initialize an empty array
-            var cartProducts = JSON.parse(localStorage.getItem('cartProducts')) || [];
-
-            // Function to update the cart count in the UI
-            function updateCartCount() {
-                let totalCount = cartProducts.reduce((total, product) => total + product.cartQuantity, 0);
-                localStorage.setItem('cartCount', totalCount); // Store the cart count in localStorage
-                if (totalCount > 0) {
-                    $('#cart-count').text(totalCount).show();
-                } else {
-                    $('#cart-count').hide();
-                }
-            }
-
-            // Function to render the cart items in the table
+            // Function to render cart items and update the checkout totals
             function renderCart() {
+                var cartProducts = JSON.parse(localStorage.getItem('cartProducts')) || [];
+                let subtotal = 0;
+                let totalQuantity = 0;
+
+                // Empty the cart table before adding new rows
                 $('#cart-items').empty();
+
+                // Check if there are items in the cart
                 if (cartProducts.length > 0) {
-                    cartProducts.forEach(function (product) {
+                    cartProducts.forEach(product => {
+                        // Calculate subtotal for each product
+                        let productTotal = product.price * product.cartQuantity;
+                        subtotal += productTotal;
+
+                        // Append cart item to the table
                         var productDetails = `
-                <tr class="cart-item" data-id="${product.id}">
-                    <td><img src="${product.image}" alt="product image" style="width: 50px; height: auto;"></td>
-                    <td>${product.name}</td>
-                    <td>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-outline-secondary btn-sm decrease" type="button">-</button>
-                            </div>
-                            <input type="text" class="form-control text-center quantity" value="${product.cartQuantity}" readonly>
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary btn-sm increase" type="button">+</button>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="price" data-price="${product.price}">${product.price}</td>
-                    <td>
-                        <button class="btn btn-outline-primary btn-sm remove">Remove</button>
-                    </td>
-                </tr>
-            `;
+                            <tr class="cart-item" data-id="${product.id}">
+                                <td><img src="${product.image}" alt="${product.name}" style="width: 50px;"></td>
+                                <td>${product.name}</td>
+                                <td>
+                                    <div class="input-group">
+                                        <button class="btn btn-sm decrease" onclick="updateQuantity('${product.id}', 'decrease')">-</button>
+                                        <input type="text" class="form-control quantity" value="${product.cartQuantity}" readonly>
+                                        <button class="btn btn-sm increase" onclick="updateQuantity('${product.id}', 'increase')">+</button>
+                                    </div>
+                                </td>
+                                <td class="price">$${product.price}</td>
+                                <td><button class="btn btn-sm remove" onclick="removeProduct('${product.id}')">Remove</button></td>
+                            </tr>
+                        `;
                         $('#cart-items').append(productDetails);
                     });
-                } else {
-                    $('#cart-items').append('<tr><td colspan="5" class="text-center text-danger">Your cart is empty.</td></tr>');
-                }
-                updateCartCount(); // Update cart count whenever the cart is rendered
-            }
 
-            // Function to update the prices and total amounts in the UI
-            function updatePrices() {
-                var totalPrice = 0;
-                $('.cart-item').each(function () {
-                    var quantity = parseInt($(this).find('.quantity').val());
-                    var price = parseFloat($(this).find('.price').data('price').replace("$", ""));
-                    totalPrice += quantity * price;
-                });
+                    // Update total price dynamically
+                    $('#sub-total').text('$' + subtotal.toFixed(2));
 
-                var subTotal = totalPrice - discount - couponDiscount;
-                $('#sub-total').text('$' + subTotal.toFixed(2));
-                var total = subTotal + deliveryCharge;
-                $('#total').text('$' + total.toFixed(2));
+                    // Assuming no discounts for now
+                    $('#discount').text('$0.00');
 
-                if (total < 20) {
-                    $('#checkout-button').prop('disabled', true);
-                    $('#min-amount-warning').show();
-                } else {
-                    $('#checkout-button').prop('disabled', false);
+                    // Add delivery charge of $10.00
+                    let deliveryCharge = 10.00;
+                    $('#delivery-charge').text('$' + deliveryCharge.toFixed(2));
+
+                    // Calculate the total (subtotal + delivery charge)
+                    let total = subtotal + deliveryCharge;
+                    $('#total').text('$' + total.toFixed(2));
+
+                    // Hide the minimum order warning, as it's not needed anymore
                     $('#min-amount-warning').hide();
-                }
-            }
 
-            // Function to update the cart products in local storage
-            function updateLocalStorage() {
-                localStorage.setItem('cartProducts', JSON.stringify(cartProducts));
-            }
-
-            // Event handler for increasing product quantity in the cart
-            $(document).on('click', '.increase', function () {
-                var $row = $(this).closest('.cart-item');
-                var productId = $row.data('id');
-                var product = cartProducts.find(p => p.id === productId);
-
-                if (product.quantity > 0) {
-                    product.cartQuantity += 1;
-                    product.quantity -= 1;
-                    $row.find('.quantity').val(product.cartQuantity);
-                    updatePrices();
-                    updateLocalStorage();
-                    updateCartCount();
+                    // Enable checkout button without checking for minimum amount
+                    $('#checkout-button').prop('disabled', false);
                 } else {
-                    swal('Error', 'No more stock available!', 'error');
-                }
-            });
-
-            // Event handler for decreasing product quantity in the cart
-            $(document).on('click', '.decrease', function () {
-                var $row = $(this).closest('.cart-item');
-                var productId = $row.data('id');
-                var product = cartProducts.find(p => p.id === productId);
-
-                if (product.cartQuantity > 1) {
-                    product.cartQuantity -= 1;
-                    product.quantity += 1;
-                    $row.find('.quantity').val(product.cartQuantity);
-                    updatePrices();
-                    updateLocalStorage();
-                    updateCartCount();
-                }
-            });
-
-            // Event handler for removing a product from the cart
-            $(document).on('click', '.remove', function () {
-                var $row = $(this).closest('.cart-item');
-                var productId = $row.data('id');
-                cartProducts = cartProducts.filter(p => p.id !== productId);
-                $row.remove();
-                updatePrices();
-                updateLocalStorage();
-                updateCartCount();
-                if (cartProducts.length === 0) {
-                    $('#cart-items').append('<tr><td colspan="5" class="text-center text-danger">Your cart is empty.</td></tr>');
-                }
-            });
-
-            // Event handler for applying a coupon code
-            $('#apply-coupon').click(function () {
-                var couponCode = $('#coupon_code').val();
-                if (coupons[couponCode]) {
-                    couponDiscount = coupons[couponCode];
-                    $('#discount').text('-$' + couponDiscount.toFixed(2));
-                    swal({
-                        title: "Coupon Applied!",
-                        text: "Your coupon has been successfully applied.",
-                        icon: "success",
-                        button: "OK",
-                    }).then(() => {
-                        updatePrices();
-                    });
-                } else {
-                    swal({
-                        title: "Invalid Coupon!",
-                        text: "The coupon code you entered is invalid.",
-                        icon: "error",
-                        button: "OK",
-                    });
-                }
-            });
-
-            // Event handler for showing the address modal and setting the current address
-            $('#address-modal').on('show.bs.modal', function () {
-                $('#address').val($('#current-address').text().trim());
-            });
-
-            // Event handler for saving the new address
-            $('#save-address').click(function () {
-                var newAddress = $('#address').val();
-                if (newAddress) {
-                    $('#current-address').text(newAddress);
-                    $('#address-modal').modal('hide');
-                }
-            });
-
-            // Event handler for continuing shopping
-            $('.shopping').click(function () {
-                window.location.href = './products.html';
-            });
-
-            // Event handler for handling form submission with SweetAlert
-            $('#checkout-form').submit(function (event) {
-                event.preventDefault();
-
-                swal({
-                    title: "Order Placed!",
-                    text: "Your order has been successfully placed.",
-                    icon: "success",
-                    button: "OK",
-                }).then(() => {
-                    localStorage.removeItem('cartProducts');
-                    localStorage.removeItem('selectedProduct');
-                    localStorage.removeItem('selectedProductQuantity');
-                    localStorage.removeItem('cartCount');
-                    $('.cart-item').remove();
-                    updateCartCount();
-                    updatePrices();
+                    // Display empty cart message if no items in the cart
                     $('#cart-items').append('<tr><td colspan="5" class="text-center">Your cart is empty.</td></tr>');
-                    updateCartCount(); // Reset cart count after checkout
-                    window.location.reload();
-                });
-            });
+                    $('#empty-cart').removeClass('d-none');
+                }
+            }
 
-            // Initial rendering of the cart and prices
+            // Function to update quantity of items in cart
+            window.updateQuantity = function (productId, action) {
+                let cartProducts = JSON.parse(localStorage.getItem('cartProducts')) || [];
+                let product = cartProducts.find(p => p.id === productId);
+
+                if (product) {
+                    if (action === 'increase' && product.cartQuantity < product.stock) {
+                        product.cartQuantity += 1;
+                    } else if (action === 'decrease' && product.cartQuantity > 1) {
+                        product.cartQuantity -= 1;
+                    }
+                    // Save updated cart back to localStorage
+                    localStorage.setItem('cartProducts', JSON.stringify(cartProducts));
+                    renderCart(); // Re-render the cart
+                }
+            }
+
+            // Function to remove product from cart
+            window.removeProduct = function (productId) {
+                let cartProducts = JSON.parse(localStorage.getItem('cartProducts')) || [];
+                cartProducts = cartProducts.filter(p => p.id !== productId);
+                // Save updated cart back to localStorage
+                localStorage.setItem('cartProducts', JSON.stringify(cartProducts));
+                renderCart(); // Re-render the cart
+            }
+
+            // Initialize the cart when the page loads
             renderCart();
-            updatePrices();
         });
     </script>
 </body>

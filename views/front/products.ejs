@@ -103,57 +103,75 @@
     <main>
         <!-- Page Header -->
         <div id="page-header">
-            <!-- Title for the products page -->
             <div class="page-title">Products</div>
         </div>
+
         <div class="bd-container main-content">
-
-            <!-- Filter and Sorting Section -->
+            <!-- Filter Section -->
             <div class="filter-sort-container">
-                <!-- Filter by Price Range -->
-                <div class="filter">
-                    <label for="priceFilter">Price Range:</label>
-                    <select id="priceFilter">
-                        <option value="all">All</option>
-                        <option value="0-500">$0 - $500</option>
-                        <option value="500-1000">$500 - $1000</option>
-                        <option value="1000-2000">$1000 - $2000</option>
-                        <option value="2000+">$2000+</option>
-                    </select>
-                </div>
+                <form method="GET" action="/products" class="filters-form">
+                    <div class="filter">
+                        <label for="categoryFilter">Category:</label>
+                        <select id="categoryFilter" name="category" onchange="this.form.submit()">
+                            <option value="all">All</option>
+                            <% categories.forEach(category=> { %>
+                                <option value="<%= category.name %>" <%=category.name===categoryFilter ? 'selected' : ''
+                                    %>>
+                                    <%= category.name %>
+                                </option>
+                                <% }); %>
+                        </select>
+                    </div>
 
-                <!-- Filter by Brand -->
-                <div class="filter">
-                    <label for="brandFilter">Brand:</label>
-                    <select id="brandFilter">
-                        <option value="all">All</option>
-                        <option value="Apple">Apple</option>
-                        <option value="Samsung">Samsung</option>
-                        <option value="Sony">Sony</option>
-                        <option value="Dell">Dell</option>
-                        <option value="Logitech">Logitech</option>
-                    </select>
-                </div>
-
-                <!-- Sorting Options -->
-                <div class="sort">
-                    <label for="sortOptions">Sort By:</label>
-                    <select id="sortOptions">
-                        <option value="popularity">Popularity</option>
-                        <option value="price-low-to-high">Price: Low to High</option>
-                        <option value="price-high-to-low">Price: High to Low</option>
-                        <option value="newest">Newest Arrivals</option>
-                        <option value="best-rated">Best Rated</option>
-                    </select>
-                </div>
+                    <div class="filter">
+                        <label for="priceFilter">Price Range:</label>
+                        <select id="priceFilter" name="price" onchange="this.form.submit()">
+                            <option value="all">All</option>
+                            <option value="0-500" <%=priceFilter==='0-500' ? 'selected' : '' %>>$0 - $500</option>
+                            <option value="500-1000" <%=priceFilter==='500-1000' ? 'selected' : '' %>>$500 - $1000
+                            </option>
+                            <option value="1000-2000" <%=priceFilter==='1000-2000' ? 'selected' : '' %>>$1000 - $2000
+                            </option>
+                            <option value="2000+" <%=priceFilter==='2000+' ? 'selected' : '' %>>$2000+</option>
+                        </select>
+                    </div>
+                </form>
             </div>
 
-            <!-- Container for product categories and products -->
-            <div id="productCategories">
-                <!-- Product categories and products will be dynamically added here -->
+            <!-- Product List -->
+            <div id="productCategories" class="product-grid">
+                <% Object.keys(groupedProducts).forEach(categoryName=> { %>
+                    <div class="product-category">
+                        <div class="product-list">
+                            <% groupedProducts[categoryName].forEach(product=> { %>
+                                <div class="product-card">
+                                    <img src="<%= product.image %>" alt="<%= product.name %>">
+                                    <h3>
+                                        <%= product.name %>
+                                    </h3>
+                                    <p>Price: $<%= product.price %>
+                                    </p>
+                                    <a href="/product-details?id=<%= product._id %>">View Details</a>
+                                </div>
+                                <% }); %>
+                        </div>
+                    </div>
+                    <% }); %>
+            </div>
+
+            <!-- Pagination Section -->
+            <div class="pagination">
+                <ul>
+                    <% for (let i=1; i <=totalPages; i++) { %>
+                        <li><a href="/products?page=<%= i %>&category=<%= categoryFilter %>&price=<%= priceFilter %>">
+                                <%= i %>
+                            </a></li>
+                        <% } %>
+                </ul>
             </div>
         </div>
     </main>
+
     <!--========== FOOTER ==========-->
     <footer class="footer">
         <div class="section footer__container">
@@ -355,196 +373,6 @@
         </div>
     </footer>
     <script src="../js/scripts.js"></script>
-    <script>
-        $(document).ready(function () {
-            const products = [
-                {
-                    id: 1,
-                    name: 'iPhone 14 Pro',
-                    category: 'Smartphones',
-                    image: 'https://example.com/images/iphone14pro.jpg',
-                    vendor: {
-                        name: 'Apple',
-                        verified: true
-                    },
-                    short_description: 'The latest iPhone with A16 Bionic chip and ProMotion display.',
-                    price: '$999',
-                    quantity: 15,
-                },
-                {
-                    id: 2,
-                    name: 'Samsung Galaxy S23 Ultra',
-                    category: 'Smartphones',
-                    image: 'https://example.com/images/galaxys23ultra.jpg',
-                    vendor: {
-                        name: 'Samsung',
-                        verified: true
-                    },
-                    short_description: 'Flagship smartphone with 200MP camera and Snapdragon 8 Gen 2.',
-                    price: '$1199',
-                    quantity: 10,
-                },
-                {
-                    id: 3,
-                    name: 'MacBook Pro 16"',
-                    category: 'Laptops',
-                    image: 'https://example.com/images/macbookpro16.jpg',
-                    vendor: {
-                        name: 'Apple',
-                        verified: true
-                    },
-                    short_description: 'Powerful laptop with M2 Max chip and Liquid Retina XDR display.',
-                    price: '$2499',
-                    quantity: 8,
-                },
-                {
-                    id: 4,
-                    name: 'Dell XPS 13',
-                    category: 'Laptops',
-                    image: 'https://example.com/images/dellxps13.jpg',
-                    vendor: {
-                        name: 'Dell',
-                        verified: true
-                    },
-                    short_description: 'Compact and lightweight laptop with Intel i7 processor.',
-                    price: '$1399',
-                    quantity: 12,
-                },
-                {
-                    id: 5,
-                    name: 'Sony WH-1000XM5',
-                    category: 'Accessories',
-                    image: 'https://example.com/images/sonywh1000xm5.jpg',
-                    vendor: {
-                        name: 'Sony',
-                        verified: true
-                    },
-                    short_description: 'Industry-leading noise-canceling headphones with 30-hour battery life.',
-                    price: '$399',
-                    quantity: 20,
-                },
-                {
-                    id: 6,
-                    name: 'Apple Watch Series 8',
-                    category: 'Accessories',
-                    image: 'https://example.com/images/applewatchseries8.jpg',
-                    vendor: {
-                        name: 'Apple',
-                        verified: true
-                    },
-                    short_description: 'Advanced health tracking smartwatch with crash detection.',
-                    price: '$499',
-                    quantity: 25,
-                },
-                {
-                    id: 7,
-                    name: 'Logitech MX Master 3S',
-                    category: 'Accessories',
-                    image: 'https://example.com/images/logitechmxmaster3s.jpg',
-                    vendor: {
-                        name: 'Logitech',
-                        verified: true
-                    },
-                    short_description: 'Ergonomic wireless mouse with ultra-fast scrolling.',
-                    price: '$99',
-                    quantity: 30,
-                },
-                {
-                    id: 8,
-                    name: 'Samsung Galaxy Tab S8',
-                    category: 'Tablets',
-                    image: 'https://example.com/images/galaxytabs8.jpg',
-                    vendor: {
-                        name: 'Samsung',
-                        verified: true
-                    },
-                    short_description: 'High-performance tablet with AMOLED display and S Pen.',
-                    price: '$799',
-                    quantity: 18,
-                },
-            ];
-
-            const categories = [...new Set(products.map(p => p.category))];
-
-            // Function to display products
-            function displayProducts(filter = '', priceRange = 'all', brand = 'all', sortOption = 'popularity') {
-                $('#productCategories').empty();
-
-                // Filter products based on search, price range, and brand
-                let filteredProducts = products.filter(product => {
-                    const matchesSearch = product.name.toLowerCase().includes(filter.toLowerCase());
-                    const matchesPrice = priceRange === 'all' || (
-                        priceRange === '0-500' && parseFloat(product.price.replace('$', '')) <= 500 ||
-                        priceRange === '500-1000' && parseFloat(product.price.replace('$', '')) > 500 && parseFloat(product.price.replace('$', '')) <= 1000 ||
-                        priceRange === '1000-2000' && parseFloat(product.price.replace('$', '')) > 1000 && parseFloat(product.price.replace('$', '')) <= 2000 ||
-                        priceRange === '2000+' && parseFloat(product.price.replace('$', '')) > 2000
-                    );
-                    const matchesBrand = brand === 'all' || product.vendor.name === brand;
-
-                    return matchesSearch && matchesPrice && matchesBrand;
-                });
-
-                // Sort products based on the selected sorting option
-                if (sortOption === 'price-low-to-high') {
-                    filteredProducts.sort((a, b) => parseFloat(a.price.replace('$', '')) - parseFloat(b.price.replace('$', '')));
-                } else if (sortOption === 'price-high-to-low') {
-                    filteredProducts.sort((a, b) => parseFloat(b.price.replace('$', '')) - parseFloat(a.price.replace('$', '')));
-                } else if (sortOption === 'newest') {
-                    filteredProducts.sort((a, b) => b.id - a.id); // Assuming higher IDs are newer
-                } else if (sortOption === 'best-rated') {
-                    // Add a `rating` property to your products and sort by it
-                    filteredProducts.sort((a, b) => b.rating - a.rating);
-                }
-
-                // Display filtered and sorted products
-                categories.forEach(category => {
-                    const categoryProducts = filteredProducts.filter(p => p.category === category);
-                    if (categoryProducts.length > 0) {
-                        const categoryId = category.split(' ').join('-').toLowerCase();
-                        $('#productCategories').append(`
-                        <div class="product-category">
-                            <div class="category-title">${category}</div>
-                            <div class="product-list" id="${categoryId}">
-                            </div>
-                        </div>
-                    `);
-
-                        categoryProducts.forEach(product => {
-                            $(`#${categoryId}`).append(`
-                            <div class="product">
-                                <img src="${product.image}" alt="${product.name}" class="product-image">
-                                <div class="product-title">${product.name}</div>
-                                <p class="product-price">Price: ${product.price}</p>
-                                <p class="product-quantity">Available Quantity: ${product.quantity}</p>
-                                <button onclick="viewProduct(${product.id})" class="product-button button">View Details</button>
-                            </div>
-                        `);
-                        });
-                    }
-                });
-            }
-
-            // Event handlers for filters and sorting
-            $('#searchBar').on('input', function () {
-                const filter = $(this).val();
-                const priceRange = $('#priceFilter').val();
-                const brand = $('#brandFilter').val();
-                const sortOption = $('#sortOptions').val();
-                displayProducts(filter, priceRange, brand, sortOption);
-            });
-
-            $('#priceFilter, #brandFilter, #sortOptions').on('change', function () {
-                const filter = $('#searchBar').val();
-                const priceRange = $('#priceFilter').val();
-                const brand = $('#brandFilter').val();
-                const sortOption = $('#sortOptions').val();
-                displayProducts(filter, priceRange, brand, sortOption);
-            });
-
-            // Initial display of products
-            displayProducts();
-        });
-    </script>
     <script>
         // Function to show or hide the navigation menu
         const showMenu = (toggleId, navId) => {

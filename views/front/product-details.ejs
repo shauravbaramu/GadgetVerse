@@ -13,6 +13,76 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
     <link rel="stylesheet" type="text/css" href="/front/css/product-details.css">
     <link rel="stylesheet" type="text/css" href="/front/css/styles.css">
+    <style>
+        .product-details-container {
+            display: flex;
+            gap: 30px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-image img {
+            width: 400px;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .product-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-info h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .product-category,
+        .product-description,
+        .product-price,
+        .product-stock {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .add-to-cart-btn,
+        .back-to-products-btn {
+            display: inline-block;
+            padding: 12px 20px;
+            margin-top: 10px;
+            text-decoration: none;
+            color: white;
+            background-color: #4CAF50;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .back-to-products-btn {
+            background-color: #333;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #45a049;
+        }
+
+        .back-to-products-btn:hover {
+            background-color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .product-details-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .product-image img {
+                width: 100%;
+                max-width: 400px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -83,89 +153,40 @@
         <div class="bd-container">
             <!-- Breadcrumb navigation -->
             <div class="breadcrumbs" id="breadcrumbs">
-                <a href="../index.html">Home</a> &gt; <!-- Link to the home page -->
-                <a href="products.html">Products</a> &gt; <!-- Link to the products page -->
-                <span id="breadcrumbProductName"></span> <!-- Placeholder for the current product name -->
+                <a href="/">Home</a> &gt; <!-- Link to the home page -->
+                <a href="/products">Products</a> &gt; <!-- Link to the products page -->
+                <span>
+                    <%= product.name %>
+                </span> <!-- Display the product name dynamically -->
             </div>
 
-            <div class="main-content">
-                <div class="row no-gutters">
-                    <aside class="col-sm-6 border-right">
-                        <!-- Section for the main product image -->
-                        <section id="default" class="padding-top0">
-                            <div class="row justify-content-center">
-                                <div class="large-5 column">
-                                    <div class="xzoom-container">
-                                        <img id="main-product-image" class="xzoom" height="400" width="400" src=""
-                                            xoriginal="" />
-                                        <!-- Main product image with zoom capability -->
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </aside>
-
-                    <main class="col-sm-6">
-                        <article class="content-body ml-4">
-                            <!-- Product category -->
-                            <div id="product-category"></div>
-                            <!-- Product title -->
-                            <h2 id="product-title"></h2>
-                            <span class="product_category text-muted">Sold By</span><br>
-                            <!-- Vendor information -->
-                            <span class="text-primary" id="vendor-link"><b id="vendor-name"></b></span>
-                            <label class="text-success" id="vendor-verified"></label>
-                            <!-- Product rating -->
-                            <div id="product-rating"></div>
-                            <hr />
-                            <!-- Product description -->
-                            <p id="product-description"></p>
-                            <!-- Product price -->
-                            <div class="h3 mb-4" id="product-price"></div>
-                            <!-- Audio player for product sound sample -->
-                            <div class="audio-player">
-                                <audio controls>
-                                    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-                                        type="audio/mp3">
-                                    Your browser does not support the audio element.
-                                </audio>
-                            </div>
-                            <!-- Share options -->
-                            <p>Share:</p>
-                            <div class="a2a_kit a2a_kit_size_24 a2a_default_style mb-3">
-                                <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
-                                <a class="a2a_button_facebook"></a>
-                                <a class="a2a_button_twitter"></a>
-                                <a class="a2a_button_email"></a>
-                            </div>
-                            <!-- Form for buying the product -->
-                            <form id="buy-form" method="POST" action="#">
-                                <!-- Hidden input for product ID -->
-                                <input hidden name="product_id" id="product-id">
-                                <!-- Quantity input -->
-                                <div class="form-row">
-                                    <div class="col-sm-6 col-md-5">
-                                        <input id="quantity-input" name="quantity" class="form-control" type="number"
-                                            value="1" min="1" />
-                                    </div>
-                                    <!-- Placeholder for wishlist widget -->
-                                    <div id="widget-wishlist-holder"></div>
-                                </div>
-                                <!-- Add to cart button -->
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-5 mt-2">
-                                        <button id="cart-button" type="button" class="btn btn-primary w-100 button">
-                                            <span class="text">Add to cart</span>
-                                            <i class="fas fa-shopping-cart"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                            <!-- Stock status -->
-                            <div id="stock-status" class="mt-3"></div>
-                        </article>
-                    </main>
+            <div class="product-details-container">
+                <div class="product-image">
+                    <img src="<%= product.image %>" alt="<%= product.name %>">
                 </div>
+
+                <div class="product-info">
+                    <h1>
+                        <%= product.name %>
+                    </h1>
+                    <p class="product-category">Category: <%= product.category.name %>
+                    </p>
+                    <p class="product-description">
+                        <%= product.description %>
+                    </p>
+                    <p class="product-price">Price: $<%= product.price %>
+                    </p>
+                    <p class="product-stock">Stock: <%= product.stock %> available</p>
+
+                    <div>
+                        <a class="add-to-cart-btn" href="javascript:void(0);"
+                            onclick="addToCart('<%= product._id %>', '<%= product.name %>', '<%= product.price %>', '<%= product.image %>', '<%= product.stock %>')">
+                            Add to Cart
+                        </a>
+                        <a href="/products" class="back-to-products-btn">Back to Products</a>
+                    </div>
+                </div>
+
             </div>
         </div>
     </main>
@@ -370,163 +391,37 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xzoom/1.0.14/xzoom.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <script>
-        $(document).ready(function () {
-            // Retrieve the logged-in user from local storage
-            let loggedUser = localStorage.getItem('loggedInUser');
+        function addToCart(id, name, price, image, stock) {
+            let cartProducts = JSON.parse(localStorage.getItem('cartProducts')) || [];
 
-            // If the user is not logged in, make the quantity input read-only
-            if (loggedUser == null) {
-                $('#quantity-input').attr('readonly', true);
-            }
-
-            // Retrieve the selected product from local storage and parse it as JSON
-            let product = JSON.parse(localStorage.getItem('selectedProduct'));
-
-            // Function to initialize the xZoom plugin for the product image
-            function initializeXzoom() {
-                $('.xzoom').xzoom({ zoomWidth: 400, title: false, tint: '#333', Xoffset: 15 });
-            }
-
-            // Function to load the product data into the page
-            function loadProductData() {
-                $('#breadcrumbProductName').text(product.name);
-                $('#main-product-image').attr('src', product.image).attr('xoriginal', product.image);
-                $('#product-category').text(product.category);
-                $('#product-title').text(product.name);
-                $('#vendor-name').text(product.vendor.name);
-                if (product.vendor.verified) {
-                    $('#vendor-verified').html('<i class="ml-2 fas fa-check-circle"></i> Verified');
+            // Check if the product is already in the cart
+            let existingProduct = cartProducts.find(p => p.id === id);
+            if (existingProduct) {
+                if (existingProduct.cartQuantity < stock) {
+                    existingProduct.cartQuantity += 1;
+                } else {
+                    alert('Stock limit reached!');
+                    return;
                 }
-                $('#product-description').text(product.short_description);
-                $('#product-price').html(`<var class="price h4">${product.price}</var>`);
-                $('#quantity-input').attr('max', product.quantity);
-                updateStockStatus(product.quantity);
-
-                if (product.sound) {
-                    $('.audio-player audio').attr('src', product.sound);
-                }
-
-                // Hide the loading overlay once the image is loaded
-                $('#main-product-image').on('load', function () {
-                    $('#loading-overlay').fadeOut();
+            } else {
+                cartProducts.push({
+                    id: id,
+                    name: name,
+                    price: parseFloat(price),
+                    image: image,
+                    cartQuantity: 1,
+                    stock: stock
                 });
             }
 
-            // Function to load the quantity from local storage
-            function loadQuantityFromLocalStorage() {
-                let storedQuantity = localStorage.getItem('selectedProductQuantity');
-                if (storedQuantity) {
-                    storedQuantity = parseInt(storedQuantity);
-                    $('#quantity-input').val(storedQuantity);
-                    if (storedQuantity > product.quantity) {
-                        $('#quantity-input').val(product.quantity);
-                    }
-                }
-            }
+            // Save updated cart to localStorage
+            localStorage.setItem('cartProducts', JSON.stringify(cartProducts));
 
-            // Function to update the stock status based on quantity
-            function updateStockStatus(quantity) {
-                if (quantity > 0) {
-                    $('#stock-status').html('<span class="badge badge-success">Available in stock</span>');
-                    $('#cart-button').prop('disabled', false);
-                    $('#buy-button').prop('disabled', false);
-                } else {
-                    $('#stock-status').html('<span class="badge badge-danger">Out of stock</span>');
-                    $('#cart-button').prop('disabled', true);
-                    $('#buy-button').prop('disabled', true);
-                }
-            }
-
-            // Function to add or update the product in the cart
-            function addOrUpdateProductInCart(product, orderedQuantity) {
-                let cartProducts = localStorage.getItem('cartProducts') ? JSON.parse(localStorage.getItem('cartProducts')) : [];
-                let productInCart = cartProducts.find(p => p.id === product.id);
-                if (productInCart) {
-                    productInCart.cartQuantity += orderedQuantity;
-                    productInCart.quantity -= orderedQuantity;
-                } else {
-                    if (orderedQuantity <= product.quantity) {
-                        product.cartQuantity = orderedQuantity;
-                        cartProducts.push(product);
-                    } else {
-                        swal('Error', 'Ordered quantity exceeds available stock!', 'error');
-                        return;
-                    }
-                }
-
-                // Update the quantity in the selected product
-                product.quantity -= orderedQuantity;
-                updateStockStatus(product.quantity);
-
-                localStorage.setItem('cartProducts', JSON.stringify(cartProducts));
-                localStorage.setItem('selectedProductQuantity', $('#quantity-input').val());
-                localStorage.setItem('selectedProduct', JSON.stringify(product));
-
-                // Update the cart count
-                updateCartCount();
-            }
-
-            // Function to update the cart count
-            function updateCartCount() {
-                let cartProducts = localStorage.getItem('cartProducts') ? JSON.parse(localStorage.getItem('cartProducts')) : [];
-                let totalCount = cartProducts.reduce((total, product) => total + product.cartQuantity, 0);
-                localStorage.setItem('cartCount', totalCount); // Store the cart count in localStorage
-
-                if (totalCount > 0) {
-                    $('#cart-count').text(totalCount).show();
-                } else {
-                    $('#cart-count').hide();
-                }
-            }
-
-            // Function to load the cart count from local storage on other pages
-            function loadCartCount() {
-                let cartCount = localStorage.getItem('cartCount');
-                if (cartCount && cartCount > 0) {
-                    $('#cart-count').text(cartCount).css('display', 'inline');
-                } else {
-                    $('#cart-count').css('display', 'none');
-                }
-            }
-
-            // Event handler for quantity input changes
-            $('#quantity-input').on('input', function () {
-                let inputQuantity = parseInt($(this).val());
-                if (inputQuantity > product.quantity) {
-                    $(this).val(product.quantity === 0 ? 1 : product.quantity);
-                    swal('Error', 'Quantity exceeds available stock!', 'error');
-                } else if (inputQuantity < 1) {
-                    $(this).val(1);
-                }
-
-                localStorage.setItem('selectedProductQuantity', $(this).val());
-            });
-
-            // Event handler for the Add to Cart button
-            $('#cart-button').click(function () {
-                if (loggedUser == null) {
-                    swal('Error', 'Please login to add the product to the cart!', 'error');
-                } else {
-                    let selectedQuantity = parseInt($('#quantity-input').val());
-
-                    if (selectedQuantity > 0 && selectedQuantity <= product.quantity) {
-                        // Update the cart
-                        addOrUpdateProductInCart(product, selectedQuantity);
-                        swal('Success', 'Product added to cart!', 'success');
-                    } else {
-                        swal('Error', 'Invalid quantity!', 'error');
-                    }
-                }
-            });
-
-            // Load product data, quantity from local storage, initialize xZoom, and update cart count
-            loadProductData();
-            loadQuantityFromLocalStorage();
-            initializeXzoom();
-            updateCartCount();
-            loadCartCount();
-        });
+            // Redirect to cart page
+            window.location.href = "/cart";
+        }
     </script>
+
 </body>
 
 </html>
