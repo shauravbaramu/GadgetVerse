@@ -6,86 +6,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - GadgetVerse</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/front/css/styles.css">
     <link rel="stylesheet" href="/front/css/login-register.css">
 </head>
 
 <body>
-<main>
-    <!-- Main content container -->
-    <div class="login-container">
-        <!-- Register form section -->
-        <div class="login-form-section">
-            <div class="form-header">
-                <!-- Register form header -->
-                <span class="form-title">Register for</span>
-                <h3>GadgetVerse</h3>
-                <span>Already have an account? <a href="/login">Login</a></span>
+    <main>
+        <!-- Main content container -->
+        <div class="login-container">
+            <!-- Register form section -->
+            <div class="login-form-section">
+                <div class="form-header">
+                    <!-- Register form header -->
+                    <span class="form-title">Register for</span>
+                    <h3>GadgetVerse</h3>
+                    <span>Already have an account? <a href="/login">Login</a></span>
+                </div>
+                <% if (typeof errors !=='undefined' && errors.length> 0) { %> <% errors.forEach(function (error) { %>
+                        <div class="alert alert-danger">
+                            <%= error.msg %>
+                        </div>
+                        <% }); %>
+                            <% } %>
+                                <% if (typeof success !=='undefined' && success.length> 0) { %>
+                                    <div class="alert alert-success">
+                                        <%= success %>
+                                    </div>
+                                    <% } %>
+                                        <!-- Register form -->
+                                        <form id="registerForm" action="/register" method="POST">
+                                            <!-- Full Name and Last Name on the same line -->
+                                            <div class="name-container">
+                                                <input type="text" id="firstName" name="first_name" required
+                                                    placeholder="First Name">
+                                                <input type="text" id="lastName" name="last_name" required
+                                                    placeholder="Last Name">
+                                            </div>
+
+                                            <!-- Email input field -->
+                                            <input type="email" id="email" name="email" required
+                                                placeholder="Enter your Email">
+
+                                            <!-- Phone input field -->
+                                            <input type="tel" id="phone" name="phone" required
+                                                placeholder="Enter your Phone Number">
+
+                                            <!-- Address input field -->
+                                            <input type="text" id="address" name="address" required
+                                                placeholder="Enter your Address">
+
+                                            <!-- Password input field with show password icon -->
+                                            <div class="password-container">
+                                                <input type="password" id="password" name="password" required
+                                                    placeholder="Enter your Password">
+                                                <i class="fa fa-eye password-toggle" id="togglePassword"></i>
+                                            </div>
+
+                                            <!-- Confirm Password input field with show password icon -->
+                                            <div class="password-container">
+                                                <input type="password" id="confirmPassword" name="confirm_password"
+                                                    required placeholder="Confirm your Password">
+                                                <i class="fa fa-eye password-toggle" id="toggleConfirmPassword"></i>
+                                            </div>
+
+                                            <!-- Submit button for the register form -->
+                                            <button type="submit" class="button login-button">Register</button>
+                                        </form>
             </div>
-            <!-- Register form -->
-            <form id="registerForm">
-                <!-- Full Name and Last Name on the same line -->
-                <div class="name-container">
-                    <input type="text" id="firstName" name="first_name" required placeholder="First Name">
-                    <input type="text" id="lastName" name="last_name" required placeholder="Last Name">
-                </div>
-
-                <!-- Email input field -->
-                <input type="email" id="email" name="email" required placeholder="Enter your Email">
-
-                <!-- Phone input field -->
-                <input type="tel" id="phone" name="phone" required placeholder="Enter your Phone Number">
-
-                <!-- Address input field -->
-                <input type="text" id="address" name="address" required placeholder="Enter your Address">
-
-                <!-- Password input field with show password icon -->
-                <div class="password-container">
-                    <input type="password" id="password" name="password" required placeholder="Enter your Password">
-                    <i class="fa fa-eye password-toggle" id="togglePassword"></i>
-                </div>
-
-                <!-- Confirm Password input field with show password icon -->
-                <div class="password-container">
-                    <input type="password" id="confirmPassword" name="confirm_password" required placeholder="Confirm your Password">
-                    <i class="fa fa-eye password-toggle" id="toggleConfirmPassword"></i>
-                </div>
-
-                <!-- Submit button for the register form -->
-                <button type="submit" class="button login-button">Register</button>
-            </form>
+            <!-- Image section -->
+            <div class="login-image-section">
+                <img src="front/img/signup.svg" alt="Register Illustration">
+            </div>
         </div>
-        <!-- Image section -->
-        <div class="login-image-section">
-            <img src="front/img/signup.svg" alt="Register Illustration">
-        </div>
-    </div>
-</main>
+    </main>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const togglePassword = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('password');
-        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
-        const confirmPasswordInput = document.getElementById('confirmPassword');
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+            const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
 
-        // Toggle password visibility for password field
-        togglePassword.addEventListener('click', () => {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            togglePassword.classList.toggle('fa-eye-slash');
+            // Toggle password visibility for password field
+            togglePassword.addEventListener('click', () => {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                togglePassword.classList.toggle('fa-eye-slash');
+            });
+
+            // Toggle password visibility for confirm password field
+            toggleConfirmPassword.addEventListener('click', () => {
+                const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                confirmPasswordInput.setAttribute('type', type);
+                toggleConfirmPassword.classList.toggle('fa-eye-slash');
+            });
         });
-
-        // Toggle password visibility for confirm password field
-        toggleConfirmPassword.addEventListener('click', () => {
-            const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            confirmPasswordInput.setAttribute('type', type);
-            toggleConfirmPassword.classList.toggle('fa-eye-slash');
-        });
-    });
-</script>
+    </script>
 </body>
 
 </html>

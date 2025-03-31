@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const authController = require('../../controllers/front/auth/AuthController');
 
 // home page route
 router.get('/', (req, res) => {
@@ -14,13 +15,20 @@ router.get('/products', (req, res) => {
   res.render('front/products');
 });
 
-router.get('/login', (req, res) => {
-  res.render('front/login');
-});
+// Render register page
+router.get("/register", (req, res) => authController.showRegisterPage(req, res));
 
-router.get('/register', (req, res) => {
-  res.render('front/register');
-});
+// Handle register form submission
+router.post("/register", (req, res) => authController.register(req, res));
+
+// Render login page
+router.get("/login", (req, res) => authController.showLoginPage(req, res));
+
+// Handle login form submission
+router.post("/login", (req, res) => authController.login(req, res));
+
+// Handle logout
+router.get("/logout", (req, res) => authController.logout(req, res));
 
 router.get('/cart', (req, res) => {
   res.render('front/cart');

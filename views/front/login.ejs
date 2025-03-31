@@ -8,14 +8,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/front/css/styles.css">
     <link rel="stylesheet" href="/front/css/login-register.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
+
 <body>
     <!-- Navbar -->
     <header class="navbar">
@@ -36,7 +37,7 @@
                     <span>Don't have an account? <a href="/register">Register</a></span>
                 </div>
                 <!-- Login form -->
-                <form id="loginForm">
+                <form id="loginForm" action="/login" method="POST">
                     <!-- Email input field -->
                     <input type="email" id="email" name="email" required placeholder="Enter your Email">
 
@@ -67,25 +68,25 @@
         <p>&copy; 2025 GadgetVerse. All Rights Reserved.</p>
     </footer>
 
-<!-- Include jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const togglePassword = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('password');
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
 
-        togglePassword.addEventListener('click', () => {
-            // Toggle the type attribute
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
+            togglePassword.addEventListener('click', () => {
+                // Toggle the type attribute
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
 
-            // Toggle the eye icon
-            togglePassword.classList.toggle('fa-eye-slash');
+                // Toggle the eye icon
+                togglePassword.classList.toggle('fa-eye-slash');
+            });
         });
-    });
-</script>
+    </script>
 
 </body>
 
