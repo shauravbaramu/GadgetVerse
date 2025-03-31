@@ -2,6 +2,7 @@ const express = require('express');
 const dashboardController = require('../../controllers/admin/DashboardController');
 const profileController = require('../../controllers/admin/ProfileController');
 const loginController = require('../../controllers/admin/auth/LoginController');
+const forgetPasswordController = require("../../controllers/admin/auth/ForgetPasswordController");
 const { ensureAuthenticated } = require('../../middlewares/auth');
 const router = express.Router();
 
@@ -13,6 +14,12 @@ router.post("/login", (req, res) => loginController.login(req, res));
 
 // Handle logout
 router.get("/logout", (req, res) => loginController.logout(req, res));
+
+// Forgot Password Routes
+router.get("/forgot-password", (req, res) => forgetPasswordController.showForgotPasswordPage(req, res));
+router.post("/forgot-password", (req, res) => forgetPasswordController.handleForgotPassword(req, res));
+router.get("/reset-password/:token", (req, res) => forgetPasswordController.showResetPasswordPage(req, res));
+router.post("/reset-password/:token", (req, res) => forgetPasswordController.handleResetPassword(req, res));
 
 // Protected routes (authentication required)
 router.use(ensureAuthenticated); // Apply middleware to all routes below this line

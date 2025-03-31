@@ -23,6 +23,7 @@
     "body-parser": "^2.2.0",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^5.1.0",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
@@ -31,6 +32,7 @@
     "install": "^0.13.0",
     "mongoose": "^8.13.0",
     "multer": "^1.4.5-lts.2",
+    "nodemailer": "^6.10.0",
     "path": "^0.12.7"
   }
 }
