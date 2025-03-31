@@ -1,6 +1,9 @@
 const User = require("../../../models/User");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
+const bcrypt = require("bcrypt");
+const path = require("path");
+const ejs = require("ejs");
 
 class ForgetPasswordController {
   // Render Forgot Password Page
@@ -29,6 +32,13 @@ class ForgetPasswordController {
 
       // Send reset email
       const resetUrl = `${req.protocol}://${req.get("host")}/admin/reset-password/${resetToken}`;
+
+      // Render the email content using EJS
+      const emailHtml = await ejs.renderFile(
+        path.join(__dirname, "../../../views/admin/auth/reset-password-email.ejs"),
+        { first_name: user.first_name, resetUrl }
+      );
+
       const transporter = nodemailer.createTransport({
         service: "Gmail",
         auth: {
@@ -39,14 +49,15 @@ class ForgetPasswordController {
 
       await transporter.sendMail({
         to: user.email,
-        subject: "Password Reset Request",
-        html: `<p>You requested a password reset. Click <a href="${resetUrl}">here</a> to reset your password.</p>`,
+        subject: "Password Reset Request - GadgetVerse",
+        html: emailHtml
       });
 
       req.flash("success", "Password reset link sent to your email.");
       return res.redirect("/admin/forgot-password");
     } catch (err) {
       console.error(err);
+      console.error("Error in handleForgotPassword:", err.message);
       req.flash("errors", [{ msg: "An error occurred. Please try again later." }]);
       return res.redirect("/admin/forgot-password");
     }
@@ -67,6 +78,11 @@ class ForgetPasswordController {
 
     if (new_password !== confirm_password) {
       req.flash("errors", [{ msg: "Passwords do not match." }]);
+      return res.redirect(`/admin/reset-password/${token}`);
+    }
+
+    if (new_password.length < 8) {
+      req.flash("errors", [{ msg: "Password must be at least 8 characters long." }]);
       return res.redirect(`/admin/reset-password/${token}`);
     }
 
@@ -92,6 +108,7 @@ class ForgetPasswordController {
       return res.redirect("/admin/login");
     } catch (err) {
       console.error(err);
+      console.error("Error in handleResetPassword:", err.message);
       req.flash("errors", [{ msg: "An error occurred. Please try again later." }]);
       return res.redirect(`/admin/reset-password/${token}`);
     }

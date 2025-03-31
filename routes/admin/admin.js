@@ -30,14 +30,14 @@ router.get('/', (req, res) => dashboardController.index(req, res));
 
 router.get('/view-profile', ensureAuthenticated, (req, res) => profileController.viewProfile(req, res));
 
-router.get('/edit-profile/:id', (req, res) => profileController.editProfile(req, res));
-router.post('/update-profile', (req, res) => profileController.updateProfile(req, res));
+router.get('/edit-profile/:id', ensureAuthenticated, (req, res) => profileController.editProfile(req, res));
+router.post('/update-profile', ensureAuthenticated, (req, res) => profileController.updateProfile(req, res));
 
 // Render Change Password Page
-router.get('/change-password', (req, res) => profileController.changePasswordPage(req, res));
+router.get('/change-password', ensureAuthenticated, (req, res) => profileController.changePasswordPage(req, res));
 
 // Handle Change Password Form Submission
-router.post('/change-password', (req, res) => profileController.changePassword(req, res));
+router.post('/change-password', ensureAuthenticated, (req, res) => profileController.changePassword(req, res));
 
 // Mount Users routes
 router.use('/users', require('./users'));
