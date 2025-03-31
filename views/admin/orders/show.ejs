@@ -1,5 +1,5 @@
-<%- include('../partials/header', { title: 'Show ' + crudInfo.title }) %>
-<%- include('../partials/topnav') %>
+<%- include('../partials/header', { title: 'Show ' + crudInfo.title }) %> 
+<%- include('../partials/topnav') %> 
 <%- include('../partials/sidebar', { activePage: 'admin/orders/show' }) %>
 
 <div class="content-wrapper">
@@ -24,16 +24,35 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-6 my-2">
-              <p><strong>User:</strong> <%= item.user ? item.user.name : 'N/A' %></p>
+              <p>
+                <strong>User:</strong> <%= item.user ? item.user.name : 'N/A' %>
+              </p>
             </div>
             <div class="col-md-6 my-2">
-              <p><strong>Status:</strong> <%= item.status %></p>
+              <p>
+                <strong>Status:</strong>
+                <% if (item.status === "pending") { %>
+                  <span class="badge badge-warning">Pending</span>
+                <% } else if (item.status === "processing") { %>
+                  <span class="badge badge-info">Processing</span>
+                <% } else if (item.status === "shipped") { %>
+                  <span class="badge badge-primary">Shipped</span>
+                <% } else if (item.status === "delivered") { %>
+                  <span class="badge badge-success">Delivered</span>
+                <% } else if (item.status === "cancelled") { %>
+                  <span class="badge badge-danger">Cancelled</span>
+                <% } else { %>
+                  <span class="badge badge-secondary">Unknown</span>
+                <% } %>
+              </p>
             </div>
             <div class="col-md-6 my-2">
               <p><strong>Total Price:</strong> <%= item.totalPrice %></p>
             </div>
             <div class="col-md-6 my-2">
-              <p><strong>Shipping Address:</strong> <%= item.shippingAddress %></p>
+              <p>
+                <strong>Shipping Address:</strong> <%= item.shippingAddress %>
+              </p>
             </div>
           </div>
           <hr />
@@ -49,18 +68,30 @@
             </thead>
             <tbody>
               <% item.items.forEach(function (orderItem) { %>
-                <tr>
-                  <td><%= orderItem.product ? orderItem.product.name : 'N/A' %></td>
-                  <td><%= orderItem.quantity %></td>
-                  <td><%= orderItem.price %></td>
-                  <td><%= (orderItem.quantity * orderItem.price).toFixed(2) %></td>
-                </tr>
+              <tr>
+                <td>
+                  <% if (orderItem.product) { %>
+                  <a href="/admin/products/show/<%= orderItem.product._id %>" target="_blank">
+                    <%= orderItem.product.name %>
+                  </a>
+                  <% } else { %> N/A <% } %>
+                </td>
+                <td><%= orderItem.quantity %></td>
+                <td><%= orderItem.price %></td>
+                <td>
+                  <%= (orderItem.quantity * orderItem.price).toFixed(2) %>
+                </td>
+              </tr>
               <% }); %>
             </tbody>
           </table>
         </div>
         <div class="card-footer">
-          <a href="javascript:history.back();" class="btn btn-default float-right">Cancel</a>
+          <a
+            href="javascript:history.back();"
+            class="btn btn-default float-right"
+            >Cancel</a
+          >
         </div>
       </div>
     </div>

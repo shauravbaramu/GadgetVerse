@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const ejs = require('ejs');
+const ejs = require("ejs");
 const BaseController = require("./BaseController");
 const Product = require("../../models/Product");
 const ProductCategory = require("../../models/ProductCategory");
@@ -84,7 +84,7 @@ class ProductController extends BaseController {
       return res.render(`${this.route}create`, {
         crudInfo,
         errors: req.flash("errors"),
-        categories,  // Pass the categories to the view
+        categories, // Pass the categories to the view
       });
     } catch (err) {
       return res.status(500).send(err.message);
@@ -110,7 +110,7 @@ class ProductController extends BaseController {
         crudInfo: this.crudInfo(),
         errors,
         item: req.body,
-        categories: req.categories || []
+        categories: req.categories || [],
       });
     }
     try {
@@ -127,7 +127,7 @@ class ProductController extends BaseController {
         crudInfo: this.crudInfo(),
         errors,
         item: req.body,
-        categories: req.categories || []
+        categories: req.categories || [],
       });
     }
   }
@@ -136,7 +136,9 @@ class ProductController extends BaseController {
   async show(req, res) {
     try {
       // Populate category to show its name in the show view
-      const item = await this.Model.findById(req.params.id).populate('category');
+      const item = await this.Model.findById(req.params.id).populate(
+        "category"
+      );
       if (!item) return res.status(404).send("Not found");
       let crudInfo = this.crudInfo();
       crudInfo.item = item;
@@ -150,7 +152,9 @@ class ProductController extends BaseController {
   async edit(req, res) {
     try {
       // Populate category so that we can pre-select the current category
-      const item = await this.Model.findById(req.params.id).populate('category');
+      const item = await this.Model.findById(req.params.id).populate(
+        "category"
+      );
       if (!item) return res.status(404).send("Not found");
       const categories = await ProductCategory.find().lean();
       let crudInfo = this.crudInfo();
@@ -160,7 +164,7 @@ class ProductController extends BaseController {
         crudInfo,
         item,
         errors: req.flash("errors"),
-        categories: categories || []
+        categories: categories || [],
       });
     } catch (err) {
       return res.status(500).send(err.message);
@@ -235,6 +239,13 @@ class ProductController extends BaseController {
           fs.unlinkSync(filePath);
         }
       }
+
+      // Delete associated order items
+      await Order.updateMany(
+        { "items.product": item._id }, // Find orders containing this product
+        { $pull: { items: { product: item._id } } } // Remove the product from the items array
+      );
+
       await this.Model.findByIdAndDelete(req.params.id);
       req.flash("success", `${this.title} deleted successfully.`);
       return res.redirect(`/${this.route}`);

@@ -76,11 +76,49 @@
       columns: [
         { data: 'DT_RowIndex', name: 'DT_RowIndex' },
         { data: 'user', name: 'user' },
-        { data: 'status', name: 'status' },
+        {
+          data: 'status',
+          name: 'status',
+          orderable: false,
+          searchable: false,
+          render: function (data, type, row) {
+            return `
+              <select class="form-control status-dropdown" data-id="${row.id}">
+                <option value="pending" ${data === 'Pending' ? 'selected' : ''}>Pending</option>
+                <option value="processing" ${data === 'Processing' ? 'selected' : ''}>Processing</option>
+                <option value="shipped" ${data === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                <option value="delivered" ${data === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                <option value="cancelled" ${data === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+              </select>
+            `;
+          }
+        },
         { data: 'totalPrice', name: 'totalPrice' },
         { data: 'createdAt', name: 'createdAt' },
         { data: 'action', name: 'action', orderable: false, searchable: false }
       ]
+    });
+
+    // Handle status change
+    $(document).on("change", ".status-dropdown", function () {
+      const id = $(this).data("id");
+      const status = $(this).val();
+
+      $.ajax({
+        url: "/admin/orders/update-status",
+        method: "POST",
+        data: { id, status },
+        success: function (response) {
+          if (response.success) {
+            Swal.fire("Success", response.message, "success");
+          } else {
+            Swal.fire("Error", response.message, "error");
+          }
+        },
+        error: function (xhr) {
+          Swal.fire("Error", xhr.responseJSON.message || "An error occurred", "error");
+        }
+      });
     });
 
     // SweetAlert confirmation for delete
@@ -96,7 +134,9 @@
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          window.location.href = $(this).attr("href");
+          $(document).find("#delete-form").submit();
+        } else if (result.isDismissed) {
+          return false;
         }
       });
     });

@@ -1,7 +1,7 @@
 const BaseController = require("./BaseController");
 const Order = require("../../models/Order");
 const path = require("path");
-const ejs = require('ejs');
+const ejs = require("ejs");
 
 class OrderController extends BaseController {
   constructor() {
@@ -21,6 +21,10 @@ class OrderController extends BaseController {
 
         const data = await Promise.all(
           items.map(async (item, index) => {
+            const user = item.user
+              ? `<a href="/admin/users/show/${item.user._id}" target="blank" style:"text-decoration: none">${item.user.first_name} ${item.user.last_name}</a>`
+              : "N/A";
+
             const actionPartialPath = path.join(
               __dirname,
               "../../views/admin/orders/index_actions.ejs"
@@ -29,11 +33,32 @@ class OrderController extends BaseController {
               item,
             });
 
+            let statusText;
+            switch (item.status) {
+              case "pending":
+                statusText = "Pending";
+                break;
+              case "processing":
+                statusText = "Processing";
+                break;
+              case "shipped":
+                statusText = "Shipped";
+                break;
+              case "delivered":
+                statusText = "Delivered";
+                break;
+              case "cancelled":
+                statusText = "Cancelled";
+                break;
+              default:
+                statusText = "Unknown";
+            }
+
             return {
               id: item._id,
               DT_RowIndex: index + 1,
-              user: item.user ? item.user.name : "N/A",
-              status: item.status,
+              user: user,
+              status: statusText,
               totalPrice: item.totalPrice,
               createdAt: item.createdAt.toLocaleString(),
               action: actionHtml,
@@ -72,10 +97,13 @@ class OrderController extends BaseController {
     try {
       const item = await this.Model.findById(req.params.id).lean();
       if (!item) return res.status(404).send("Order not found");
+
       let crudInfo = this.crudInfo();
       crudInfo.item = item;
       crudInfo.routeName = "Edit Status";
-      return res.render(`${this.route}edit`, { crudInfo, item });
+
+      // Pass an empty errors array to the template
+      return res.render(`${this.route}edit`, { crudInfo, item, errors: [] });
     } catch (err) {
       return res.status(500).send(err.message);
     }
@@ -131,6 +159,46 @@ class OrderController extends BaseController {
       return res.redirect(`/${this.route}`);
     } catch (err) {
       return res.status(500).send(err.message);
+    }
+  }
+
+  // Update order status via AJAX
+  async updateStatus(req, res) {
+    try {
+      const { id, status } = req.body;
+
+      // Validate the status
+      if (
+        ![
+          "pending",
+          "processing",
+          "shipped",
+          "delivered",
+          "cancelled",
+        ].includes(status)
+      ) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Invalid status" });
+      }
+
+      const item = await this.Model.findById(id);
+      if (!item) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Order not found" });
+      }
+
+      // Update the status
+      item.status = status;
+      await item.save();
+
+      return res.json({
+        success: true,
+        message: "Order status updated successfully",
+      });
+    } catch (err) {
+      return res.status(500).json({ success: false, message: err.message });
     }
   }
 }
