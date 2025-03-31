@@ -5,8 +5,9 @@ class ProfileController {
   // View Profile
   async viewProfile(req, res) {
     try {
-      const user = await User.findById(req.user.id).lean(); // Use req.user.id
-      if (!user) return res.status(404).send("User not found");
+      const user = req.user;
+      if (!user) 
+        return res.status(404).send("User not found");
 
       return res.render("admin/profile/view", { user });
     } catch (err) {
