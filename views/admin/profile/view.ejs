@@ -1,0 +1,53 @@
+<%- include('../partials/header', { title: 'View Profile' }) %>
+<%- include('../partials/topnav'), { activePage: 'admin/view-profile' } %>
+<%- include('../partials/sidebar', { activePage: 'admin/view-profile' }) %>
+
+<div class="content-wrapper">
+  <!-- Content Header -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>My Profile</h1>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="content">
+    <div class="container-fluid">
+      <% if (typeof success !== 'undefined' && success.length > 0) { %>
+        <div class="alert alert-success"><%= success %></div>
+      <% } %>
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white text-center">
+              <h3 class="card-title">Profile Details</h3>
+            </div>
+            <div class="card-body text-center">
+              <!-- Profile Picture -->
+              <div class="mb-4">
+                <img src="/admin/img/user-placeholder.png" alt="Profile Picture" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #5772C1;">
+              </div>
+              <!-- Profile Information -->
+              <p><strong>First Name:</strong> <%= user.first_name %></p>
+              <p><strong>Last Name:</strong> <%= user.last_name || 'N/A' %></p>
+              <p><strong>Email:</strong> <%= user.email %></p>
+              <p><strong>Phone:</strong> <%= user.phone %></p>
+              <p><strong>Address:</strong> <%= user.address %></p>
+            </div>
+            <div class="card-footer text-center">
+              <a href="/admin/edit-profile/<%= user._id %>" class="btn btn-primary">
+                <i class="fas fa-edit"></i> Edit Profile
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<%- include('../partials/footer') %>
