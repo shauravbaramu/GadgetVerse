@@ -132,28 +132,38 @@
               <a href="/" class="nav__link">Home</a>
             </li>
 
+            <!-- Products link -->
+            <li class="nav__item">
+              <a href="/products" class="nav__link">Products</a>
+            </li>
+           
             <!-- About link -->
             <li class="nav__item">
               <a href="/about" class="nav__link">About</a>
             </li>
 
-            <!-- Products link -->
+            <!-- Contact link -->
             <li class="nav__item">
-              <a href="/products" class="nav__link active-link">Products</a>
+              <a href="/contactus" class="nav__link">Contacts</a>
             </li>
+
+
+           <!-- Cart icon (only visible if user is logged in) -->
             <% if (user) { %>
-            <li class="nav__item">
-              <a href="/cart" class="nav__link">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <span
-                  id="cart-count"
-                  class="badge badge-pill badge-danger position-absolute"
-                  style="display: none"
-                  >0</span
-                >
-              </a>
-            </li>
-            <% } %>
+              <li class="nav__item">
+                <a href="/cart" class="nav__link">
+                  <i class="fa-solid fa-cart-shopping"></i>
+                  <span
+                    id="cart-count"
+                    class="badge badge-pill badge-danger position-absolute"
+                    style="display: none"
+                    >0</span
+                  >
+                </a>
+              </li>
+              <% } %>
+
+
 
             <!-- User login/logout -->
             <li class="nav__item">
