@@ -26,7 +26,7 @@ router.use(ensureAuthenticated); // Apply middleware to all routes below this li
 
 // Dashboard route
 router.get('/', (req, res) => dashboardController.index(req, res));
-// const admin = req.session.user;   to access the data of logged in users
+// const admin = req.session.adminUser;   to access the data of logged in users
 
 router.get('/view-profile', ensureAuthenticated, (req, res) => profileController.viewProfile(req, res));
 

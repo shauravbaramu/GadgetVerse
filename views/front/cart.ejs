@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - The Musical Shop</title>
+    <title>Checkout - GadgetVerse</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
@@ -26,13 +26,16 @@
             </a>
 
             <!-- Search bar for products -->
-            <div class="search-bar">
-                <input type="text" id="searchBar" placeholder="Search products...">
-                <button type="button" class="search-button">
-                    <i class="fa fa-search"></i>
-                </button>
+            <form action="/products" method="get" id="searchForm">
+                <div class="search-bar">
+                    <input type="text" id="searchBar" name="search" placeholder="Search products..."
+                        value="<%= searchQuery %>">
+                    <button type="submit" class="search-button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </form>
 
-            </div>
             <!-- Navigation items container -->
             <div class="nav__menu" id="nav-menu">
                 <!-- List of navigation links -->
@@ -41,75 +44,73 @@
                     <li class="nav__item">
                         <a href="/" class="nav__link ">Home</a>
                     </li>
+
                     <!-- About link -->
                     <li class="nav__item">
                         <a href="/about" class="nav__link">About</a>
                     </li>
+
                     <!-- Products link -->
                     <li class="nav__item">
-                        <a href="/products" class="nav__link active-link">Products</a>
+                        <a href="/products" class="nav__link">Products</a>
                     </li>
-                    <!-- Cart icon link (hidden by default) -->
-                    <li class="nav__item" style="display:none;" id="cart-icon">
-                        <a href="/cart" class="nav__link"><i class="fa-solid fa-cart-shopping"></i>
-                            <!-- Cart item count badge (hidden by default) -->
+
+                    <li class="nav__item">
+                        <a href="/cart" class="nav__link">
+                            <i class="fa-solid fa-cart-shopping"></i>
                             <span id="cart-count" class="badge badge-pill badge-danger position-absolute"
                                 style="display: none;">0</span>
                         </a>
                     </li>
-                    <li class="nav__item">
-                        <div class="login-btn" id="loginContainer">
-                            <!-- Login button link -->
-                            <a href="/login" id="loginButton"><img src="/front/img/user-icon.png" alt="user"
-                                    class="user-icon"></a>
 
-                            <!-- Link to the login page with an id for styling or JavaScript interaction -->
-                        </div>
-                    </li>
+                    <!-- User login/logout -->
                     <li class="nav__item">
-                        <!-- Logout button, initially hidden -->
-                        <a class="button" id="logoutButton" style="display: none; font-size: 11px">Logout</a>
-                        <!-- Logout button with inline styling to hide it initially and set font size -->
+                        <% if (user) { %>
+                            <!-- User Icon and Name -->
+                            <div class="user-menu">
+                                <a href="#" class="user-dropdown-toggle">
+                                    <img src="/front/img/user-icon.png" alt="user" class="user-icon">
+                                    <span>
+                                        <%= user.first_name %>
+                                    </span>
+                                    <i class="fa fa-caret-down"></i>
+                                </a>
+                                <!-- Dropdown Menu -->
+                                <ul class="user-dropdown">
+                                    <li><a href="/profile">Profile</a></li>
+                                    <li><a href="/orders">My Orders</a></li>
+                                    <li><a href="/logout">Logout</a></li>
+                                </ul>
+                            </div>
+                            <% } else { %>
+                                <!-- Show Login Button if Not Logged In -->
+                                <div class="login-btn" id="loginContainer">
+                                    <a href="/login" class="button" id="loginButton">Login</a>
+                                    <!-- Link to the login page with an id for styling or JavaScript interaction -->
+                                </div>
+                                <% } %>
                     </li>
-
-                    <!-- Closing the unordered list containing navigation items -->
                 </ul>
             </div>
-
-            <!-- Add the search bar here -->
-
-            <!-- Welcome message container, initially hidden -->
-            <div id="welcome">
-                <!-- Span to display the welcome message -->
-                <span id="welcomeMessage" style="display: none;"></span>
-                <!-- Inline styling to hide the span initially -->
-            </div>
-
 
             <!-- Toggle button for mobile view -->
             <div class="nav__toggle" id="nav-toggle">
                 <span>&#9776;</span>
             </div>
         </nav>
-
     </header>
 
-
-    <!-- Loading Overlay (typically shown while page content is loading) -->
-    <div class="loading-overlay" id="loading-overlay">
-        <div class="spinner-border text-primary" role="status">
-            <!-- Spinner icon for loading indication -->
-        </div>
+    <!-- Page Header -->
+    <div id="page-header">
+        <div class="page-title">Cart</div>
     </div>
 
-    <!-- Main Content Section -->
+    <!-- Cart Page Content -->
     <section class="section-content padding-y bg">
         <div class="bd-container">
             <div class="row">
-                <!-- Cart Items Section -->
                 <aside class="col-lg-9">
                     <div id="cart-card" class="card">
-                        <!-- Cart Table -->
                         <table id="cart-table" class="table table-borderless table-shopping-cart">
                             <thead class="text-muted">
                                 <tr class="small text-uppercase">
@@ -125,52 +126,41 @@
                             </tbody>
                         </table>
 
-                        <!-- Delivery Information -->
-                        <div class="card-body border-top">
-                            <p class="icontext"><i class="icon text-success fa fa-truck"></i> Delivered in 2-3 days</p>
+                        <!-- Empty Cart Message -->
+                        <div id="empty-cart" class="empty-cart d-none">
+                            <h3>Your cart is currently empty</h3>
+                            <p>Looks like you haven't added anything to your cart yet.</p>
+                            <button class="btn btn-primary shopping">Continue Shopping</button>
                         </div>
                     </div>
-
-                    <!-- Empty Cart Message (shown if cart is empty) -->
-                    <div id="empty-cart" class="empty-cart d-none">
-                        <h3>Your cart is currently empty</h3>
-                        <p>Looks like you haven't added anything to your cart yet.</p>
-                        <button class="btn btn-primary shopping">Continue Shopping</button>
-                    </div>
                 </aside>
-                <!-- Checkout and Address Section -->
-                <aside class="col-lg-3">
 
-                    <!-- Checkout Summary Card -->
+                <aside class="col-lg-3">
                     <div class="card">
                         <div class="card-body">
                             <div id="amount-info">
-                                <!-- Checkout Form -->
-                                <form id="checkout-form" method="POST" action="/checkout">
-                                    <!-- Price Information -->
-                                    <dl class="dlist-align">
-                                        <dt>Total price:</dt>
-                                        <dd class="text-right" id="sub-total">$0.00</dd>
-                                    </dl>
-                                    <dl class="dlist-align">
-                                        <dt>Discount:</dt>
-                                        <dd class="text-right text-danger" id="discount">$0.00</dd>
-                                    </dl>
-                                    <dl class="dlist-align">
-                                        <dt>Delivery Charge:</dt>
-                                        <dd class="text-right" id="delivery-charge">$10.00</dd>
-                                    </dl>
-                                    <dl class="dlist-align">
-                                        <dt>Total:</dt>
-                                        <dd class="text-right text-dark"><strong id="total">$0.00</strong></dd>
-                                    </dl>
-                                    <!-- Checkout and Continue Shopping Buttons -->
-                                    <button type="submit" id="checkout-button"
-                                        class="btn btn-primary btn-block">Checkout
-                                    </button>
-                                    <button class="btn btn-light btn-block shopping" href="/products">Continue
-                                        Shopping</button>
-                                </form>
+                                <dl class="dlist-align">
+                                    <dt>Total price:</dt>
+                                    <dd class="text-right" id="sub-total">$0.00</dd>
+                                </dl>
+                                <dl class="dlist-align">
+                                    <dt>Discount:</dt>
+                                    <dd class="text-right text-danger" id="discount">$0.00</dd>
+                                </dl>
+                                <dl class="dlist-align">
+                                    <dt>Delivery Charge:</dt>
+                                    <dd class="text-right" id="delivery-charge">$10.00</dd>
+                                </dl>
+                                <dl class="dlist-align">
+                                    <dt>Total:</dt>
+                                    <dd class="text-right text-dark"><strong id="total">$0.00</strong></dd>
+                                </dl>
+                                <button class="btn btn-primary btn-block">
+                                    <a href="/checkout" class="text-white">Checkout</a>
+                                </button>
+                                <button class="btn btn-light btn-block shopping">
+                                    <a href="/products">Continue Shopping</a>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -184,10 +174,9 @@
         <div class="section footer__container">
             <div class="footer__wrapper bd-grid">
                 <div class="footer__content">
-                    <a href="/">
+                    <a href="/" style="color: white;">
                         <!-- Footer Logo -->
-                        <img id="footer-logo" src="https://live.staticflickr.com/65535/53889787330_9be346b063_n.jpg"
-                            alt="footer logo">
+                        GadgetVerse
                     </a>
                     <span class="footer__description">Our online store features a curated collection of unique and
                         artisanal instruments that are crafted with precision, passion, and care.</span>
@@ -300,9 +289,12 @@
                 <div class="footer__content">
                     <h3 class="footer__title">Services</h3>
                     <ul>
-                        <li><a href="#" class="footer__text">Delivery</a></li>
-                        <li><a href="#" class="footer__text">Pricing</a></li>
-                        <li><a href="#" class="footer__text">Quality Product</a></li>
+                        <li><a href="#service" class="footer__text">Delivery</a></li>
+                        <li><a href="#service" class="footer__text">Pricing</a></li>
+                        <li><a href="#service" class="footer__text">Quality Product</a></li>
+                        <!-- <li>
+                    <a href="#service" class="footer__text">Reserve your spot</a>
+                </li> -->
                     </ul>
                 </div>
                 <div class="footer__content">
@@ -326,9 +318,9 @@
                                 viewBox="0 0 395.71 395.71" xml:space="preserve">
                                 <g>
                                     <path d="M197.849,0C122.131,0,60.531,61.609,60.531,137.329c0,72.887,124.591,243.177,129.896,250.388l4.951,6.738
-                          c0.579,0.792,1.501,1.255,2.471,1.255c0.985,0,1.901-0.463,2.486-1.255l4.948-6.738c5.308-7.211,129.896-177.501,129.896-250.388
-                          C335.179,61.609,273.569,0,197.849,0z M197.849,88.138c27.13,0,49.191,22.062,49.191,49.191c0,27.115-22.062,49.191-49.191,49.191
-                          c-27.114,0-49.191-22.076-49.191-49.191C148.658,110.2,170.734,88.138,197.849,88.138z" />
+                              c0.579,0.792,1.501,1.255,2.471,1.255c0.985,0,1.901-0.463,2.486-1.255l4.948-6.738c5.308-7.211,129.896-177.501,129.896-250.388
+                              C335.179,61.609,273.569,0,197.849,0z M197.849,88.138c27.13,0,49.191,22.062,49.191,49.191c0,27.115-22.062,49.191-49.191,49.191
+                              c-27.114,0-49.191-22.076-49.191-49.191C148.658,110.2,170.734,88.138,197.849,88.138z" />
                                 </g>
                             </svg>
                             <span><a target="_blank"
@@ -353,42 +345,17 @@
                                     d="M1920 428.266v1189.54l-464.16-580.146-88.203 70.585 468.679 585.904H83.684l468.679-585.904-88.202-70.585L0 1617.805V428.265l959.944 832.441L1920 428.266ZM1919.932 226v52.627l-959.943 832.44L.045 278.628V226h1919.887Z"
                                     fill-rule="evenodd" />
                             </svg>
-                            <a href="mailto:himalayan@gmail.com" class="address_link">musicalinstruments@gmail.com</a>
+                            <a href="mailto:himalayan@gmail.com" class="address_link">gadgetverse2025@gmail.com</a>
                         </li>
                     </ul>
                 </div>
             </div>
             <!-- Copyright -->
             <p class="footer__copy">
-                &#169; 2024 Musical Instruments. All right reserved
+                &#169; 2025 GadgetVerse. All right reserved
             </p>
         </div>
     </footer>
-
-    <!-- Address Modal -->
-    <div class="modal fade" id="address-modal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addressModalLabel">Change Address</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="address">New Address</label>
-                        <input type="text" class="form-control" id="address" placeholder="Enter new address">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="save-address">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
@@ -400,7 +367,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-    <script src="../js/scripts.js"></script>
+    <script src="/front/js/cart.js"></script>
+
     <script>
         $(document).ready(function () {
             // Function to render cart items and update the checkout totals

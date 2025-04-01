@@ -4,16 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - GadgetVerse</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+    <title>Checkout - The Musical Shop</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/front/css/styles.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/front/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/front/css/cart.css">
 </head>
 
 <body>
@@ -28,15 +26,12 @@
             </a>
 
             <!-- Search bar for products -->
-            <form action="/products" method="get" id="searchForm">
-                <div class="search-bar">
-                    <input type="text" id="searchBar" name="search" placeholder="Search products..."
-                        value="<%= searchQuery %>">
-                    <button type="submit" class="search-button">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </div>
-            </form>
+            <div class="search-bar">
+                <input type="text" id="searchBar" placeholder="Search products...">
+                <button type="button" class="search-button">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
 
             <!-- Navigation items container -->
             <div class="nav__menu" id="nav-menu">
@@ -49,17 +44,18 @@
 
                     <!-- About link -->
                     <li class="nav__item">
-                        <a href="/about" class="nav__link active-link">About</a>
+                        <a href="/about" class="nav__link">About</a>
                     </li>
 
                     <!-- Products link -->
                     <li class="nav__item">
-                        <a href="/products" class="nav__link">Products</a>
+                        <a href="/products" class="nav__link active-link">Products</a>
                     </li>
 
-                    <li class="nav__item">
-                        <a href="/cart" class="nav__link">
-                            <i class="fa-solid fa-cart-shopping"></i>
+                    <!-- Cart icon link (hidden by default) -->
+                    <li class="nav__item" style="display:none;" id="cart-icon">
+                        <a href="/cart" class="nav__link"><i class="fa-solid fa-cart-shopping"></i>
+                            <!-- Cart item count badge (hidden by default) -->
                             <span id="cart-count" class="badge badge-pill badge-danger position-absolute"
                                 style="display: none;">0</span>
                         </a>
@@ -102,55 +98,27 @@
         </nav>
     </header>
 
-    <main>
-        <!-- Page Header -->
-        <div id="page-header">
-            <!-- Title for the about page -->
-            <div class="page-title">About Us</div>
-        </div>
-        <div class="bd-container main-content">
-            <div class="about-row">
-                <!-- Left Column -->
-                <div class="about-column-left">
-                    <!-- About Heading -->
-                    <div class="about-heading">
-                        <span class="section-subtitle">Who we are ?</span>
-                        <h2 class="section-title">Welcome to GadgetVerse</h2>
-                    </div>
-                    <!-- About Sub-Content -->
-                    <div class="about-sub-content">
-                        <p>
-                            At GadgetVerse, we are committed to bringing you the latest and most innovative tech gadgets
-                            and accessories. Whether you're a tech enthusiast, a professional, or someone looking for
-                            smart solutions, our online store offers a curated selection of high-quality products
-                            designed to enhance your digital lifestyle.
+    <!-- Main Content Section -->
+    <section class="section-content padding-y bg">
+        <div class="bd-container">
+            <div class="row">
+                <h2>Order Placed Successfully!</h2>
+                <p>Thank you for your order. You will receive a confirmation email soon.</p>
+                <a href="/" class="btn btn-primary">Return to Home</a>
 
-                        </p>
-                        <p>
-                            We take pride in offering top-tier gadgets that combine functionality, style, and
-                            cutting-edge technology. Every product in our collection is carefully chosen to meet the
-                            highest standards of quality, performance, and reliability. At GadgetVerse, we believe
-                            technology should be both exciting and accessible, making your everyday life smarter and
-                            more convenient.
-                        </p>
-                    </div>
-                </div>
-                <!-- Right Column -->
-                <div class="about-column-right">
-                    <!-- Image related to the about section -->
-                    <img src="front/img/about-img.png" class="about-image-1" alt="restaurant area">
-                </div>
             </div>
         </div>
-    </main>
+    </section>
+
     <!--========== FOOTER ==========-->
     <footer class="footer">
         <div class="section footer__container">
             <div class="footer__wrapper bd-grid">
                 <div class="footer__content">
-                    <a href="/" style="color: white;">
+                    <a href="/">
                         <!-- Footer Logo -->
-                        GadgetVerse
+                        <img id="footer-logo" src="https://live.staticflickr.com/65535/53889787330_9be346b063_n.jpg"
+                            alt="footer logo">
                     </a>
                     <span class="footer__description">Our online store features a curated collection of unique and
                         artisanal instruments that are crafted with precision, passion, and care.</span>
@@ -263,12 +231,9 @@
                 <div class="footer__content">
                     <h3 class="footer__title">Services</h3>
                     <ul>
-                        <li><a href="#service" class="footer__text">Delivery</a></li>
-                        <li><a href="#service" class="footer__text">Pricing</a></li>
-                        <li><a href="#service" class="footer__text">Quality Product</a></li>
-                        <!-- <li>
-                    <a href="#service" class="footer__text">Reserve your spot</a>
-                </li> -->
+                        <li><a href="#" class="footer__text">Delivery</a></li>
+                        <li><a href="#" class="footer__text">Pricing</a></li>
+                        <li><a href="#" class="footer__text">Quality Product</a></li>
                     </ul>
                 </div>
                 <div class="footer__content">
@@ -292,9 +257,9 @@
                                 viewBox="0 0 395.71 395.71" xml:space="preserve">
                                 <g>
                                     <path d="M197.849,0C122.131,0,60.531,61.609,60.531,137.329c0,72.887,124.591,243.177,129.896,250.388l4.951,6.738
-                              c0.579,0.792,1.501,1.255,2.471,1.255c0.985,0,1.901-0.463,2.486-1.255l4.948-6.738c5.308-7.211,129.896-177.501,129.896-250.388
-                              C335.179,61.609,273.569,0,197.849,0z M197.849,88.138c27.13,0,49.191,22.062,49.191,49.191c0,27.115-22.062,49.191-49.191,49.191
-                              c-27.114,0-49.191-22.076-49.191-49.191C148.658,110.2,170.734,88.138,197.849,88.138z" />
+                          c0.579,0.792,1.501,1.255,2.471,1.255c0.985,0,1.901-0.463,2.486-1.255l4.948-6.738c5.308-7.211,129.896-177.501,129.896-250.388
+                          C335.179,61.609,273.569,0,197.849,0z M197.849,88.138c27.13,0,49.191,22.062,49.191,49.191c0,27.115-22.062,49.191-49.191,49.191
+                          c-27.114,0-49.191-22.076-49.191-49.191C148.658,110.2,170.734,88.138,197.849,88.138z" />
                                 </g>
                             </svg>
                             <span><a target="_blank"
@@ -319,22 +284,31 @@
                                     d="M1920 428.266v1189.54l-464.16-580.146-88.203 70.585 468.679 585.904H83.684l468.679-585.904-88.202-70.585L0 1617.805V428.265l959.944 832.441L1920 428.266ZM1919.932 226v52.627l-959.943 832.44L.045 278.628V226h1919.887Z"
                                     fill-rule="evenodd" />
                             </svg>
-                            <a href="mailto:himalayan@gmail.com" class="address_link">gadgetverse2025@gmail.com</a>
+                            <a href="mailto:himalayan@gmail.com" class="address_link">musicalinstruments@gmail.com</a>
                         </li>
                     </ul>
                 </div>
             </div>
             <!-- Copyright -->
             <p class="footer__copy">
-                &#169; 2025 GadgetVerse. All right reserved
+                &#169; 2024 Musical Instruments. All right reserved
             </p>
         </div>
     </footer>
-    <!-- Include jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-    <script src="/front/js/cart.js"></script>
 
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
+        integrity="sha512-HGOnQO9+SP1V92SrtZfjqxxtLmVzqZpjFFekvzZVWoiASSQgSr4cw9Kqd2+l8Llp4Gm0G8GIFJ4ddwZilcdb8A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script>
+        localStorage.removeItem('cartProducts'); // Clear cart from localStorage after successful checkout
+    </script>
 </body>
 
 </html>

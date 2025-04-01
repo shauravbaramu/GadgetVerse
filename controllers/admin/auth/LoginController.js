@@ -44,7 +44,7 @@ class LoginController {
       }
 
       // Set session data for the logged-in admin
-      req.session.user = {
+      req.session.adminUser = {
         id: user._id,
         first_name: user.first_name, // Add first name
         last_name: user.last_name,

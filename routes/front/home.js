@@ -1,18 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../../controllers/front/auth/AuthController');
+const productController = require('../../controllers/front/ProductController');
+const { ensureAuthenticatedUser } = require('../../middlewares/auth');
+const { createOrder } = require("../../controllers/front/OrderController");
+const userController = require("../../controllers/front/UserController");
+const orderController = require('../../controllers/front/OrderController');
 
 // home page route
 router.get('/', (req, res) => {
-  res.render('front/index');
+  res.render('front/index', { user: req.session.user });
 });
 
 router.get('/about', (req, res) => {
-  res.render('front/about');
-});
-
-router.get('/products', (req, res) => {
-  res.render('front/products');
+  res.render('front/about', { user: req.session.user });
 });
 
 // Render register page
@@ -30,12 +31,59 @@ router.post("/login", (req, res) => authController.login(req, res));
 // Handle logout
 router.get("/logout", (req, res) => authController.logout(req, res));
 
+// Route to display all products
+router.get('/products', (req, res) => productController.getAllProducts(req, res));
+
+router.get("/product-details", productController.getProductDetails);
+
 router.get('/cart', (req, res) => {
-  res.render('front/cart');
+  res.render('front/cart', { user: req.session.user });
 });
 
-router.get('/product-details', (req, res) => {
-  res.render('front/product-details');
+// Render Checkout Page
+router.get('/checkout', (req, res) => {
+  res.render('front/checkout', { user: req.session.user });
 });
+
+router.get("/profile", ensureAuthenticatedUser, (req, res) => {
+  res.render("front/user/profile", {
+    user: req.session.user,
+    messages: {
+      success: req.flash("success"),
+      error: req.flash("error")
+    }
+  });
+});
+
+router.post("/profile/update", ensureAuthenticatedUser, (req, res) => userController.updateProfile(req, res));
+
+
+// POST route for creating an order
+router.post('/order', ensureAuthenticatedUser, orderController.createOrder);
+
+// Route to show the order success page
+router.get('/order/success/:orderId', async (req, res) => {
+  try {
+    const orderId = req.params.orderId;
+
+    // Fetch the order details by its ID from the database
+    const order = await Order.findById(orderId).populate('items.product');
+
+    if (!order) {
+      return res.status(404).send('Order not found');
+    }
+
+    // Render the order success page and pass the order details to the view
+    res.render('orderSuccess', { order });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
+  }
+});
+
+router.get('/my-orders', ensureAuthenticatedUser, orderController.getOrders);
+
+router.get('/search', productController.searchProducts);
+
 
 module.exports = router;

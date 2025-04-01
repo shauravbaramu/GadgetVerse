@@ -38,7 +38,7 @@ mongoose
   })
   .catch(err => console.error(err));
 
-  // Set up sessions middleware (configure as needed)
+// Set up sessions middleware (configure as needed)
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -60,13 +60,19 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use((req, res, next) => {
-  res.locals.admin = req.session.user || null; // Pass the logged-in admin's data to all views
+  res.locals.admin = req.session.adminUser || null; // Pass the logged-in admin's data to all views
+  next();
+});
+
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null; // User is accessible in all views
   next();
 });
 
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 // Register admin routes
 app.use('/admin', adminRoute);

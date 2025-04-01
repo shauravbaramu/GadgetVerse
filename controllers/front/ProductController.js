@@ -58,6 +58,7 @@ class ProductController {
         }
     }
 
+
     async getProductDetails(req, res) {
         try {
             const productId = req.query.id; // Get product ID from query parameter
@@ -70,6 +71,28 @@ class ProductController {
             res.render("front/product-details", { product });
         } catch (err) {
             res.status(500).send("Error retrieving product details");
+        }
+    }
+
+    // Method to handle search query
+    async searchProducts(req, res) {
+        try {
+            const searchQuery = req.query.query.trim();
+
+            if (!searchQuery) {
+                return res.json([]);  // Return empty array if no query
+            }
+
+            // Fetch products that match the search query
+            const products = await Product.find({
+                name: { $regex: searchQuery, $options: 'i' }  // Case-insensitive search
+            }).limit(5);  // You can limit the number of products displayed
+
+            // Return the search results as a JSON response
+            res.json(products);
+        } catch (err) {
+            console.error('Error fetching search results:', err);
+            res.status(500).json({ error: 'Failed to fetch search results' });
         }
     }
 }

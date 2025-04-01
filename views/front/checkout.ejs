@@ -4,16 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - GadgetVerse</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+    <title>Checkout - GadgetVerse</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/front/css/styles.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="/front/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/front/css/cart.css">
 </head>
 
 <body>
@@ -49,12 +47,12 @@
 
                     <!-- About link -->
                     <li class="nav__item">
-                        <a href="/about" class="nav__link active-link">About</a>
+                        <a href="/about" class="nav__link">About</a>
                     </li>
 
                     <!-- Products link -->
                     <li class="nav__item">
-                        <a href="/products" class="nav__link">Products</a>
+                        <a href="/products" class="nav__link active-link">Products</a>
                     </li>
 
                     <li class="nav__item">
@@ -102,47 +100,77 @@
         </nav>
     </header>
 
-    <main>
-        <!-- Page Header -->
-        <div id="page-header">
-            <!-- Title for the about page -->
-            <div class="page-title">About Us</div>
-        </div>
-        <div class="bd-container main-content">
-            <div class="about-row">
-                <!-- Left Column -->
-                <div class="about-column-left">
-                    <!-- About Heading -->
-                    <div class="about-heading">
-                        <span class="section-subtitle">Who we are ?</span>
-                        <h2 class="section-title">Welcome to GadgetVerse</h2>
-                    </div>
-                    <!-- About Sub-Content -->
-                    <div class="about-sub-content">
-                        <p>
-                            At GadgetVerse, we are committed to bringing you the latest and most innovative tech gadgets
-                            and accessories. Whether you're a tech enthusiast, a professional, or someone looking for
-                            smart solutions, our online store offers a curated selection of high-quality products
-                            designed to enhance your digital lifestyle.
+    <!-- Page Header -->
+    <div id="page-header">
+        <div class="page-title">Checkout</div>
+    </div>
 
-                        </p>
-                        <p>
-                            We take pride in offering top-tier gadgets that combine functionality, style, and
-                            cutting-edge technology. Every product in our collection is carefully chosen to meet the
-                            highest standards of quality, performance, and reliability. At GadgetVerse, we believe
-                            technology should be both exciting and accessible, making your everyday life smarter and
-                            more convenient.
-                        </p>
-                    </div>
-                </div>
-                <!-- Right Column -->
-                <div class="about-column-right">
-                    <!-- Image related to the about section -->
-                    <img src="front/img/about-img.png" class="about-image-1" alt="restaurant area">
-                </div>
+    <!-- Main Content Section -->
+    <div class="bd-container main-content">
+        <% if (!user) { %>
+            <div class="alert alert-warning text-center">
+                <p>You must be <a href="/login">logged in</a> to proceed with checkout.</p>
             </div>
-        </div>
-    </main>
+            <% } else { %>
+                <h2 class="pb-4">Billing Information</h2>
+                <form id="order-form" method="POST" action="/order">
+                    <input type="hidden" name="items" id="cart-items">
+                    <!-- User Information -->
+                    <div class="form-group">
+                        <label for="first_name">First Name:</label>
+                        <input type="text" id="first_name" name="first_name" class="form-control"
+                            value="<%= user.first_name %>" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" id="last_name" name="last_name" class="form-control"
+                            value="<%= user.last_name %>" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" class="form-control" value="<%= user.email %>"
+                            readonly>
+                    </div>
+
+                    <!-- Shipping Address -->
+                    <div class="form-group">
+                        <label for="address">Shipping Address:</label>
+                        <input type="text" id="address" name="shippingAddress" class="form-control large-form-field"
+                            value="<%= user.address || '' %>" required>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="form-group">
+                        <label for="payment-method">Payment Method:</label>
+                        <select id="payment-method" name="paymentMethod" class="form-control" required>
+                            <option value="COD">Cash on Delivery</option>
+                        </select>
+                    </div>
+
+                    <!-- Order Summary -->
+                    <div class="order-summary">
+                        <dl class="dlist-align">
+                            <dt>Subtotal:</dt>
+                            <dd id="sub-total">$0.00</dd>
+                        </dl>
+                        <dl class="dlist-align">
+                            <dt>Delivery Charge:</dt>
+                            <dd id="delivery-charge">$10.00</dd>
+                        </dl>
+                        <dl class="dlist-align">
+                            <dt>Total:</dt>
+                            <dd id="total">$0.00</dd>
+                        </dl>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary btn-block">Order</button>
+                </form>
+                <% } %>
+    </div>
+
     <!--========== FOOTER ==========-->
     <footer class="footer">
         <div class="section footer__container">
@@ -330,11 +358,58 @@
             </p>
         </div>
     </footer>
-    <!-- Include jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
+        integrity="sha512-HGOnQO9+SP1V92SrtZfjqxxtLmVzqZpjFFekvzZVWoiASSQgSr4cw9Kqd2+l8Llp4Gm0G8GIFJ4ddwZilcdb8A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <script src="/front/js/cart.js"></script>
 
+    <script>
+        $(document).ready(function () {
+            // Retrieve the cart items from localStorage
+            var cartProducts = JSON.parse(localStorage.getItem('cartProducts')) || [];
+
+            // Function to calculate totals
+            function calculateTotals() {
+                var subTotal = 0;
+
+                // Loop through cart products and calculate the subtotal
+                cartProducts.forEach(function (product) {
+                    var price = parseFloat(product.price) || 0;
+                    var quantity = parseInt(product.quantity) || 0;
+                    subTotal += price * quantity;
+                });
+
+                // Static delivery charge
+                var deliveryCharge = 10.00;
+
+                // Calculate total
+                var total = subTotal + deliveryCharge;
+
+                // Update the UI
+                $('#sub-total').text('$' + subTotal.toFixed(2));
+                $('#total').text('$' + total.toFixed(2));
+                $('#delivery-charge').text('$' + deliveryCharge.toFixed(2));
+            }
+
+            // Call calculateTotals to update the UI when the page loads
+            calculateTotals();
+
+            // Before submitting the form, pass cartItems to the hidden input field
+            $('#order-form').submit(function () {
+                // Set the cart items as JSON string in the hidden input field
+                $('#cart-items').val(JSON.stringify(cartProducts));
+            });
+        });
+
+    </script>
 </body>
 
 </html>
