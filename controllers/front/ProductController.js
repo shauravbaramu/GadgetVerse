@@ -7,33 +7,39 @@ class ProductController {
             const page = parseInt(req.query.page) || 1;
             const limit = 6; // Products per page
             const skip = (page - 1) * limit;
-            const categoryName = req.query.category || "";  // Default to empty string
-            const priceRange = req.query.price || "";  // Default to empty string
-
+            const categoryName = req.query.category || "all";
+            const priceRange = req.query.price || "all";
+            const searchQuery = req.query.search || "";
+    
             let filter = {};
-
-            // Get category ID by name if a category name is provided
-            if (categoryName && categoryName !== "all") {
+    
+            // Filter by category
+            if (categoryName !== "all") {
                 const category = await ProductCategory.findOne({ name: categoryName });
                 if (category) {
                     filter.category = category._id;
                 }
             }
-
-            // Price Range Filter
-            if (priceRange && priceRange !== "all") {
+    
+            // Filter by price range
+            if (priceRange !== "all") {
                 const [min, max] = priceRange === "2000+" ? [2000, Infinity] : priceRange.split("-").map(Number);
                 filter.price = { $gte: min, $lte: max };
             }
-
+    
+            // Filter by search query
+            if (searchQuery) {
+                filter.name = { $regex: searchQuery, $options: "i" }; // Case-insensitive search
+            }
+    
             // Fetch filtered products
-            const products = await Product.find(filter).populate('category').skip(skip).limit(limit);
+            const products = await Product.find(filter).populate("category").skip(skip).limit(limit);
             const totalProducts = await Product.countDocuments(filter);
             const totalPages = Math.ceil(totalProducts / limit);
-
+    
             // Fetch all categories for the filter dropdown
             const categories = await ProductCategory.find();
-
+    
             // Group products by category for display
             const groupedProducts = {};
             products.forEach(product => {
@@ -43,18 +49,19 @@ class ProductController {
                 }
                 groupedProducts[categoryName].push(product);
             });
-
+    
             // Render the page with products, categories, pagination, and filters
-            res.render('front/products', {
+            res.render("front/products", {
                 groupedProducts,
                 categories,
                 totalPages,
                 currentPage: page,
-                categoryFilter: categoryName, // Pass categoryFilter to the view as the category name
-                priceFilter: priceRange // Pass priceFilter to the view
+                categoryFilter: categoryName,
+                priceFilter: priceRange,
+                searchQuery // Pass the search query to the frontend
             });
         } catch (err) {
-            res.status(500).send('Error retrieving products');
+            res.status(500).send("Error retrieving products");
         }
     }
 
@@ -77,22 +84,39 @@ class ProductController {
     // Method to handle search query
     async searchProducts(req, res) {
         try {
-            const searchQuery = req.query.query.trim();
-
-            if (!searchQuery) {
-                return res.json([]);  // Return empty array if no query
+            const searchQuery = req.query.query?.trim() || ""; // Get the search query
+            const categoryName = req.query.category || "all"; // Get the category filter
+            const priceRange = req.query.price || "all"; // Get the price range filter
+    
+            let filter = {};
+    
+            // Filter by category
+            if (categoryName !== "all") {
+                const category = await ProductCategory.findOne({ name: categoryName });
+                if (category) {
+                    filter.category = category._id;
+                }
             }
-
-            // Fetch products that match the search query
-            const products = await Product.find({
-                name: { $regex: searchQuery, $options: 'i' }  // Case-insensitive search
-            }).limit(5);  // You can limit the number of products displayed
-
-            // Return the search results as a JSON response
+    
+            // Filter by price range
+            if (priceRange !== "all") {
+                const [min, max] = priceRange === "2000+" ? [2000, Infinity] : priceRange.split("-").map(Number);
+                filter.price = { $gte: min, $lte: max };
+            }
+    
+            // Filter by search query
+            if (searchQuery) {
+                filter.name = { $regex: searchQuery, $options: "i" }; // Case-insensitive search
+            }
+    
+            // Fetch products that match the filters
+            const products = await Product.find(filter).populate("category").limit(10); // Limit results to 10
+    
+            // Return the filtered products as a JSON response
             res.json(products);
         } catch (err) {
-            console.error('Error fetching search results:', err);
-            res.status(500).json({ error: 'Failed to fetch search results' });
+            console.error("Error fetching search results:", err);
+            res.status(500).json({ error: "Failed to fetch search results" });
         }
     }
 }

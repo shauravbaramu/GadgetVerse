@@ -43,6 +43,16 @@
       <button type="button" id="removePreview" class="btn btn-sm btn-danger" style="margin-left: 10px;">Remove</button>
     </div>
   </div>
+
+  <div class="col-md-6">
+    <label for="isFeatured">Featured Product</label>
+    <div class="form-check">
+      <input type="checkbox" name="isFeatured" id="isFeatured" class="form-check-input"
+             <%= (old && old.isFeatured === 'on') || (item && item.isFeatured) ? 'checked' : '' %>>
+      <label class="form-check-label" for="isFeatured">Mark as Featured</label>
+    </div>
+  </div>
+
 </div>
 <div class="form-group row">
   <div class="col-md-12">
@@ -50,3 +60,13 @@
     <textarea name="description" id="description" class="form-control" placeholder="Enter Product Description" rows="4"><%= old.description || (item ? item.description : '') %></textarea>
   </div>
 </div>
+<!-- <div class="form-group row">
+  <div class="col-md-6">
+    <label for="isFeatured">Featured Product</label>
+    <div class="form-check">
+      <input type="checkbox" name="isFeatured" id="isFeatured" class="form-check-input"
+             <%= (old && old.isFeatured === 'on') || (item && item.isFeatured) ? 'checked' : '' %>>
+      <label class="form-check-label" for="isFeatured">Mark as Featured</label>
+    </div>
+  </div>
+</div> -->

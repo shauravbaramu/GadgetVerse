@@ -2,15 +2,18 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../../controllers/front/auth/AuthController');
 const productController = require('../../controllers/front/ProductController');
+const HomeController = require('../../controllers/front/HomeController');
 const { ensureAuthenticatedUser } = require('../../middlewares/auth');
 const { createOrder } = require("../../controllers/front/OrderController");
 const userController = require("../../controllers/front/UserController");
 const orderController = require('../../controllers/front/OrderController');
 
 // home page route
-router.get('/', (req, res) => {
-  res.render('front/index', { user: req.session.user });
-});
+// router.get('/', (req, res) => {
+//   res.render('front/index', { user: req.session.user });
+// });
+
+router.get('/', HomeController.index);
 
 router.get('/about', (req, res) => {
   res.render('front/about', { user: req.session.user });
@@ -33,6 +36,7 @@ router.get("/logout", (req, res) => authController.logout(req, res));
 
 // Route to display all products
 router.get('/products', (req, res) => productController.getAllProducts(req, res));
+router.get("/search-products", productController.searchProducts);
 
 router.get("/product-details", productController.getProductDetails);
 

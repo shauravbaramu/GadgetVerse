@@ -1,6 +1,6 @@
-<%- include('../partials/header', { title: 'Show ' + crudInfo.title }) %> <%-
-include('../partials/topnav') %> <%- include('../partials/sidebar', {
-activePage: 'admin/products/show' }) %>
+<%- include('../partials/header', { title: 'Show ' + crudInfo.title }) %> 
+<%- include('../partials/topnav') %> 
+<%- include('../partials/sidebar', { activePage: 'admin/products/show' }) %>
 
 <div class="content-wrapper">
   <!-- Content Header -->
@@ -48,22 +48,32 @@ activePage: 'admin/products/show' }) %>
             </div>
             <div class="col-md-6 my-2">
               <p>
-                <strong>Category:</strong> <%= item.category ?
-                item.category.name : 'N/A' %>
+                <strong>Category:</strong> <%= item.category ? item.category.name : 'N/A' %>
               </p>
             </div>
             <div class="col-md-6 my-2">
               <p>
                 <strong>Image:</strong><br />
-              <% if(item.image){ %>
-              <img
-                src="<%= item.image %>"
-                alt="Product Image"
-                width="300"
-                height="300"
-                class="mt-2"
-              />
-              <% } %>
+                <% if (item.image) { %>
+                <img
+                  src="<%= item.image %>"
+                  alt="Product Image"
+                  width="300"
+                  height="300"
+                  class="mt-2"
+                />
+                <% } %>
+              </p>
+            </div>
+            <div class="col-md-6 my-2">
+              <p>
+                <strong>Featured:</strong> 
+                <% if (item.isFeatured) { %>
+                <span class="badge badge-success">Yes</span> 
+                <% } else { %>
+                <span class="badge badge-danger">No</span>
+                <% } %> 
+              </p>
             </div>
           </div>
         </div>
@@ -71,8 +81,7 @@ activePage: 'admin/products/show' }) %>
           <a
             href="javascript:history.back();"
             class="btn btn-default float-right"
-            >Cancel</a
-          >
+          >Cancel</a>
         </div>
       </div>
     </div>
