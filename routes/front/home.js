@@ -34,6 +34,10 @@ router.post("/login", (req, res) => authController.login(req, res));
 // Handle logout
 router.get("/logout", (req, res) => authController.logout(req, res));
 
+router.get("/contactus", (req, res) => {
+  res.render("front/contactus");
+});
+
 // Route to display all products
 router.get('/products', (req, res) => productController.getAllProducts(req, res));
 router.get("/search-products", productController.searchProducts);

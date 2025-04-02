@@ -1,0 +1,196 @@
+u/* Ronish Shivakoti
+March 25, 2024 */
+
+#page-header {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836');
+}
+
+.content .section-subtitle {
+    text-align: left;
+}
+
+/* give only padding to top for both contact info and contact form */
+.contact-info-form {
+    padding-top: 1em;
+}
+
+/* for contact info  */
+/* gives padding, margin and make the elements center */
+.contact-info .box {
+    padding-top: 5%;
+    display: flex;
+}
+
+/* gives background, radius and other style to the icon  */
+.contact-info .box .icon {
+    min-width: 60px;
+    height: 60px;
+    background: #48b781;
+    display: flex;
+    /* horizontal center */
+    justify-content: center;
+    color: white;
+    /* vertical center */
+    align-items: center;
+    border-radius: 50%;
+}
+
+/* gives certain width to text to maintain alignment property as text can varies acc to their content */
+.contact-info .box .text {
+    width: 50%;
+    margin-left: 20px;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.contact-info .box .text a {
+    color: #312f2f;
+}
+
+.contact-info .box .text a:hover {
+    color: #069c54;
+}
+
+/* styles for contact form */
+.contact-form {
+    padding: 2em 3em;
+    margin-top: 2em;
+    border-radius: 4%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form h2 {
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+
+input[type="text"],
+input[type="email"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* only apply when the textbox are focused */
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+    outline: none;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+textarea {
+    height: 150px;
+    /* resize property none protect the textarea from expanding the given width  and height*/
+    resize: none;
+}
+
+/* form button style  */
+input[type="submit"] {
+    display: inline-block;
+    background-color: #fff;
+    border: #069c54 solid 1px;
+    color: #069c54;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    transition: 0.3s;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    background-color: #048654;
+    color: white;
+}
+
+/* provide full width to the location google map */
+.location-map {
+    width: 100%;
+}
+
+.location-map h2 {
+    text-align: left;
+}
+
+.location-map iframe {
+    width: 100%;
+    height: 400px;
+}
+
+
+/* Tablet Styles */
+@media screen and (min-width: 769px) and (max-width: 1280px) {
+
+    #page-header {
+        margin-top: 4.5em;
+    }
+
+    /* gives left and right padding to 30px for content  */
+    .contact .content {
+        padding: 0 30px;
+    }
+
+    /* used display flex to show both contact info and contact form horizontally in row */
+    .contact-info-form {
+        display: flex;
+        align-items: center;
+    }
+
+    /* only give padding to top of box for contact info items*/
+    .contact-info .box {
+        padding-top: 50px;
+        margin: 0;
+    }
+
+    /* gives full width to the contents of contact info */
+    .contact-info .box .text {
+        width: 100%;
+    }
+
+    /* provide min width so that form can still remain to certain size when the screen size is minimized */
+    .contact-form {
+        min-width: 50%;
+    }
+}
+
+/* Desktop Styles */
+@media screen and (min-width: 1280px) {
+
+    /* provide half screen width to the contact form */
+    .contact-form {
+        width: 50%;
+        margin-top: 1em;
+    }
+
+    /* display flex gives horizontal row to both contact info and contact form for desktop view */
+    .contact-info-form {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 4em;
+    }
+
+    /* provide half screen size to the contact info */
+    .contact-info {
+        width: 50%;
+    }
+
+    /* provide no margin to the item in contact info and alignment is done from start of the item size */
+    .contact-info .box {
+        padding-top: 50px;
+        margin: 0;
+        justify-content: flex-start;
+    }
+}
