@@ -99,6 +99,10 @@
     transform: scale(1.05);
 }
 
+.product-slider .product-item {
+    margin: 0 1rem;
+}
+
 .product-item img {
     width: 100%;
     height: 200px;
