@@ -163,19 +163,41 @@ class ProductController extends BaseController {
     }
   }
 
+  async show(req, res) {
+    try {
+      const item = await this.Model.findById(req.params.id).populate("category").lean(); // Populate the category field
+      if (!item) {
+        return res.status(404).send("Product not found");
+      }
+  
+      let crudInfo = this.crudInfo();
+      return res.render(`${this.route}show`, {
+        crudInfo,
+        item,
+        success: req.flash("success"),
+      });
+    } catch (err) {
+      console.error("Error in show method:", err.message);
+      return res.status(500).send(err.message);
+    }
+  }
+
   async edit(req, res) {
     try {
       const item = await this.Model.findById(req.params.id).populate("category");
       if (!item) return res.status(404).send("Not found");
+  
       const categories = await ProductCategory.find().lean();
+  
       let crudInfo = this.crudInfo();
       crudInfo.item = item;
       crudInfo.routeName = "Edit";
+
       return res.render(`${this.route}edit`, {
         crudInfo,
         item,
         errors: req.flash("errors"),
-        categories: categories || [],
+        categories,
       });
     } catch (err) {
       return res.status(500).send(err.message);
@@ -204,7 +226,9 @@ class ProductController extends BaseController {
     try {
       const oldItem = await this.Model.findById(req.params.id);
       if (!oldItem) return res.status(404).send("Not found");
-  
+
+      req.body.isFeatured = req.body.isFeatured === "on";
+      
       // Handle main image update
       if (req.body.deletedMainImage) {
         // Delete the old main image from the server
@@ -254,7 +278,7 @@ class ProductController extends BaseController {
       return res.redirect(`/${this.route}`);
     } catch (err) {
       errors.push({ msg: err.message });
-      return res.render(`${this.route}edit`, {
+      return res.render(`${this.route}index`, {
         crudInfo: this.crudInfo(),
         errors,
         item: req.body,
@@ -292,7 +316,7 @@ class ProductController extends BaseController {
       return res.redirect(`/${this.route}`);
     } catch (err) {
       req.flash("error", "Failed to delete the product.");
-      return res.redirect(`/${this.route}`);
+      return res.redirect(`/${this.route}index`);
     }
   }
 }

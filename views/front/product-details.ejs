@@ -292,13 +292,17 @@
             <p class="product-stock">Stock: <%= product.stock %> available</p>
 
             <div>
-              <a
-                class="add-to-cart-btn button"
-                href="javascript:void(0);"
-                onclick="addToCart('<%= product._id %>', '<%= product.name %>', '<%= product.price %>', '<%= product.image %>', '<%= product.stock %>')"
-              >
-                Add to Cart
-              </a>
+              <% if (product.stock > 0) { %>
+                <a
+                  class="add-to-cart-btn button"
+                  href="javascript:void(0);"
+                  onclick="addToCart('<%= product._id %>', '<%= product.name %>', '<%= product.price %>', '<%= product.image %>', '<%= product.stock %>')"
+                >
+                  Add to Cart
+                </a>
+              <% } else { %>
+                <span class="text-danger">Out of Stock</span>
+              <% } %>
               <a href="/products" class="back-to-products-btn button"
                 >Back to Products</a
               >
@@ -636,7 +640,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xzoom/1.0.14/xzoom.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-    <script src="/front/js/cart.js"></script>
+    <script src="/front/js/cartCount.js"></script>
 
     <script>
       $(document).ready(function () {

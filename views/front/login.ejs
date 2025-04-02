@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - GadgetVerse</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
@@ -15,7 +14,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</head>
+  </head>
 
 <body>
     <main class="main-content">
@@ -39,26 +38,32 @@
                     <!-- Email input field -->
                     <input type="email" id="email" name="email" required placeholder="Enter your Email">
 
-                    <!-- Password input field with show password icon -->
-                    <div class="password-container">
-                        <input type="password" id="password" name="password" required placeholder="Enter your Password">
-                        <i class="fa fa-eye password-toggle" id="togglePassword"></i>
-                    </div>
-
-                    <!-- Submit button for the login form -->
-                    <button type="submit" class="button login-button">Login</button>
-
-                    <!-- Forgot Password button -->
-                    <div class="forgot-password">
-                        <a href="forgot-password.html">Forgot Password?</a>
-                    </div>
-                </form>
+            <!-- Password input field with show password icon -->
+            <div class="password-container">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                placeholder="Enter your Password"
+              />
+              <i class="fa fa-eye password-toggle" id="togglePassword"></i>
             </div>
-            <!-- Image section -->
-            <div class="login-image-section">
-                <img src="front/img/login-img.svg" alt="Login Illustration">
+
+            <!-- Submit button for the login form -->
+            <button type="submit" class="button login-button">Login</button>
+
+            <!-- Forgot Password button -->
+            <div class="forgot-password">
+              <a href="forgot-password">Forgot Password?</a>
             </div>
+          </form>
         </div>
+        <!-- Image section -->
+        <div class="login-image-section">
+          <img src="front/img/login-img.svg" alt="Login Illustration" />
+        </div>
+      </div>
     </main>
 
     <!-- Include jQuery -->
@@ -66,21 +71,22 @@
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const togglePassword = document.getElementById('togglePassword');
-            const passwordInput = document.getElementById('password');
+      document.addEventListener("DOMContentLoaded", () => {
+        const togglePassword = document.getElementById("togglePassword");
+        const passwordInput = document.getElementById("password");
 
-            togglePassword.addEventListener('click', () => {
-                // Toggle the type attribute
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
+        togglePassword.addEventListener("click", () => {
+          // Toggle the type attribute
+          const type =
+            passwordInput.getAttribute("type") === "password"
+              ? "text"
+              : "password";
+          passwordInput.setAttribute("type", type);
 
-                // Toggle the eye icon
-                togglePassword.classList.toggle('fa-eye-slash');
-            });
+          // Toggle the eye icon
+          togglePassword.classList.toggle("fa-eye-slash");
         });
+      });
     </script>
-
-</body>
-
+  </body>
 </html>

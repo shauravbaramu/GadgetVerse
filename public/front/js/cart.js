@@ -26,15 +26,21 @@ $(document).ready(function () {
               <td><img src="${productImage}" alt="${product.name}" style="width: 50px; height: 50px; object-fit: cover;"></td>
               <td>${product.name}</td>
               <td>
-                <div class="quantity-wrapper">
-                  <button class="btn btn-sm btn-outline-secondary decrease" data-id="${product.productId}" data-action="decrease">
-                    <i class="fa fa-minus"></i>
-                  </button>
-                  <input type="text" class="form-control text-center quantity-input" value="${product.quantity}" readonly>
-                  <button class="btn btn-sm btn-outline-secondary increase" data-id="${product.productId}" data-action="increase">
-                    <i class="fa fa-plus"></i>
-                  </button>
-                </div>
+                ${
+                  product.stock > 0
+                    ? `
+                    <div class="quantity-wrapper">
+                      <button class="btn btn-sm btn-outline-secondary decrease" data-id="${product.productId}" data-action="decrease">
+                        <i class="fa fa-minus"></i>
+                      </button>
+                      <input type="text" class="form-control text-center quantity-input" value="${product.quantity}" readonly>
+                      <button class="btn btn-sm btn-outline-secondary increase" data-id="${product.productId}" data-action="increase">
+                        <i class="fa fa-plus"></i>
+                      </button>
+                    </div>
+                    `
+                    : `<span class="text-danger">Out of Stock</span>`
+                }
               </td>
               <td>$${product.price.toFixed(2)}</td>
               <td>
@@ -90,33 +96,30 @@ $(document).ready(function () {
   
     // Handle quantity update (increase or decrease)
     $(document).on("click", ".decrease, .increase", function () {
-        const productId = $(this).data("id");
-        const action = $(this).data("action");
-      
-        $.post("/cart/update-quantity", { productId, action }, function (response) {
-          if (response.success) {
-            fetchCart(); // Re-fetch the cart to update the UI
-            setTimeout(updateCartCount, 500);
-          } else {
-            // Show SweetAlert error message
-            Swal.fire({
-              title: "Error",
-              text: response.message || "Failed to update quantity.",
-              icon: "error",
-              confirmButtonColor: "#5772C1",
-            });
-          }
-        }).fail(function (xhr) {
-          // Handle server errors (e.g., 400 Bad Request)
-          const errorMessage = xhr.responseJSON?.message || "An error occurred while updating the quantity.";
+      const productId = $(this).data("id");
+      const action = $(this).data("action");
+  
+      $.post("/cart/update-quantity", { productId, action }, function (response) {
+        if (response.success) {
+          fetchCart(); // Re-fetch the cart to update the UI
+        } else {
           Swal.fire({
             title: "Error",
-            text: errorMessage,
+            text: response.message || "Failed to update quantity.",
             icon: "error",
             confirmButtonColor: "#5772C1",
           });
+        }
+      }).fail(function (xhr) {
+        const errorMessage = xhr.responseJSON?.message || "An error occurred while updating the quantity.";
+        Swal.fire({
+          title: "Error",
+          text: errorMessage,
+          icon: "error",
+          confirmButtonColor: "#5772C1",
         });
       });
+    });
   
     // Handle item removal
     $(document).on("click", ".remove", function () {

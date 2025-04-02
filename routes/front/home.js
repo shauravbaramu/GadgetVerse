@@ -9,6 +9,7 @@ const userController = require("../../controllers/front/UserController");
 const orderController = require('../../controllers/front/OrderController');
 const contactController = require('../../controllers/front/ContactController');
 const CartController = require("../../controllers/front/CartController");
+const forgotPasswordController = require("../../controllers/front/auth/ForgotPasswordController");
 
 
 // home page route
@@ -37,6 +38,11 @@ router.post("/login", (req, res) => authController.login(req, res));
 // Handle logout
 router.get("/logout", (req, res) => authController.logout(req, res));
 
+// Reset Password
+router.get("/forgot-password", (req, res) => forgotPasswordController.showForgotPasswordPage(req, res));
+router.post("/forgot-password", (req, res) => forgotPasswordController.handleForgotPassword(req, res));
+router.get("/reset-password/:token", (req, res) => forgotPasswordController.showResetPasswordPage(req, res));
+router.post("/reset-password/:token", (req, res) => forgotPasswordController.handleResetPassword(req, res));
 
 // Route to display all products
 router.get('/products', (req, res) => productController.getAllProducts(req, res));
