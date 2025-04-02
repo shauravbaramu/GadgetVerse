@@ -1,0 +1,31 @@
+/* Style for user first name */
+.profile-first-name {
+    font-size: 24px; /* Adjust the font size */
+    font-weight: bold; /* Make it bold */
+    color: #5772c1; /* Apply the primary color */
+    text-transform: capitalize; /* Capitalize the first letter */
+    margin-bottom: 0px;
+    margin-top: 15px; /* Add spacing below */
+    display: inline-block; /* Ensure it behaves like inline text */
+  }
+
+  /* Style for user email */
+.profile-email {
+  font-size: 16px; /* Adjust the font size */
+  color: #777777; /* Apply the primary color */
+  font-weight: 500; /* Slightly bold */
+  text-transform: lowercase; /* Display email in lowercase */
+  margin-top: 0px; /* Add spacing above */
+  display: inline-block; /* Ensure it behaves like inline text */
+}
+
+/* Change the text color inside input fields */
+input.form-control {
+  color: #777777; /* Set the text color to your desired color */
+}
+
+/* Optional: Change the placeholder text color */
+input.form-control::placeholder {
+  color: #777777 ; /* Set a lighter color for placeholder text */
+  opacity: 1; /* Ensure the placeholder is fully visible */
+}
