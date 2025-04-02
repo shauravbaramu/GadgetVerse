@@ -27,6 +27,10 @@
     />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+      
+    </style>
   </head>
 
   <body>
@@ -187,7 +191,7 @@
         </section>
 
         <!--========== FEATURED PRODUCTS ==========-->
-        <section id="featured-products" class="products-section">
+        <!-- <section id="featured-products" class="products-section">
           <span class="section-subtitle about__initial">Special</span>
           <h2 class="section-title about__initial">Featured Products</h2>
           <div class="product-slider">
@@ -222,13 +226,13 @@
               <a href="#" class="button">View Details</a>
             </div>
           </div>
-        </section>
+        </section> -->
 
-        <!-- <section id="featured-products" class="products-section">
+        <section id="featured-products" class="products-section">
           <span class="section-subtitle about__initial">Special</span>
           <h2 class="section-title about__initial">Featured Products</h2>
           <% if (featuredProducts && featuredProducts.length > 0) { %>
-          <div class="product-slider">
+          <div class="product-slider" style="width: auto;">
             <% featuredProducts.forEach(product => { %>
             <div class="product-item">
               <img
@@ -248,7 +252,7 @@
             No featured products available at the moment.
           </p>
           <% } %>
-        </section> -->
+        </section>
 
         <!--========== CONTACT US ==========-->
         <section class="contact">
