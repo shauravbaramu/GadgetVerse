@@ -192,7 +192,7 @@ class ProductController extends BaseController {
       let crudInfo = this.crudInfo();
       crudInfo.item = item;
       crudInfo.routeName = "Edit";
-  
+
       return res.render(`${this.route}edit`, {
         crudInfo,
         item,
@@ -276,7 +276,7 @@ class ProductController extends BaseController {
       return res.redirect(`/${this.route}`);
     } catch (err) {
       errors.push({ msg: err.message });
-      return res.render(`${this.route}edit`, {
+      return res.render(`${this.route}index`, {
         crudInfo: this.crudInfo(),
         errors,
         item: req.body,
@@ -314,7 +314,7 @@ class ProductController extends BaseController {
       return res.redirect(`/${this.route}`);
     } catch (err) {
       req.flash("error", "Failed to delete the product.");
-      return res.redirect(`/${this.route}`);
+      return res.redirect(`/${this.route}index`);
     }
   }
 }

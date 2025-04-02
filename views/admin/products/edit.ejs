@@ -36,7 +36,7 @@ activePage: 'admin/products/index' }) %>
             <div class="alert alert-danger" role="alert"><%= error.msg %></div>
             <% }); %> <% } %>
             <!-- Include the form partial with existing item data -->
-            <%- include('form', { item: item, old: item }) %>
+            <%- include('form', { item: item, old: item, categories: categories }) %>
           </div>
           <div class="card-footer">
             <button type="submit" id="button_submit" class="btn btn-primary">
