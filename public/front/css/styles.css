@@ -520,18 +520,16 @@ footer {
   border-radius: 1em;
 }
 
-/* Cart label positioning and styling */
-/*.position-absolute {*/
-/*    position: absolute;*/
-/*    top: -14px;*/
-/*    right: -6px;*/
-/*    background-color: red;*/
-/*    color: white;*/
-/*    padding: 3px 4px;*/
-/*    border-radius: 50%;*/
-/*    font-size: 0.75rem;*/
-/*    line-height: 1;*/
-/*}*/
+/* Default position for the cart badge */
+.position-absolute {
+  position: absolute;
+  background-color: red;
+  color: white;
+  padding: 3px 4px;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  line-height: 1;
+}
 
 .product-button {
   padding: 0.5rem 0.75rem;
@@ -780,15 +778,8 @@ footer {
   }
 
   .position-absolute {
-    position: absolute;
     top: 54%;
     right: 47%;
-    background-color: red;
-    color: white;
-    padding: 3px 4px;
-    border-radius: 50%;
-    font-size: 0.75rem;
-    line-height: 1;
   }
 
   /* Configure grid layout for contact container with two columns */
@@ -914,15 +905,7 @@ footer {
   }
 
   .position-absolute {
-    position: absolute;
-    top: 19%;
-    right: 37%;
-    background-color: red;
-    color: white;
-    padding: 3px 4px;
-    border-radius: 50%;
-    font-size: 0.75rem;
-    line-height: 1;
+    top: 8%;
   }
 
   /* =======Footer===== */
@@ -1105,17 +1088,6 @@ footer {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .position-absolute {
-    position: absolute;
-    top: 21%;
-    right: 39%;
-    background-color: red;
-    color: white;
-    padding: 3px 4px;
-    border-radius: 50%;
-    font-size: 0.75rem;
-    line-height: 1;
-  }
 }
 
 /*========= Responsive design for desktop =========*/
@@ -1201,15 +1173,8 @@ footer {
   }
 
   .position-absolute {
-    position: absolute;
-    top: -14px;
-    right: -6px;
-    background-color: red;
-    color: white;
-    padding: 3px 4px;
-    border-radius: 50%;
-    font-size: 0.75rem;
-    line-height: 1;
+    top: -16px;
+    right: -10px;
   }
 }
 
