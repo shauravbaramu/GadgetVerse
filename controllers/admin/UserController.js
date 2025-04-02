@@ -15,17 +15,51 @@ class UserController extends BaseController {
 
   async index(req, res) {
     try {
+      // Check if the request is AJAX (DataTables expects JSON)
       if (req.xhr || req.headers.accept.indexOf("json") > -1) {
-        const items = await this.Model.find({ role: "user" }).lean();
+        const draw = req.query.draw || 1; // DataTables draw counter
+        const start = parseInt(req.query.start) || 0; // Starting record index
+        const length = parseInt(req.query.length) || 10; // Number of records per page
+        const searchValue = req.query.search?.value || ""; // Search value
+  
+        // Build the query for filtering
+        const query = searchValue
+          ? {
+              $or: [
+                { first_name: { $regex: searchValue, $options: "i" } },
+                { email: { $regex: searchValue, $options: "i" } },
+                { phone: { $regex: searchValue, $options: "i" } },
+                { address: { $regex: searchValue, $options: "i" } },
+              ],
+            }
+          : {};
+  
+        // Get total records and filtered records
+        const totalRecords = await this.Model.countDocuments({ role: "user" });
+        const filteredRecords = await this.Model.countDocuments({
+          role: "user",
+          ...query,
+        });
+  
+        // Fetch the filtered data with pagination
+        const items = await this.Model.find({ role: "user", ...query })
+          .skip(start)
+          .limit(length)
+          .lean();
+  
+        // Format the data for DataTables
         const data = await Promise.all(
           items.map(async (item, index) => {
-            const actionHtml = await ejs.renderFile(
-              path.join(__dirname, "../../views/admin/users/index_actions.ejs"),
-              { item }
+            // Render the action buttons using the partial view
+            const actionPartialPath = path.join(
+              __dirname,
+              "../../views/admin/users/index_actions.ejs"
             );
+            const actionHtml = await ejs.renderFile(actionPartialPath, { item });
+  
             return {
               id: item._id,
-              DT_RowIndex: index + 1,
+              DT_RowIndex: start + index + 1,
               first_name: item.first_name,
               email: item.email,
               phone: item.phone,
@@ -34,9 +68,17 @@ class UserController extends BaseController {
             };
           })
         );
-        return res.json({ data });
+  
+        // Return the JSON response for DataTables
+        return res.json({
+          draw: parseInt(draw),
+          recordsTotal: totalRecords,
+          recordsFiltered: filteredRecords,
+          data: data,
+        });
       } else {
-        const items = await this.Model.find();
+        // Regular page load: render the view
+        const items = await this.Model.find({ role: "user" });
         let crudInfo = this.crudInfo();
         return res.render(`${this.route}index`, {
           crudInfo,
@@ -47,6 +89,7 @@ class UserController extends BaseController {
         });
       }
     } catch (err) {
+      console.error("Error in index method:", err);
       return res.status(500).send(err.message);
     }
   }

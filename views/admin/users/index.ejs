@@ -91,15 +91,33 @@ include('../partials/topnav') %>
       serverSide: true,
       ajax: "/admin/users/",
       columns: [
-        { data: "id", name: "DT_RowIndex" },
+        { data: "DT_RowIndex", name: "DT_RowIndex" },
         { data: "first_name", name: "first_name" },
         { data: "email", name: "email" },
         { data: "phone", name: "phone" },
         { data: "address", name: "address" },
-        { data: "action", name: "action" },
+        { data: "action", name: "action", orderable: false, searchable: false },
       ],
+      order: [[1, "asc"]], // Default sorting by the "first_name" column
+      language: {
+        emptyTable: "No data available in table",
+        info: "Showing _START_ to _END_ of _TOTAL_ entries",
+        infoEmpty: "Showing 0 to 0 of 0 entries",
+        infoFiltered: "(filtered from _MAX_ total entries)",
+        lengthMenu: "Show _MENU_ entries",
+        loadingRecords: "Loading...",
+        processing: "Processing...",
+        search: "Search:",
+        zeroRecords: "No matching records found",
+        paginate: {
+          first: "First",
+          last: "Last",
+          next: "Next",
+          previous: "Previous",
+        },
+      },
     });
-
+  
     // SweetAlert confirmation for delete
     $(document).on("click", ".btn-delete", function (e) {
       e.preventDefault();
@@ -113,9 +131,7 @@ include('../partials/topnav') %>
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          $(document).find("#delete-form").submit();
-        } else if (result.isDismissed) {
-          return false;
+          $(this).closest("form").submit();
         }
       });
     });

@@ -19,18 +19,35 @@ class ProductCategoryController extends BaseController {
     try {
       // Check if the request is AJAX (DataTables expects JSON)
       if (req.xhr || req.headers.accept.indexOf("json") > -1) {
-        // Fetch all items; use .lean() for plain objects
-        const items = await this.Model.find().lean();
+        const draw = req.query.draw || 1; // DataTables draw counter
+        const start = parseInt(req.query.start) || 0; // Starting record index
+        const length = parseInt(req.query.length) || 10; // Number of records per page
+        const searchValue = req.query.search?.value || ""; // Search value
   
-        // Process each item to include rendered HTML for image and actions
+        // Build the query for filtering
+        const query = searchValue
+          ? { name: { $regex: searchValue, $options: "i" } }
+          : {};
+  
+        // Get total records and filtered records
+        const totalRecords = await this.Model.countDocuments();
+        const filteredRecords = await this.Model.countDocuments(query);
+  
+        // Fetch the filtered data with pagination
+        const items = await this.Model.find(query)
+          .skip(start)
+          .limit(length)
+          .lean();
+  
+        // Format the data for DataTables
         const data = await Promise.all(
           items.map(async (item, index) => {
-            // Create HTML for image column
+            // Create HTML for the image column
             const imageHtml = item.image
-              ? `<a href="${item.image}" target="blank"><img src="${item.image}" alt="Category Image" style="width:80px; height:80px; object-fit: cover;"></a>`
-              : `<a href="/admin/img/placeholder.png" target="blank"><img src="/admin/img/placeholder.png" alt="Category Image" style="width:80px; height:80px; object-fit: cover;"></a>`;
-            
-            // Adjust the path to index_actions.ejs:
+              ? `<a href="${item.image}" target="_blank"><img src="${item.image}" alt="Category Image" style="width:80px; height:80px; object-fit: cover;"></a>`
+              : `<a href="/admin/img/placeholder.png" target="_blank"><img src="/admin/img/placeholder.png" alt="Category Image" style="width:80px; height:80px; object-fit: cover;"></a>`;
+  
+            // Render the action buttons using the partial view
             const actionPartialPath = path.join(
               __dirname,
               "../../views/admin/productCategories/index_actions.ejs"
@@ -38,8 +55,7 @@ class ProductCategoryController extends BaseController {
             const actionHtml = await ejs.renderFile(actionPartialPath, { item });
   
             return {
-              id: item._id,
-              DT_RowIndex: index + 1,
+              DT_RowIndex: start + index + 1,
               name: item.name,
               image: imageHtml,
               action: actionHtml,
@@ -47,15 +63,22 @@ class ProductCategoryController extends BaseController {
           })
         );
   
-        return res.json({ data });
+        // Return the JSON response for DataTables
+        return res.json({
+          draw: parseInt(draw),
+          recordsTotal: totalRecords,
+          recordsFiltered: filteredRecords,
+          data: data,
+        });
       } else {
         // Regular page load: render the view
         const items = await this.Model.find();
         let crudInfo = this.crudInfo();
         const success = req.flash("success");
-        return res.render(`${this.route}index`, { crudInfo, items, success});
+        return res.render(`${this.route}index`, { crudInfo, items, success });
       }
     } catch (err) {
+      console.error("Error in index method:", err);
       return res.status(500).send(err.message);
     }
   }

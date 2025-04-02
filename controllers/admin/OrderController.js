@@ -16,63 +16,75 @@ class OrderController extends BaseController {
   // List all orders
   async index(req, res) {
     try {
+      // Check if the request is AJAX (DataTables expects JSON)
       if (req.xhr || req.headers.accept.indexOf("json") > -1) {
-        const items = await this.Model.find().populate("user").lean();
-
+        const draw = req.query.draw || 1; // DataTables draw counter
+        const start = parseInt(req.query.start) || 0; // Starting record index
+        const length = parseInt(req.query.length) || 10; // Number of records per page
+        const searchValue = req.query.search?.value || ""; // Search value
+  
+        // Build the query for filtering
+        const query = searchValue
+          ? {
+              $or: [
+                { "user.first_name": { $regex: searchValue, $options: "i" } },
+                { "user.last_name": { $regex: searchValue, $options: "i" } },
+                { status: { $regex: searchValue, $options: "i" } },
+              ],
+            }
+          : {};
+  
+        // Get total records and filtered records
+        const totalRecords = await this.Model.countDocuments();
+        const filteredRecords = await this.Model.countDocuments(query);
+  
+        // Fetch the filtered data with pagination
+        const items = await this.Model.find(query)
+          .populate("user")
+          .skip(start)
+          .limit(length)
+          .lean();
+  
+        // Format the data for DataTables
         const data = await Promise.all(
           items.map(async (item, index) => {
             const user = item.user
-              ? `<a href="/admin/users/show/${item.user._id}" target="blank" style:"text-decoration: none">${item.user.first_name} ${item.user.last_name}</a>`
+              ? `<a href="/admin/users/show/${item.user._id}" target="_blank">${item.user.first_name} ${item.user.last_name}</a>`
               : "N/A";
-
+  
             const actionPartialPath = path.join(
               __dirname,
               "../../views/admin/orders/index_actions.ejs"
             );
-            const actionHtml = await ejs.renderFile(actionPartialPath, {
-              item,
-            });
-
-            let statusText;
-            switch (item.status) {
-              case "pending":
-                statusText = "Pending";
-                break;
-              case "processing":
-                statusText = "Processing";
-                break;
-              case "shipped":
-                statusText = "Shipped";
-                break;
-              case "delivered":
-                statusText = "Delivered";
-                break;
-              case "cancelled":
-                statusText = "Cancelled";
-                break;
-              default:
-                statusText = "Unknown";
-            }
-
+            const actionHtml = await ejs.renderFile(actionPartialPath, { item });
+  
             return {
               id: item._id,
-              DT_RowIndex: index + 1,
+              DT_RowIndex: start + index + 1,
               user: user,
-              status: statusText,
-              totalPrice: item.totalPrice,
-              createdAt: item.createdAt.toLocaleString(),
+              status: item.status.charAt(0).toUpperCase() + item.status.slice(1),
+              totalPrice: `$${item.totalPrice.toFixed(2)}`,
+              createdAt: new Date(item.createdAt).toLocaleString(),
               action: actionHtml,
             };
           })
         );
-
-        return res.json({ data });
+  
+        // Return the JSON response for DataTables
+        return res.json({
+          draw: parseInt(draw),
+          recordsTotal: totalRecords,
+          recordsFiltered: filteredRecords,
+          data: data,
+        });
       } else {
+        // Regular page load: render the view
         const items = await this.Model.find().populate("user").lean();
         let crudInfo = this.crudInfo();
         return res.render(`${this.route}index`, { crudInfo, items });
       }
     } catch (err) {
+      console.error("Error in index method:", err);
       return res.status(500).send(err.message);
     }
   }

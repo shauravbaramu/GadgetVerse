@@ -67,19 +67,37 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   $(function () {
-    var table = $('#data-table').DataTable({
+    var table = $("#data-table").DataTable({
       processing: true,
       serverSide: true,
       ajax: "/admin/contacts/",
       columns: [
-        { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-        { data: 'name', name: 'name' },
-        { data: 'email', name: 'email' },
-        { data: 'createdAt', name: 'createdAt' },
-        { data: 'action', name: 'action', orderable: false, searchable: false }
-      ]
+        { data: "DT_RowIndex", name: "DT_RowIndex" },
+        { data: "name", name: "name" },
+        { data: "email", name: "email" },
+        { data: "createdAt", name: "createdAt" },
+        { data: "action", name: "action", orderable: false, searchable: false },
+      ],
+      order: [[1, "asc"]], // Default sorting by the "name" column
+      language: {
+        emptyTable: "No data available in table",
+        info: "Showing _START_ to _END_ of _TOTAL_ entries",
+        infoEmpty: "Showing 0 to 0 of 0 entries",
+        infoFiltered: "(filtered from _MAX_ total entries)",
+        lengthMenu: "Show _MENU_ entries",
+        loadingRecords: "Loading...",
+        processing: "Processing...",
+        search: "Search:",
+        zeroRecords: "No matching records found",
+        paginate: {
+          first: "First",
+          last: "Last",
+          next: "Next",
+          previous: "Previous",
+        },
+      },
     });
-
+  
     // SweetAlert confirmation for delete
     $(document).on("click", ".btn-delete", function (e) {
       e.preventDefault();
@@ -93,9 +111,7 @@
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          $(document).find("#delete-form").submit();
-        } else if (result.isDismissed) {
-          return false;
+          $(this).closest("form").submit();
         }
       });
     });
