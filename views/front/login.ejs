@@ -23,6 +23,7 @@
         <div class="login-container">
             <!-- Login form section -->
             <div class="login-form-section">
+              
                 <!-- Add the logo here -->
                 <div class="login-logo">
                     <a href="/"><img src="/front/img/logo.png" alt="GadgetVerse Logo"></a>
@@ -50,7 +51,17 @@
               />
               <i class="fa fa-eye password-toggle" id="togglePassword"></i>
             </div>
+            <div class="password-container">
 
+            <% if (typeof errors !== 'undefined' && errors.length > 0) { %> <%
+              errors.forEach(function (error) { %>
+              <div class="alert alert-danger p-2 m-1 "><%= error.msg %></div>
+              <% }); %> <% } %> <% if (typeof success !== 'undefined' && success.length
+              > 0) { %>
+              <div class="alert alert-success"><%= success %></div>
+              <% } %>
+            </div>
+              
             <!-- Submit button for the login form -->
             <button type="submit" class="button login-button">Login</button>
 
