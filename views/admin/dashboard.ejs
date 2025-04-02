@@ -18,7 +18,7 @@
   <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
-      <!-- Place your dashboard widgets or content here -->
+      <!-- Small boxes -->
       <div class="row">
         <div class="col-lg-3 col-6">
           <!-- small box -->
@@ -76,6 +76,30 @@
           </div>
         </div>
       </div>
+
+      <!-- Charts Section -->
+      <div class="row">
+        <div class="col-lg-6 col-12">
+          <div class="card">
+            <div class="card-header bg-info">
+              <h3 class="card-title">Income vs Expenses</h3>
+            </div>
+            <div class="card-body">
+              <canvas id="incomeExpenseChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-12">
+          <div class="card">
+            <div class="card-header bg-primary">
+              <h3 class="card-title">Orders by Status</h3>
+            </div>
+            <div class="card-body">
+              <canvas id="orderStatusChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
   <!-- /.content -->
@@ -83,3 +107,58 @@
 <!-- /.content-wrapper -->
 
 <%- include('partials/footer') %>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    // Fetch chart data via AJAX
+    $.get('/admin/dashboard/chart-data', function (data) {
+      // Income vs Expenses Chart
+      const incomeExpenseCtx = document.getElementById('incomeExpenseChart').getContext('2d');
+      new Chart(incomeExpenseCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Income', 'Expenses'],
+          datasets: [{
+            label: 'Amount (in $)',
+            data: [data.income, data.expenses],
+            backgroundColor: ['#28a745', '#dc3545']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+
+      // Orders by Status Chart
+      const orderStatusCtx = document.getElementById('orderStatusChart').getContext('2d');
+      new Chart(orderStatusCtx, {
+        type: 'pie',
+        data: {
+          labels: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
+          datasets: [{
+            data: [
+              data.orderStatusCounts.pending,
+              data.orderStatusCounts.processing,
+              data.orderStatusCounts.shipped,
+              data.orderStatusCounts.delivered,
+              data.orderStatusCounts.cancelled
+            ],
+            backgroundColor: ['#ffc107', '#17a2b8', '#007bff', '#28a745', '#dc3545']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' }
+          }
+        }
+      });
+    });
+  });
+</script>
