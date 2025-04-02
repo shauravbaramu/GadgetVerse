@@ -129,6 +129,9 @@ class ProductController extends BaseController {
     if (!req.body.category) {
       errors.push({ msg: "Category is required" });
     }
+    if (!req.body.stock || parseInt(req.body.stock) <= 0) {
+      errors.push({ msg: "Stock must be greater than 0" });
+    }
 
     if (errors.length > 0) {
       return res.render(`${this.route}create`, {
@@ -154,12 +157,17 @@ class ProductController extends BaseController {
       return res.redirect(`/${this.route}`);
     } catch (err) {
       errors.push({ msg: err.message });
-      return res.render(`${this.route}create`, {
-        crudInfo: this.crudInfo(),
-        errors,
-        item: req.body,
-        categories: req.categories || [],
-      });
+      try {
+        const categories = await ProductCategory.find().lean(); // Fetch categories for re-rendering
+        return res.render(`${this.route}create`, {
+            crudInfo: this.crudInfo(),
+            errors,
+            item: req.body, // Pass the current input values back to the form
+            categories: req.categories || [],
+        });
+    } catch (fetchErr) {
+        return res.status(500).send(fetchErr.message);
+    }
     }
   }
 
