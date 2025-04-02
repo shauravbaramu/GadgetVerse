@@ -29,21 +29,6 @@
         <!-- Website logo image -->
       </a>
 
-      <!-- Search bar for products -->
-      <!-- <div class="search-bar">
-          <input
-            type="text"
-            id="searchBar"
-            name="search"
-            placeholder="Search products..."
-          />
-          <button type="button" class="search-button">
-            <i class="fa fa-search"></i>
-          </button>
-          <div id="searchDropdown" class="search-dropdown">
-          </div>
-        </div> -->
-
       <!-- Navigation items container -->
       <div class="nav__menu" id="nav-menu">
         <!-- List of navigation links -->
@@ -166,27 +151,10 @@
       </section>
 
       <!--========== FEATURED PRODUCTS ==========-->
-      <span class="section-subtitle about__initial">Special</span>
-      <h2 class="section-title about__initial">Featured Products</h2>
+      <!-- <span class="section-subtitle about__initial">Special</span>
+      <h2 class="section-title about__initial">Featured Products</h2> -->
 
-      <% if (featuredProducts && featuredProducts.length> 0) { %>
-        <div class="featured-product-grid">
-          <% featuredProducts.forEach(product=> { %>
-            <div class="product-item">
-              <img src="<%= product.image || '/front/img/placeholder.png' %>" alt="<%= product.name %>" />
-              <h3 class="product-title">
-                <%= product.name %>
-              </h3>
-              <p class="product-price">$<%= product.price %>
-              </p>
-              <a href="/product-details/?id=<%= product._id %>" class="button">View Details</a>
-            </div>
-            <% }); %>
-        </div>
-        <% } else { %>
-          <p class="alert alert-danger">No featured products available at the moment.</p>
-          <% } %>
-            </section> -->
+      
             <section id="featured-products" class="products-section">
               <span class="section-subtitle about__initial">Special</span>
               <h2 class="section-title about__initial">Featured Products</h2>
@@ -195,7 +163,7 @@
                 <div class="product-slider">
                   <% featuredProducts.forEach(product=> { %>
                     <div class="product-item">
-                      <img src="<%= product.image || '/front/img/placeholder.png' %>" alt="<%= product.name %>" />
+                      <img src="<%= product.image || '/admin/img/placeholder.png' %>" alt="<%= product.name %>" />
                       <h3 class="product-title">
                         <%= product.name %>
                       </h3>
