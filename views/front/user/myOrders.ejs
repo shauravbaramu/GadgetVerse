@@ -5,11 +5,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Order - GadgetVerse</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <%- include('../favicon.ejs') %>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="/front/css/styles.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -23,7 +34,7 @@
         <nav class="nav bd-container">
             <!-- ====== Logo of the website =======-->
             <a href="/" class="nav__logo" id="logo">
-                GadgetVerse
+                <img src="/front/img/logo.png" alt="logo" class="nav__logo-img">
                 <!-- Website logo image -->
             </a>
 
@@ -102,8 +113,7 @@
     <main>
         <!-- Page Header -->
         <div id="page-header">
-            <!-- Title for the about page -->
-            <div class="page-title">My Profile</div>
+            <div class="page-title">My Orders</div>
         </div>
 
         <div class="bd-container main-content">
@@ -116,7 +126,7 @@
                         <th>Status</th>
                         <th>Shipping Address</th>
                         <th>Total</th>
-                        <th>Order Items</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -135,20 +145,12 @@
                                 <td>$<%= order.totalPrice.toFixed(2) %>
                                 </td>
                                 <td>
-                                    <ul>
-                                        <% order.items.forEach(item=> { %>
-                                            <li>
-                                                <strong>Product:</strong>
-                                                <%= item.product.name %><br>
-                                                    <strong>Price:</strong> $<%= item.price.toFixed(2) %><br>
-                                                        <strong>Quantity:</strong>
-                                                        <%= item.quantity %>
-                                            </li>
-                                            <% }) %>
-                                    </ul>
+                                    <a href="/my-orders/<%= order._id %>" class="btn btn-primary btn-sm">
+                                        View Order
+                                    </a>
                                 </td>
                             </tr>
-                            <% }) %>
+                            <% }); %>
                                 <% } else { %>
                                     <tr>
                                         <td colspan="5" class="text-center">No orders available</td>
@@ -158,7 +160,6 @@
             </table>
         </div>
     </main>
-
 
     <!--========== FOOTER ==========-->
     <footer class="footer">

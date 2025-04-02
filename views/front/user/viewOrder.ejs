@@ -2,17 +2,16 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - GadgetVerse</title>
-    <%- include('favicon.ejs') %>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Order - GadgetVerse</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/front/css/styles.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/front/css/styles.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
@@ -22,163 +21,168 @@
     <header class="l-header" id="header">
         <!-- =========Navbar====== -->
         <nav class="nav bd-container">
-          <!-- ====== Logo of the website =======-->
-          <a href="/" class="nav__logo" id="logo">
-            <img
-            src="/front/img/logo.png"
-            alt="logo"
-            class="nav__logo-img" >
-            <!-- Website logo image -->
-          </a>
-  
-          <!-- Search bar for products -->
-          <!-- <div class="search-bar">
-            <input
-              type="text"
-              id="searchBar"
-              name="search"
-              placeholder="Search products..."
-            />
-            <button type="button" class="search-button">
-              <i class="fa fa-search"></i>
-            </button>
-            <div id="searchDropdown" class="search-dropdown">
+            <!-- ====== Logo of the website =======-->
+            <a href="/" class="nav__logo" id="logo">
+                GadgetVerse
+                <!-- Website logo image -->
+            </a>
+
+            <!-- Navigation items container -->
+            <div class="nav__menu" id="nav-menu">
+                <!-- List of navigation links -->
+                <ul class="nav__list">
+                    <!-- Home link -->
+                    <li class="nav__item">
+                        <a href="/" class="nav__link">Home</a>
+                    </li>
+
+                    <!-- About link -->
+                    <li class="nav__item">
+                        <a href="/about" class="nav__link">About</a>
+                    </li>
+
+                    <!-- Products link -->
+                    <li class="nav__item">
+                        <a href="/products" class="nav__link">Products</a>
+                    </li>
+
+                    <!-- Contact link -->
+                    <li class="nav__item">
+                        <a href="/contactus" class="nav__link">Contacts</a>
+                    </li>
+
+                    <!-- Cart icon (only visible if user is logged in) -->
+                    <% if (user) { %>
+                        <li class="nav__item">
+                            <a href="/cart" class="nav__link">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                                <span id="cart-count" class="badge badge-pill badge-danger position-absolute"
+                                    style="display: none">0</span>
+                            </a>
+                        </li>
+                        <% } %>
+
+                            <!-- User login/logout -->
+                            <li class="nav__item">
+                                <% if (user) { %>
+                                    <!-- User Icon and Name -->
+                                    <div class="user-menu">
+                                        <a href="#" class="user-dropdown-toggle">
+                                            <img src="/front/img/user-icon.png" alt="user" class="user-icon" />
+                                            <span>
+                                                <%= user.first_name %>
+                                            </span>
+                                            <i class="ml-2 fa fa-caret-down"></i>
+                                        </a>
+                                        <!-- Dropdown Menu -->
+                                        <ul class="user-dropdown">
+                                            <li><a href="/profile">Profile</a></li>
+                                            <li><a href="/my-orders">My Orders</a></li>
+                                            <li><a href="/logout">Logout</a></li>
+                                        </ul>
+                                    </div>
+                                    <% } else { %>
+                                        <!-- Show Login Button if Not Logged In -->
+                                        <div class="login-btn" id="loginContainer">
+                                            <a href="/login" class="button" id="loginButton">Login</a>
+                                            <!-- Link to the login page with an id for styling or JavaScript interaction -->
+                                        </div>
+                                        <% } %>
+                            </li>
+                </ul>
             </div>
-          </div> -->
-  
-          <!-- Navigation items container -->
-          <div class="nav__menu" id="nav-menu">
-            <!-- List of navigation links -->
-            <ul class="nav__list">
-              <!-- Home link -->
-              <li class="nav__item">
-                <a href="/" class="nav__link ">Home</a>
-              </li>
 
-              <!-- Products link -->
-              <li class="nav__item">
-                <a href="/products" class="nav__link">Products</a>
-              </li>
-             
-              <!-- About link -->
-              <li class="nav__item">
-                <a href="/about" class="nav__link active-link">About</a>
-              </li>
-
-              <!-- Contact link -->
-              <li class="nav__item">
-                <a href="/contactus" class="nav__link">Contacts</a>
-              </li>
-
-
-             <!-- Cart icon (only visible if user is logged in) -->
-              <% if (user) { %>
-                <li class="nav__item">
-                  <a href="/cart" class="nav__link">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span
-                      id="cart-count"
-                      class="badge badge-pill badge-danger position-absolute"
-                      style="display: none"
-                      >0</span
-                    >
-                  </a>
-                </li>
-                <% } %>
-  
-  
-  
-              <!-- User login/logout -->
-              <li class="nav__item">
-                <% if (user) { %>
-                <!-- User Icon and Name -->
-                <div class="user-menu">
-                  <a href="#" class="user-dropdown-toggle">
-                    <img
-                      src="/front/img/user-icon.png"
-                      alt="user"
-                      class="user-icon"
-                    />
-                    <span> <%= user.first_name %> </span>
-                    <i class="fa fa-caret-down"style="margin-left: 7px;"></i>
-                  </a>
-                  <!-- Dropdown Menu -->
-                  <ul class="user-dropdown">
-                    <li><a href="/profile">Profile</a></li>
-                    <li><a href="/my-orders">My Orders</a></li>
-                    <li><a href="/logout">Logout</a></li>
-                  </ul> 
-                </div>
-                <% } else { %>
-                <!-- Show Login Button if Not Logged In -->
-                <div class="login-btn" id="loginContainer">
-                  <a href="/login" class="button" id="loginButton">Login</a>
-                  <!-- Link to the login page with an id for styling or JavaScript interaction -->
-                </div>
-                <% } %>
-              </li>
-            </ul>
-          </div>
-  
-          <!-- Toggle button for mobile view -->
-          <div class="nav__toggle" id="nav-toggle">
-            <span>&#9776;</span>
-          </div>
+            <!-- Toggle button for mobile view -->
+            <div class="nav__toggle" id="nav-toggle">
+                <span>&#9776;</span>
+            </div>
         </nav>
-      </header>
+    </header>
 
     <main>
         <!-- Page Header -->
         <div id="page-header">
-            <!-- Title for the about page -->
-            <div class="page-title">About Us</div>
+            <div class="page-title">Order Summary</div>
         </div>
-        <div class="bd-container main-content"> 
-            <div class="about-row">
-                <!-- Left Column -->
-                <div class="about-column-left">
-                    <!-- About Heading -->
-                    <div class="about-heading">
-                        <span class="section-subtitle">Who we are ?</span>
-                        <h2 class="section-title">Welcome to GadgetVerse</h2>
-                    </div>
-                    <!-- About Sub-Content -->
-                    <div class="about-sub-content">
-                        <p>
-                            At GadgetVerse, we are committed to bringing you the latest and most innovative tech gadgets
-                            and accessories. Whether you're a tech enthusiast, a professional, or someone looking for
-                            smart solutions, our online store offers a curated selection of high-quality products
-                            designed to enhance your digital lifestyle.
 
-                        </p>
-                        <p>
-                            We take pride in offering top-tier gadgets that combine functionality, style, and
-                            cutting-edge technology. Every product in our collection is carefully chosen to meet the
-                            highest standards of quality, performance, and reliability. At GadgetVerse, we believe
-                            technology should be both exciting and accessible, making your everyday life smarter and
-                            more convenient.
-                        </p>
-                    </div>
+        <div class="bd-container main-content">
+            <div class="order-card">
+                <h2 class="order-title">Order Summary</h2>
+
+                <!-- Order Summary -->
+                <div class="order-info">
+                    <p><strong>Order ID:</strong>
+                        <%= order._id %>
+                    </p>
+                    <p><strong>Status:</strong> <span class="status <%= order.status %>">
+                            <%= order.status %>
+                        </span></p>
+                    <p><strong>Shipping Address:</strong>
+                        <%= order.shippingAddress %>
+                    </p>
+                    <p><strong>Subtotal:</strong> $<%= order.subTotal.toFixed(2) %>
+                    </p>
+                    <p><strong>Discount:</strong> $<%= order.discount.toFixed(2) %>
+                    </p>
+                    <p><strong>Delivery Charge:</strong> $<%= order.deliveryCharge.toFixed(2) %>
+                    </p>
+                    <p><strong>Total Price:</strong> <span class="total-price">$<%= order.totalPrice.toFixed(2) %>
+                        </span></p>
                 </div>
-                <!-- Right Column -->
-                <div class="about-column-right">
-                    <!-- Image related to the about section -->
-                    <img src="front/img/about-img.png" class="about-image-1" alt="restaurant area">
-                </div>
+
+                <!-- Order Items Table -->
+                <h3 class="section-subtitle">Order Items</h3>
+                <table class="order-items-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Image</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% order.items.forEach(item=> { %>
+                            <tr>
+                                <td>
+                                    <%= item.product.name %>
+                                </td>
+                                <td>
+                                    <img src="<%= item.product.image || '/front/img/placeholder.png' %>"
+                                        alt="<%= item.product.name %>" class="order-product-image">
+                                </td>
+                                <td>$<%= item.price.toFixed(2) %>
+                                </td>
+                                <td>
+                                    <%= item.quantity %>
+                                </td>
+                                <td>$<%= (item.price * item.quantity).toFixed(2) %>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+
+                <a href="/my-orders" class="btn-sm back-button">Back to Orders</a>
             </div>
         </div>
     </main>
+
+
+
     <!--========== FOOTER ==========-->
     <footer class="footer">
         <div class="section footer__container">
             <div class="footer__wrapper bd-grid">
                 <div class="footer__content">
-                    <a href="/" style="color: white;">
+                    <a href="/" style="color: white">
                         <!-- Footer Logo -->
                         GadgetVerse
                     </a>
                     <span class="footer__description">Our online store features a curated collection of unique and
-                        artisanal instruments that are crafted with precision, passion, and care.</span>
+                        artisanal instruments that are crafted with precision, passion,
+                        and care.</span>
                     <div>
                         <!-- Social Media icons and links -->
                         <a target="_blank" href="https://www.facebook.com" class="footer__social">
@@ -290,7 +294,9 @@
                     <ul>
                         <li><a href="#service" class="footer__text">Delivery</a></li>
                         <li><a href="#service" class="footer__text">Pricing</a></li>
-                        <li><a href="#service" class="footer__text">Quality Product</a></li>
+                        <li>
+                            <a href="#service" class="footer__text">Quality Product</a>
+                        </li>
                         <!-- <li>
                     <a href="#service" class="footer__text">Reserve your spot</a>
                 </li> -->
@@ -329,9 +335,14 @@
                                 </a></span>
                         </li>
                         <li>
-                            <svg class="svg-icon"
-                                style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden; color:white"
-                                viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                            <svg class="svg-icon" style="
+                    width: 1em;
+                    height: 1em;
+                    vertical-align: middle;
+                    fill: currentColor;
+                    overflow: hidden;
+                    color: white;
+                  " viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M742.4 938.666667A657.92 657.92 0 0 1 85.333333 281.6 196.266667 196.266667 0 0 1 281.6 85.333333a168.106667 168.106667 0 0 1 32.853333 2.986667 161.706667 161.706667 0 0 1 30.72 7.68 42.666667 42.666667 0 0 1 27.733334 32l58.453333 256a42.666667 42.666667 0 0 1-11.093333 39.253333c-5.546667 5.973333-5.973333 6.4-58.453334 33.706667a422.826667 422.826667 0 0 0 207.786667 208.64c27.733333-52.906667 28.16-53.333333 34.133333-58.88a42.666667 42.666667 0 0 1 39.253334-11.093333l256 58.453333a42.666667 42.666667 0 0 1 30.72 27.733333 185.173333 185.173333 0 0 1 8.106666 31.146667 203.52 203.52 0 0 1 2.56 32.426667A196.266667 196.266667 0 0 1 742.4 938.666667z" />
                             </svg>
@@ -350,9 +361,7 @@
                 </div>
             </div>
             <!-- Copyright -->
-            <p class="footer__copy">
-                &#169; 2025 GadgetVerse. All right reserved
-            </p>
+            <p class="footer__copy">&#169; 2025 GadgetVerse. All right reserved</p>
         </div>
     </footer>
     <!-- Include jQuery -->

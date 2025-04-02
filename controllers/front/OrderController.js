@@ -92,3 +92,18 @@ exports.getOrders = async (req, res) => {
         res.status(500).send('Server error');
     }
 };
+
+exports.getOrderDetails = async (req, res) => {
+    try {
+        const orderId = req.params.orderId;
+
+        // Fetch the order with populated product details
+        const order = await Order.findById(orderId).populate('items.product');
+
+        // Render the order details view
+        res.render('front/user/viewOrder', { order });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server error');
+    }
+};
