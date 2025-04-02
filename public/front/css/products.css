@@ -76,6 +76,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    height: 100%;
 }
 
 .product-card:hover {
@@ -120,12 +121,19 @@
 }
 
 /* Product Details */
-.product-card h3 {
+.product-title {
     font-size: 1.2rem;
     font-weight: bold;
     margin-bottom: 10px;
     color: #333;
+    overflow: hidden;
+    /* Ensures long titles do not overflow */
+    text-overflow: ellipsis;
+    /* Adds '...' for overflowed text */
+    white-space: nowrap;
+    /* Prevents text from wrapping */
 }
+
 
 .product-card p {
     font-size: 1rem;

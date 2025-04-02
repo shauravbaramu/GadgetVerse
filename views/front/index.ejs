@@ -12,7 +12,6 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="/front/css/styles.css" />
   <link rel="stylesheet" href="/front/css/products.css" />
-
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -28,21 +27,6 @@
         <img src="/front/img/logo.png" alt="logo" class="nav__logo-img">
         <!-- Website logo image -->
       </a>
-
-      <!-- Search bar for products -->
-      <!-- <div class="search-bar">
-          <input
-            type="text"
-            id="searchBar"
-            name="search"
-            placeholder="Search products..."
-          />
-          <button type="button" class="search-button">
-            <i class="fa fa-search"></i>
-          </button>
-          <div id="searchDropdown" class="search-dropdown">
-          </div>
-        </div> -->
 
       <!-- Navigation items container -->
       <div class="nav__menu" id="nav-menu">
@@ -166,70 +150,75 @@
       </section>
 
       <!--========== FEATURED PRODUCTS ==========-->
-      <span class="section-subtitle about__initial">Special</span>
-      <h2 class="section-title about__initial">Featured Products</h2>
 
-      <% if (featuredProducts && featuredProducts.length> 0) { %>
-        <div class="featured-product-grid">
-          <% featuredProducts.forEach(product=> { %>
-            <div class="product-item">
-              <img src="<%= product.image || '/front/img/placeholder.png' %>" alt="<%= product.name %>" />
-              <h3 class="product-title">
-                <%= product.name %>
-              </h3>
-              <p class="product-price">$<%= product.price %>
-              </p>
-              <a href="/product-details/?id=<%= product._id %>" class="button">View Details</a>
-            </div>
-            <% }); %>
-        </div>
-        <% } else { %>
-          <p class="alert alert-danger">No featured products available at the moment.</p>
-          <% } %>
-            </section> -->
-            <section id="featured-products" class="products-section">
-              <span class="section-subtitle about__initial">Special</span>
-              <h2 class="section-title about__initial">Featured Products</h2>
+      <section id="featured-products" class="products-section">
+        <span class="section-subtitle about__initial">Special</span>
+        <h2 class="section-title about__initial">Featured Products</h2>
 
-              <% if (featuredProducts && featuredProducts.length> 0) { %>
-                <div class="product-slider">
-                  <% featuredProducts.forEach(product=> { %>
-                    <div class="product-item">
-                      <img src="<%= product.image || '/front/img/placeholder.png' %>" alt="<%= product.name %>" />
-                      <h3 class="product-title">
-                        <%= product.name %>
-                      </h3>
-                      <p class="product-price">$<%= product.price %>
-                      </p>
-                      <a href="/product-details/?id=<%= product._id %>" class="button">View Details</a>
-                    </div>
-                    <% }); %>
+        <% if (featuredProducts && featuredProducts.length> 0) { %>
+          <% if (featuredProducts.length>= 3) { %>
+            <!-- Use Slider for 3 or more products -->
+            <div class="product-slider">
+              <% featuredProducts.forEach(product=> { %>
+                <div class="product-item">
+                  <img src="<%= product.image || '/admin/img/placeholder.png' %>" alt="<%= product.name %>" />
+                  <h3 class="product-title">
+                    <%= product.name %>
+                  </h3>
+                  <p class="product-price">$<%= product.price %>
+                  </p>
+                  <div>
+                    <a href="/product-details/?id=<%= product._id %>" class="button btn-sm">View Details</a>
+                  </div>
                 </div>
+                <% }); %>
+            </div>
+            <% } else { %>
+              <!-- Use Simple Grid for 1 or 2 products -->
+              <div class="featured-product-grid">
+                <% featuredProducts.forEach(product=> { %>
+                  <div class="product-card">
+                    <img src="<%= product.image || '/admin/img/placeholder.png' %>" alt="<%= product.name %>" />
+                    <h3 class="product-title">
+                      <%= product.name %>
+                    </h3>
+                    <p class="product-price">$<%= product.price %>
+                    </p>
+                    <div>
+                      <a href="/product-details/?id=<%= product._id %>" class="button btn-sm">View Details</a>
+                    </div>
+                  </div>
+                  <% }); %>
+              </div>
+              <% } %>
                 <% } else { %>
                   <p class="alert alert-danger">No featured products available at the moment.</p>
                   <% } %>
-            </section>
+      </section>
 
 
-            <!--========== CONTACT US ==========-->
-            <section class="contact">
-              <div class="contact section" id="contact">
-                <div class="contact__container bd-grid">
-                  <div class="contact__data">
-                    <span class="section-subtitle contact__initial">Let's talk</span>
-                    <h2 class="section-title contact__initial">Contact us</h2>
-                    <p class="contact__description">
-                      If you want to buy any products or have any inquiry, contact
-                      us and we will attend you quickly, with our 24/7 chat service.
-                    </p>
-                  </div>
-                  <!-- Contact button -->
-                  <div class="contact__button">
-                    <a href="/contactus" class="button">Contact us now</a>
-                  </div>
-                </div>
-              </div>
-            </section>
+      </section>
+
+
+      <!--========== CONTACT US ==========-->
+      <section class="contact">
+        <div class="contact section" id="contact">
+          <div class="contact__container bd-grid">
+            <div class="contact__data">
+              <span class="section-subtitle contact__initial">Let's talk</span>
+              <h2 class="section-title contact__initial">Contact us</h2>
+              <p class="contact__description">
+                If you want to buy any products or have any inquiry, contact
+                us and we will attend you quickly, with our 24/7 chat service.
+              </p>
+            </div>
+            <!-- Contact button -->
+            <div class="contact__button">
+              <a href="/contactus" class="button">Contact us now</a>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
 
@@ -430,27 +419,26 @@
 
 <script>
   $(document).ready(function () {
+    let productCount = $(".product-item").length;
+
     $(".product-slider").slick({
-      infinite: true, // Infinite scrolling
-      slidesToShow: 3, // Number of products visible at once
-      slidesToScroll: 1, // Number of products to scroll at a time
-      autoplay: true, // Enable autoplay
-      autoplaySpeed: 2000, // Auto-slide interval (in milliseconds)
-      arrows: true, // Show navigation arrows
-      dots: true, // Show navigation dots
-      pauseOnHover: true, // Pause auto-slide on hover
-      pauseOnFocus: true, // Pause auto-slide on focus
-      speed: 500, // Sliding animation duration in milliseconds
+      infinite: productCount >= 3,  // Disable infinite scroll if fewer than 3 items
+      slidesToShow: productCount < 3 ? productCount : 3, // Adjust slides shown dynamically
+      slidesToScroll: 1,
+      autoplay: productCount >= 3, // Enable autoplay only if enough products
+      autoplaySpeed: 2000,
+      arrows: productCount > 1, // Hide arrows if only 1 product
+      dots: productCount > 1, // Hide dots if only 1 product
       responsive: [
         {
-          breakpoint: 1024, // For tablets
+          breakpoint: 1024,
           settings: {
-            slidesToShow: 2,
+            slidesToShow: productCount < 2 ? productCount : 2,
             slidesToScroll: 1,
           },
         },
         {
-          breakpoint: 768, // For mobile devices
+          breakpoint: 768,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -459,6 +447,7 @@
       ],
     });
   });
+
 </script>
 
 </html>
