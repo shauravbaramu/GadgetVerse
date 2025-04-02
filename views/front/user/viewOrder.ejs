@@ -5,22 +5,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Order - GadgetVerse</title>
-    <%- include('../favicon.ejs') %>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/front/css/styles.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -34,7 +23,7 @@
         <nav class="nav bd-container">
             <!-- ====== Logo of the website =======-->
             <a href="/" class="nav__logo" id="logo">
-                <img src="/front/img/logo.png" alt="logo" class="nav__logo-img">
+                GadgetVerse
                 <!-- Website logo image -->
             </a>
 
@@ -113,53 +102,74 @@
     <main>
         <!-- Page Header -->
         <div id="page-header">
-            <div class="page-title">My Orders</div>
+            <div class="page-title">Order Summary</div>
         </div>
 
         <div class="bd-container main-content">
-            <h2>My Orders</h2>
+            <div class="order-card">
+                <h2 class="order-title">Order Summary</h2>
 
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Status</th>
-                        <th>Shipping Address</th>
-                        <th>Total</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% if (orders && orders.length> 0) { %>
-                        <% orders.forEach(order=> { %>
+                <!-- Order Summary -->
+                <div class="order-info">
+                    <p><strong>Order ID:</strong>
+                        <%= order._id %>
+                    </p>
+                    <p><strong>Status:</strong> <span class="status <%= order.status %>">
+                            <%= order.status %>
+                        </span></p>
+                    <p><strong>Shipping Address:</strong>
+                        <%= order.shippingAddress %>
+                    </p>
+                    <p><strong>Subtotal:</strong> $<%= order.subTotal.toFixed(2) %>
+                    </p>
+                    <p><strong>Discount:</strong> $<%= order.discount.toFixed(2) %>
+                    </p>
+                    <p><strong>Delivery Charge:</strong> $<%= order.deliveryCharge.toFixed(2) %>
+                    </p>
+                    <p><strong>Total Price:</strong> <span class="total-price">$<%= order.totalPrice.toFixed(2) %>
+                        </span></p>
+                </div>
+
+                <!-- Order Items Table -->
+                <h3 class="section-subtitle">Order Items</h3>
+                <table class="order-items-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Image</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% order.items.forEach(item=> { %>
                             <tr>
                                 <td>
-                                    <%= order._id %>
+                                    <%= item.product.name %>
                                 </td>
                                 <td>
-                                    <%= order.status %>
+                                    <img src="<%= item.product.image || '/front/img/placeholder.png' %>"
+                                        alt="<%= item.product.name %>" class="order-product-image">
+                                </td>
+                                <td>$<%= item.price.toFixed(2) %>
                                 </td>
                                 <td>
-                                    <%= order.shippingAddress %>
+                                    <%= item.quantity %>
                                 </td>
-                                <td>$<%= order.totalPrice.toFixed(2) %>
-                                </td>
-                                <td>
-                                    <a href="/my-orders/<%= order._id %>" class="btn btn-primary btn-sm">
-                                        View Order
-                                    </a>
+                                <td>$<%= (item.price * item.quantity).toFixed(2) %>
                                 </td>
                             </tr>
                             <% }); %>
-                                <% } else { %>
-                                    <tr>
-                                        <td colspan="5" class="text-center">No orders available</td>
-                                    </tr>
-                                    <% } %>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+
+                <a href="/my-orders" class="btn-sm back-button">Back to Orders</a>
+            </div>
         </div>
     </main>
+
+
 
     <!--========== FOOTER ==========-->
     <footer class="footer">

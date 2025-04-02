@@ -14,266 +14,218 @@
     <link rel="stylesheet" type="text/css" href="/front/css/cart.css">
 </head>
 
-  <body>
-    <!--========== HEADER ==========-->
-    <header class="l-header" id="header">
-      <nav class="nav bd-container">
-        <a href="/" class="nav__logo" id="logo">
-          <img src="/front/img/logo.png" alt="logo" class="nav__logo-img" />
-        </a>
-        <div class="nav__menu" id="nav-menu">
-          <ul class="nav__list">
-            <li class="nav__item"><a href="/" class="nav__link">Home</a></li>
-            <li class="nav__item">
-              <a href="/products" class="nav__link">Products</a>
-            </li>
-            <li class="nav__item">
-              <a href="/about" class="nav__link">About</a>
-            </li>
-            <li class="nav__item">
-              <a href="/contactus" class="nav__link">Contacts</a>
-            </li>
-            <% if (user) { %>
+<body>
+  <!--========== HEADER ==========-->
+  <header class="l-header" id="header">
+    <nav class="nav bd-container">
+      <a href="/" class="nav__logo" id="logo">
+        <img src="/front/img/logo.png" alt="logo" class="nav__logo-img" />
+      </a>
+      <div class="nav__menu" id="nav-menu">
+        <ul class="nav__list">
+          <li class="nav__item"><a href="/" class="nav__link">Home</a></li>
+          <li class="nav__item">
+            <a href="/products" class="nav__link">Products</a>
+          </li>
+          <li class="nav__item">
+            <a href="/about" class="nav__link">About</a>
+          </li>
+          <li class="nav__item">
+            <a href="/contactus" class="nav__link">Contacts</a>
+          </li>
+          <% if (user) { %>
             <li class="nav__item">
               <a href="/cart" class="nav__link active-link">
                 <i class="fa-solid fa-cart-shopping"></i>
-                <span
-                  id="cart-count"
-                  class="badge badge-pill badge-danger position-absolute"
-                  style="display: none"
-                  >0</span
-                >
+                <span id="cart-count" class="badge badge-pill badge-danger position-absolute"
+                  style="display: none">0</span>
               </a>
             </li>
             <% } %>
-            <li class="nav__item">
-              <% if (user) { %>
-              <div class="user-menu">
-                <a href="#" class="user-dropdown-toggle">
-                  <img
-                    src="/front/img/user-icon.png"
-                    alt="user"
-                    class="user-icon"
-                  />
-                  <span> <%= user.first_name %> </span>
-                  <i class="fa fa-caret-down" style="margin-left: 7px"></i>
-                </a>
-                <ul class="user-dropdown">
-                  <li><a href="/profile">Profile</a></li>
-                  <li><a href="/my-orders">My Orders</a></li>
-                  <li><a href="/logout">Logout</a></li>
-                </ul>
-              </div>
-              <% } else { %>
-              <div class="login-btn" id="loginContainer">
-                <a href="/login" class="button" id="loginButton">Login</a>
-              </div>
-              <% } %>
-            </li>
-          </ul>
-        </div>
-        <div class="nav__toggle" id="nav-toggle">
-          <span>&#9776;</span>
-        </div>
-      </nav>
-    </header>
-
-    <!-- Page Header -->
-
-    <!-- Checkout Page Content -->
-    <section class="section-content padding-y bg">
-      <div class="text-center mb-4">
-        <h3 class="font-weight-bold text-primary">Checkout</h3>
-        <p class="text-muted">
-          Complete your order by providing the required details below.
-        </p>
-        <div class="alert alert-info text-center shadow-sm">
-          <i class="fa fa-info-circle"></i> Please review your order and ensure
-          all details are correct before proceeding.
-        </div>
+              <li class="nav__item">
+                <% if (user) { %>
+                  <div class="user-menu">
+                    <a href="#" class="user-dropdown-toggle">
+                      <img src="/front/img/user-icon.png" alt="user" class="user-icon" />
+                      <span>
+                        <%= user.first_name %>
+                      </span>
+                      <i class="fa fa-caret-down" style="margin-left: 7px"></i>
+                    </a>
+                    <ul class="user-dropdown">
+                      <li><a href="/profile">Profile</a></li>
+                      <li><a href="/my-orders">My Orders</a></li>
+                      <li><a href="/logout">Logout</a></li>
+                    </ul>
+                  </div>
+                  <% } else { %>
+                    <div class="login-btn" id="loginContainer">
+                      <a href="/login" class="button" id="loginButton">Login</a>
+                    </div>
+                    <% } %>
+              </li>
+        </ul>
       </div>
-      <div class="bd-container">
-        <div class="row">
-          <!-- Billing Information -->
-          <aside class="col-lg-6">
-            <div class="card shadow-sm">
-              <div class="card-header bg-info text-white">
-                <h5 class="mb-0">Billing Information</h5>
-              </div>
-              <div class="card-body">
-                  <div class="form-group">
-                    <label for="first_name">First Name:</label>
-                    <input
-                      type="text"
-                      id="first_name"
-                      name="first_name"
-                      class="form-control"
-                      value="<%= user.first_name %>"
-                      readonly
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="last_name">Last Name:</label>
-                    <input
-                      type="text"
-                      id="last_name"
-                      name="last_name"
-                      class="form-control"
-                      value="<%= user.last_name %>"
-                      readonly
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      class="form-control"
-                      value="<%= user.email %>"
-                      readonly
-                    />
-                  </div>
-                  <form id="checkout-form" method="POST" action="/checkout">
-                  <div class="form-group">
-                    <label for="address">Shipping Address:</label>
-                    <input
-                      type="text"
-                      id="address"
-                      name="shippingAddress"
-                      class="form-control"
-                      value="<%= user.address || '' %>"
-                      required
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="payment-method">Payment Method:</label>
-                    <select
-                      id="payment-method"
-                      name="paymentMethod"
-                      class="form-control"
-                      required
-                    >
-                      <option value="COD">Cash on Delivery</option>
-                    </select>
-                  </div>
-                  <button type="submit" class="btn btn-primary btn-block">
-                    Place Order
-                  </button>
-                </form>
-              </div>
-            </div>
-          </aside>
+      <div class="nav__toggle" id="nav-toggle">
+        <span>&#9776;</span>
+      </div>
+    </nav>
+  </header>
 
-          <!-- Order Summary -->
-          <aside class="col-lg-6">
-            <div class="card shadow-sm">
-              <div class="card-header bg-info text-white">
-                <h5 class="mb-0">Order Summary</h5>
+  <!-- Page Header -->
+  <div id="page-header">
+    <div class="page-title">Checkout</div>
+  </div>
+
+  <!-- Checkout Page Content -->
+  <section class="bd-container main-content">
+    <div class="mb-4">
+      <h3 class="font-weight-bold">Checkout</h3>
+      <p class="text-muted">
+        Complete your order by providing the required details below.
+      </p>
+      <div class="alert alert-info text-center shadow-sm">
+        <i class="fa fa-info-circle"></i> Please review your order and ensure
+        all details are correct before proceeding.
+      </div>
+    </div>
+    <div class="bd-container">
+      <div class="row">
+        <!-- Billing Information -->
+        <aside class="col-lg-6">
+          <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+              <h5 class="mb-0">Billing Information</h5>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" class="form-control" value="<%= user.first_name %>"
+                  readonly />
               </div>
-              <div class="card-body">
-                <ul class="list-group mb-3">
-                  <% cart.items.forEach((item) => { %>
-                  <li
-                    class="list-group-item d-flex justify-content-between align-items-center"
-                  >
-                    <span><%= item.name %> (x<%= item.quantity %>)</span>
+              <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" class="form-control" value="<%= user.last_name %>"
+                  readonly />
+              </div>
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="form-control" value="<%= user.email %>" readonly />
+              </div>
+              <form id="checkout-form" method="POST" action="/checkout">
+                <div class="form-group">
+                  <label for="address">Shipping Address:</label>
+                  <input type="text" id="address" name="shippingAddress" class="form-control"
+                    value="<%= user.address || '' %>" required />
+                </div>
+                <div class="form-group">
+                  <label for="payment-method">Payment Method:</label>
+                  <select id="payment-method" name="paymentMethod" class="form-control" required>
+                    <option value="COD">Cash on Delivery</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                  Place Order
+                </button>
+              </form>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Order Summary -->
+        <aside class="col-lg-6">
+          <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+              <h5 class="mb-0">Order Summary</h5>
+            </div>
+            <div class="card-body">
+              <ul class="list-group mb-3">
+                <% cart.items.forEach((item)=> { %>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>
+                      <%= item.name %> (x<%= item.quantity %>)
+                    </span>
                     <span>$<%= item.total.toFixed(2) %></span>
                   </li>
                   <% }); %>
-                  <li class="list-group-item d-flex justify-content-between">
-                    <strong>Subtotal:</strong>
-                    <span>$<%= cart.subTotal.toFixed(2) %></span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between">
-                    <strong>Delivery Charge:</strong>
-                    <span>$<%= cart.deliveryCharge.toFixed(2) %></span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between">
-                    <strong>Total:</strong>
-                    <span>$<%= cart.total.toFixed(2) %></span>
-                  </li>
-                </ul>
-              </div>
+                    <li class="list-group-item d-flex justify-content-between">
+                      <strong>Subtotal:</strong>
+                      <span>$<%= cart.subTotal.toFixed(2) %></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                      <strong>Delivery Charge:</strong>
+                      <span>$<%= cart.deliveryCharge.toFixed(2) %></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                      <strong>Total:</strong>
+                      <span>$<%= cart.total.toFixed(2) %></span>
+                    </li>
+              </ul>
             </div>
-          </aside>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!--========== FOOTER ==========-->
+  <footer class="footer">
+    <div class="section footer__container">
+      <div class="footer__wrapper bd-grid">
+        <div class="footer__content">
+          <a href="/" style="color: white">GadgetVerse</a>
+          <span class="footer__description">Our online store features a curated collection of unique and
+            artisanal instruments that are crafted with precision, passion,
+            and care.</span>
+        </div>
+        <div class="footer__content">
+          <h3 class="footer__title">Services</h3>
+          <ul>
+            <li><a href="#service" class="footer__text">Delivery</a></li>
+            <li><a href="#service" class="footer__text">Pricing</a></li>
+            <li>
+              <a href="#service" class="footer__text">Quality Product</a>
+            </li>
+          </ul>
+        </div>
+        <div class="footer__content">
+          <h3 class="footer__title">Information</h3>
+          <ul>
+            <li><a href="/products" class="footer__text">Products</a></li>
+            <li><a href="/about" class="footer__text">About us</a></li>
+            <li><a href="#" class="footer__text">Contact us</a></li>
+          </ul>
+        </div>
+        <div class="footer__content">
+          <h3 class="footer__title">Address</h3>
+          <ul>
+            <li>
+              <a target="_blank" href="https://www.google.com/maps/place/271+Yorkland+Blvd,+North+York,+ON+M2J+1S5"
+                class="footer__text">271 Yorkland Blvd, North York</a>
+            </li>
+            <li>
+              <a href="tel:4374324650" class="footer__text">+1 437-432-4650</a>
+            </li>
+            <li>
+              <a href="mailto:gadgetverse2025@gmail.com" class="footer__text">gadgetverse2025@gmail.com</a>
+            </li>
+          </ul>
         </div>
       </div>
-    </section>
+      <p class="footer__copy">&#169; 2025 GadgetVerse. All right reserved</p>
+    </div>
+  </footer>
 
-    <!--========== FOOTER ==========-->
-    <footer class="footer">
-      <div class="section footer__container">
-        <div class="footer__wrapper bd-grid">
-          <div class="footer__content">
-            <a href="/" style="color: white">GadgetVerse</a>
-            <span class="footer__description"
-              >Our online store features a curated collection of unique and
-              artisanal instruments that are crafted with precision, passion,
-              and care.</span
-            >
-          </div>
-          <div class="footer__content">
-            <h3 class="footer__title">Services</h3>
-            <ul>
-              <li><a href="#service" class="footer__text">Delivery</a></li>
-              <li><a href="#service" class="footer__text">Pricing</a></li>
-              <li>
-                <a href="#service" class="footer__text">Quality Product</a>
-              </li>
-            </ul>
-          </div>
-          <div class="footer__content">
-            <h3 class="footer__title">Information</h3>
-            <ul>
-              <li><a href="/products" class="footer__text">Products</a></li>
-              <li><a href="/about" class="footer__text">About us</a></li>
-              <li><a href="#" class="footer__text">Contact us</a></li>
-            </ul>
-          </div>
-          <div class="footer__content">
-            <h3 class="footer__title">Address</h3>
-            <ul>
-              <li>
-                <a
-                  target="_blank"
-                  href="https://www.google.com/maps/place/271+Yorkland+Blvd,+North+York,+ON+M2J+1S5"
-                  class="footer__text"
-                  >271 Yorkland Blvd, North York</a
-                >
-              </li>
-              <li>
-                <a href="tel:4374324650" class="footer__text"
-                  >+1 437-432-4650</a
-                >
-              </li>
-              <li>
-                <a href="mailto:gadgetverse2025@gmail.com" class="footer__text"
-                  >gadgetverse2025@gmail.com</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-        <p class="footer__copy">&#169; 2025 GadgetVerse. All right reserved</p>
-      </div>
-    </footer>
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
+    integrity="sha512-HGOnQO9+SP1V92SrtZfjqxxtLmVzqZpjFFekvzZVWoiASSQgSr4cw9Kqd2+l8Llp4Gm0G8GIFJ4ddwZilcdb8A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
 
-    <!-- Scripts -->
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
-      integrity="sha512-HGOnQO9+SP1V92SrtZfjqxxtLmVzqZpjFFekvzZVWoiASSQgSr4cw9Kqd2+l8Llp4Gm0G8GIFJ4ddwZilcdb8A=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  </body>
 </html>
