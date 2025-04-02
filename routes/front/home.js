@@ -10,7 +10,7 @@ const orderController = require('../../controllers/front/OrderController');
 const contactController = require('../../controllers/front/ContactController');
 const CartController = require("../../controllers/front/CartController");
 const forgotPasswordController = require("../../controllers/front/auth/ForgotPasswordController");
-
+const CheckoutController = require("../../controllers/front/CheckoutController");
 
 // home page route
 // router.get('/', (req, res) => {
@@ -66,9 +66,23 @@ router.get("/cart/count", ensureAuthenticatedUser, CartController.getCartCount);
 module.exports = router;
 
 // Render Checkout Page
-router.get('/checkout', (req, res) => {
-  res.render('front/checkout', { user: req.session.user });
+router.get("/checkout", ensureAuthenticatedUser, (req, res) =>
+  CheckoutController.showCheckoutPage(req, res)
+);
+
+// Place Order Route
+router.post("/checkout", ensureAuthenticatedUser, CheckoutController.placeOrder);
+
+// Success Page Route
+router.get("/checkout/success", ensureAuthenticatedUser, (req, res) => {
+  const { orderId } = req.query;
+  res.render("front/checkout-success", { orderId });
 });
+
+// Handle Checkout Form Submission
+router.post("/checkout", ensureAuthenticatedUser, (req, res) =>
+  CheckoutController.handleCheckout(req, res)
+);
 
 router.get("/profile", ensureAuthenticatedUser, (req, res) => {
   res.render("front/user/profile", {
