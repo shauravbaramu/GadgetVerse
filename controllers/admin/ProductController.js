@@ -226,7 +226,9 @@ class ProductController extends BaseController {
     try {
       const oldItem = await this.Model.findById(req.params.id);
       if (!oldItem) return res.status(404).send("Not found");
-  
+
+      req.body.isFeatured = req.body.isFeatured === "on";
+      
       // Handle main image update
       if (req.body.deletedMainImage) {
         // Delete the old main image from the server
