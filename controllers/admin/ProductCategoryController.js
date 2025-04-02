@@ -209,7 +209,7 @@ class ProductCategoryController extends BaseController {
       return res.redirect(`/${this.route}`);
     } catch (err) {
       errors.push({ msg: err.message });
-      return res.render(`${this.route}edit`, {
+      return res.render(`${this.route}index`, {
         crudInfo: this.crudInfo(),
         errors,
         item: req.body
@@ -236,7 +236,7 @@ class ProductCategoryController extends BaseController {
 
       await this.Model.findByIdAndDelete(req.params.id);
       req.flash("success", `${this.title} deleted successfully.`);
-      return res.redirect(`/${this.route}`);
+      return res.redirect(`/${this.route}index`);
     } catch (err) {
       return res.status(500).send(err.message);
     }
