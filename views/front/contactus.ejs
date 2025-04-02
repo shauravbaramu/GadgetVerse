@@ -23,7 +23,10 @@
         <nav class="nav bd-container">
           <!-- ====== Logo of the website =======-->
           <a href="/" class="nav__logo" id="logo">
-            GadgetVerse
+            <img
+            src="/front/img/logo.png"
+            alt="logo"
+            class="nav__logo-img" >
             <!-- Website logo image -->
           </a>
   
@@ -81,7 +84,7 @@
                       class="user-icon"
                     />
                     <span> <%= user.first_name %> </span>
-                    <i class="fa fa-caret-down"></i>
+                    <i class="fa fa-caret-down" style="margin-left: 7px;"></i>
                   </a>
                   <!-- Dropdown Menu -->
                   <ul class="user-dropdown">
@@ -144,7 +147,7 @@
                         <div class="box" id="opening-hour">
                             <!-- svg image taken to reduce the size of webpage -->
                             <div class="icon"><svg height="25" width="25" viewBox="0 0 19 19"
-                                    xmlns="http://www.w3.org/2000/svg" fill="#ffffff" stroke="#069c54">
+                                    xmlns="http://www.w3.org/2000/svg" fill="#ffffff" stroke="">
                                     <g stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                                     <g>
@@ -234,11 +237,11 @@
                             <div class="form-group">
                                 <label for="message">Message:</label>
                                 <!-- textarea used to allow user write more than one line of sentences -->
-                                <textarea id="message" name="message" required minlength="10"></textarea>
+                                <textarea id="message" name="message" required minlength="10" placeholder="Leave us a message"></textarea>
                             </div>
                             <!-- Submit button which does nothing for now -->
                             <div class="form-group">
-                                <input type="submit" value="Submit" class="button">
+                                <input type="submit" value="Submit" class="button" style="width: 100px;">
                             </div>
                         </form>
                 </div>

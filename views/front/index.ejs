@@ -27,10 +27,6 @@
     />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <style>
-      
-    </style>
   </head>
 
   <body>
@@ -40,7 +36,10 @@
       <nav class="nav bd-container">
         <!-- ====== Logo of the website =======-->
         <a href="/" class="nav__logo" id="logo">
-          GadgetVerse
+          <img
+            src="/front/img/logo.png"
+            alt="logo"
+            class="nav__logo-img" >
           <!-- Website logo image -->
         </a>
 
@@ -112,8 +111,8 @@
                     alt="user"
                     class="user-icon"
                   />
-                  <span> <%= user.first_name %> </span>
-                  <i class="fa fa-caret-down"></i>
+                  <span style="color: #5772c1;"> <%= user.first_name %> </span>
+                  <i class="fa fa-caret-down" style="margin-left: 7px;"></i>
                 </a>
                 <!-- Dropdown Menu -->
                 <ul class="user-dropdown">
