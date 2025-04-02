@@ -14,24 +14,42 @@
 </head>
 
 <body>
-  <!--========== HEADER ==========-->
-  <header class="l-header" id="header">
-    <!-- =========Navbar====== -->
-    <nav class="nav bd-container">
-      <!-- ====== Logo of the website =======-->
-      <a href="/" class="nav__logo" id="logo">
-        GadgetVerse
-        <!-- Website logo image -->
-      </a>
-
-      <!-- Navigation items container -->
-      <div class="nav__menu" id="nav-menu">
-        <!-- List of navigation links -->
-        <ul class="nav__list">
-          <!-- Home link -->
-          <li class="nav__item">
-            <a href="/" class="nav__link ">Home</a>
-          </li>
+    <!--========== HEADER ==========-->
+    <header class="l-header" id="header">
+        <!-- =========Navbar====== -->
+        <nav class="nav bd-container">
+          <!-- ====== Logo of the website =======-->
+          <a href="/" class="nav__logo" id="logo">
+            <img
+            src="/front/img/logo.png"
+            alt="logo"
+            class="nav__logo-img" >
+            <!-- Website logo image -->
+          </a>
+  
+          <!-- Search bar for products -->
+          <!-- <div class="search-bar">
+            <input
+              type="text"
+              id="searchBar"
+              name="search"
+              placeholder="Search products..."
+            />
+            <button type="button" class="search-button">
+              <i class="fa fa-search"></i>
+            </button>
+            <div id="searchDropdown" class="search-dropdown">
+            </div>
+          </div> -->
+  
+          <!-- Navigation items container -->
+          <div class="nav__menu" id="nav-menu">
+            <!-- List of navigation links -->
+            <ul class="nav__list">
+              <!-- Home link -->
+              <li class="nav__item">
+                <a href="/" class="nav__link ">Home</a>
+              </li>
 
           <!-- Products link -->
           <li class="nav__item">
@@ -63,29 +81,31 @@
               <!-- User login/logout -->
               <li class="nav__item">
                 <% if (user) { %>
-                  <!-- User Icon and Name -->
-                  <div class="user-menu">
-                    <a href="#" class="user-dropdown-toggle">
-                      <img src="/front/img/user-icon.png" alt="user" class="user-icon" />
-                      <span>
-                        <%= user.first_name %>
-                      </span>
-                      <i class="ml-2 fa fa-caret-down"></i>
-                    </a>
-                    <!-- Dropdown Menu -->
-                    <ul class="user-dropdown">
-                      <li><a href="/profile">Profile</a></li>
-                      <li><a href="/my-orders">My Orders</a></li>
-                      <li><a href="/logout">Logout</a></li>
-                    </ul>
-                  </div>
-                  <% } else { %>
-                    <!-- Show Login Button if Not Logged In -->
-                    <div class="login-btn" id="loginContainer">
-                      <a href="/login" class="button" id="loginButton">Login</a>
-                      <!-- Link to the login page with an id for styling or JavaScript interaction -->
-                    </div>
-                    <% } %>
+                <!-- User Icon and Name -->
+                <div class="user-menu">
+                  <a href="#" class="user-dropdown-toggle">
+                    <img
+                      src="/front/img/user-icon.png"
+                      alt="user"
+                      class="user-icon"
+                    />
+                    <span> <%= user.first_name %> </span>
+                    <i class="fa fa-caret-down" style="margin-left: 7px;"></i>
+                  </a>
+                  <!-- Dropdown Menu -->
+                  <ul class="user-dropdown">
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/my-orders">My Orders</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                  </ul>
+                </div>
+                <% } else { %>
+                <!-- Show Login Button if Not Logged In -->
+                <div class="login-btn" id="loginContainer">
+                  <a href="/login" class="button" id="loginButton">Login</a>
+                  <!-- Link to the login page with an id for styling or JavaScript interaction -->
+                </div>
+                <% } %>
               </li>
         </ul>
       </div>

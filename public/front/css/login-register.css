@@ -1,3 +1,26 @@
+/* Remove extra margins and padding from body and html */
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    height: 100%; /* Ensure the body takes up the full height */
+}
+
+
+/* Fix for the login-container height */
+.login-container {
+    min-height: 100vh; /* Ensure it takes at least the full viewport height */
+    height: auto; /* Allow it to grow if content exceeds the viewport */
+    overflow: hidden; /* Prevent unnecessary scrolling */
+    padding: 0; /* Remove any extra padding */
+    box-sizing: border-box; /* Include padding and border in height calculation */
+}
+
+/* Reset margins for child elements */
+.login-form-section, .login-image-section {
+    margin: 0;
+    padding: 0;
+}
 /*========== MAIN FORM SECTION ==========*/
 .main-form-section {
     display: flex;
@@ -77,6 +100,19 @@ input:focus {
     font-size: 0.9rem;
 }
 
+/* Style for the large logo on the login/register page */
+.login-logo {
+    text-align: center;
+    margin-bottom: 20px; /* Add spacing below the logo */
+}
+
+.login-logo img {
+    max-width: 150px; /* Adjust the size of the logo */
+    height: auto; /* Maintain aspect ratio */
+    display: block;
+    margin: 0 auto; /* Center the logo */
+}
+
 /* For screens with a max width of 768px (mobile devices) */
 @media (max-width: 768px) {
     .form-column {
@@ -100,6 +136,10 @@ input:focus {
     height: 100vh; /* Full viewport height */
     padding: 0;
     background-color: white; 
+    min-height: 100vh; /* Ensure it takes at least the full viewport height */
+    height: auto; /* Allow it to grow if content exceeds the viewport */
+    overflow: hidden; /* Prevent unnecessary scrolling */
+    box-sizing: border-box; /* Include padding and border in height calculation */
 }
 
 /* Login form section */
@@ -115,11 +155,12 @@ input:focus {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin: 0;
 }
 
 .login-form-section .form-header {
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 1rem;
 }
 
 .login-form-section h3 {
@@ -175,7 +216,7 @@ input:focus {
     justify-content: space-between;
     width: 100%;
     max-width: 400px;
-    margin: 0 auto 1rem auto; /* Center the container and add spacing below */
+    margin: 0 auto; /* Center the container and add spacing below */
 }
 
 .name-container input {
@@ -211,6 +252,7 @@ input:focus {
     justify-content: center;
     align-items: center;
     padding: 2rem;
+    margin: 0;
 }
 
 .login-image-section img {
