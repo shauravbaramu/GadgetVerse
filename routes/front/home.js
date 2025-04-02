@@ -7,6 +7,7 @@ const { ensureAuthenticatedUser } = require('../../middlewares/auth');
 const { createOrder } = require("../../controllers/front/OrderController");
 const userController = require("../../controllers/front/UserController");
 const orderController = require('../../controllers/front/OrderController');
+const contactController = require('../../controllers/front/ContactController');
 
 // home page route
 // router.get('/', (req, res) => {
@@ -34,9 +35,6 @@ router.post("/login", (req, res) => authController.login(req, res));
 // Handle logout
 router.get("/logout", (req, res) => authController.logout(req, res));
 
-router.get("/contactus", (req, res) => {
-  res.render("front/contactus");
-});
 
 // Route to display all products
 router.get('/products', (req, res) => productController.getAllProducts(req, res));
@@ -92,6 +90,9 @@ router.get('/order/success/:orderId', async (req, res) => {
 router.get('/my-orders', ensureAuthenticatedUser, orderController.getOrders);
 
 router.get('/search', productController.searchProducts);
+
+router.get("/contactus", (req, res) => contactController.showContactPage(req, res));
+router.post("/contact/store", (req, res) => contactController.store(req, res));
 
 
 module.exports = router;

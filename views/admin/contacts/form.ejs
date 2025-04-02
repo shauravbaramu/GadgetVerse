@@ -1,0 +1,19 @@
+<div class="form-group row">
+    <div class="col-md-6">
+      <label for="name">Name <span class="text-danger">*</span></label>
+      <input type="text" name="name" id="name" class="form-control required-field"
+             value="<%= old.name || (item ? item.name : '') %>" placeholder="Enter Name" required>
+    </div>
+    <div class="col-md-6">
+      <label for="email">Email <span class="text-danger">*</span></label>
+      <input type="email" name="email" id="email" class="form-control required-field"
+             value="<%= old.email || (item ? item.email : '') %>" placeholder="Enter Email" required>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-md-12">
+      <label for="message">Message <span class="text-danger">*</span></label>
+      <textarea name="message" id="message" class="form-control required-field"
+                placeholder="Enter Message" rows="4" required><%= old.message || (item ? item.message : '') %></textarea>
+    </div>
+  </div>

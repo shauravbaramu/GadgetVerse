@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - GadgetVerse</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -22,21 +26,6 @@
             GadgetVerse
             <!-- Website logo image -->
           </a>
-  
-          <!-- Search bar for products -->
-          <!-- <div class="search-bar">
-            <input
-              type="text"
-              id="searchBar"
-              name="search"
-              placeholder="Search products..."
-            />
-            <button type="button" class="search-button">
-              <i class="fa fa-search"></i>
-            </button>
-            <div id="searchDropdown" class="search-dropdown">
-            </div>
-          </div> -->
   
           <!-- Navigation items container -->
           <div class="nav__menu" id="nav-menu">
@@ -128,6 +117,18 @@
             </h1>
         </section>
         <div class="section bd-container">
+
+          <% if (typeof success !== "undefined" && success.length > 0) { %>
+            <div class="alert alert-success mt-3">
+              <%= success %>
+            </div>
+            <% } %>
+            <% if (typeof error !== "undefined" && error.length > 0) { %>
+            <div class="alert alert-danger mt-3">
+              <%= error %>
+            </div>
+            <% } %>
+
             <!-- Contain both contact info and contact form  -->
             <div class="contact-info-form">
                 <!-- Title for contact form -->
@@ -217,7 +218,7 @@
                 </div>
                 <!-- Contact form -->
                 <div class="contact-form">
-                    <form method="post" action="/index">
+                    <form method="post" action="/contact/store">
                         <!-- heading for form -->
                         <h2 class="section-title">Send Message</h2>
                             <div class="form-group">

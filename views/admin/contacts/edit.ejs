@@ -1,0 +1,38 @@
+<%- include('../partials/header', { title: 'Edit ' + crudInfo.title }) %>
+<%- include('../partials/topnav') %>
+<%- include('../partials/sidebar', { activePage: 'admin/contacts/index' }) %>
+
+<div class="content-wrapper">
+  <section class="content-header">
+    <div class="container-fluid">
+      <h1>Edit <%= crudInfo.title %></h1>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title"><%= crudInfo.title %> | Edit</h3>
+        </div>
+        <form action="/<%= crudInfo.route %>update/<%= item._id %>" method="post">
+          <div class="card-body">
+            <input type="hidden" name="_method" value="PUT" />
+            <% if (errors && errors.length) { %>
+              <% errors.forEach(function(error) { %>
+                <div class="alert alert-danger" role="alert"><%= error.msg %></div>
+              <% }); %>
+            <% } %>
+            <%- include('form', { item: item, old: item }) %>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a href="javascript:history.back();" class="btn btn-default float-right">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+
+<%- include('../partials/footer') %>

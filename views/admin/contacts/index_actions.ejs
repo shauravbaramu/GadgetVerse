@@ -1,0 +1,10 @@
+<a href="/admin/contacts/show/<%= item._id %>" class="btn btn-sm btn-clean btn-icon btn-hover-primary"><i
+    class="fa fa-eye"></i></a>
+  <form id="delete-form" style="display:inline;" action="/admin/contacts/destroy/<%= item._id %>" method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit" class="btn-delete btn btn-sm btn-clean btn-icon btn-hover-danger"><i
+      class="fa fa-trash"></i></button>
+  </form>
+  
+  
+  

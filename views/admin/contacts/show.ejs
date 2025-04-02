@@ -1,0 +1,45 @@
+<%- include('../partials/header', { title: 'Show ' + crudInfo.title }) %>
+<%- include('../partials/topnav') %>
+<%- include('../partials/sidebar', { activePage: 'admin/contacts/show' }) %>
+
+<div class="content-wrapper">
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>View <%= crudInfo.title %></h1>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title"><%= crudInfo.title %> | Show</h3>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 my-2">
+              <p><strong>Name:</strong> <%= item.name %></p>
+            </div>
+            <div class="col-md-6 my-2">
+              <p><strong>Email:</strong> <%= item.email %></p>
+            </div>
+            <div class="col-md-12 my-2">
+              <p><strong>Message:</strong></p>
+              <hr>
+              <%= item.message %>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="javascript:history.back();" class="btn btn-default float-right">Cancel</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<%- include('../partials/footer') %>
