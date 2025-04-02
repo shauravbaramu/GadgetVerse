@@ -163,19 +163,41 @@ class ProductController extends BaseController {
     }
   }
 
+  async show(req, res) {
+    try {
+      const item = await this.Model.findById(req.params.id).populate("category").lean(); // Populate the category field
+      if (!item) {
+        return res.status(404).send("Product not found");
+      }
+  
+      let crudInfo = this.crudInfo();
+      return res.render(`${this.route}show`, {
+        crudInfo,
+        item,
+        success: req.flash("success"),
+      });
+    } catch (err) {
+      console.error("Error in show method:", err.message);
+      return res.status(500).send(err.message);
+    }
+  }
+
   async edit(req, res) {
     try {
       const item = await this.Model.findById(req.params.id).populate("category");
       if (!item) return res.status(404).send("Not found");
+  
       const categories = await ProductCategory.find().lean();
+  
       let crudInfo = this.crudInfo();
       crudInfo.item = item;
       crudInfo.routeName = "Edit";
+  
       return res.render(`${this.route}edit`, {
         crudInfo,
         item,
         errors: req.flash("errors"),
-        categories: categories || [],
+        categories,
       });
     } catch (err) {
       return res.status(500).send(err.message);
