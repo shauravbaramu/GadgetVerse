@@ -31,21 +31,13 @@
   <body>
     <!--========== HEADER ==========-->
     <header class="l-header" id="header">
-      <!-- =========Navbar====== -->
-      <nav class="nav bd-container">
-        <!-- ====== Logo of the website =======-->
-        <a href="/" class="nav__logo" id="logo">
-          GadgetVerse
-          <!-- Website logo image -->
-        </a>
-
-        <!-- Search bar for products -->
-        <div class="search-bar">
-          <input type="text" id="searchBar" placeholder="Search products..." />
-          <button type="button" class="search-button">
-            <i class="fa fa-search"></i>
-          </button>
-        </div>
+        <!-- =========Navbar====== -->
+        <nav class="nav bd-container">
+            <!-- ====== Logo of the website =======-->
+            <a href="/" class="nav__logo" id="logo">
+                GadgetVerse
+                <!-- Website logo image -->
+            </a>
 
         <!-- Navigation items container -->
         <div class="nav__menu" id="nav-menu">
@@ -135,46 +127,56 @@
       <div class="bd-container main-content">
         <h2>My Orders</h2>
 
-        <% if (orders && orders.length> 0) { %>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Status</th>
-              <th>Shipping Address</th>
-              <th>Total</th>
-              <th>Order Items</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% orders.forEach(order=> { %>
-            <tr>
-              <td><%= order._id %></td>
-              <td><%= order.status %></td>
-              <td><%= order.shippingAddress %></td>
-              <td>$<%= order.totalPrice.toFixed(2) %></td>
-              <td>
-                <ul>
-                  <% order.items.forEach(item=> { %>
-                  <li>
-                    <strong>Product:</strong>
-                    <%= item.product.name %><br />
-                    <strong>Price:</strong> $<%= item.price.toFixed(2) %><br />
-                    <strong>Quantity:</strong>
-                    <%= item.quantity %>
-                  </li>
-                  <% }) %>
-                </ul>
-              </td>
-            </tr>
-            <% }) %>
-          </tbody>
-        </table>
-        <% } else { %>
-        <p>You have no orders yet.</p>
-        <% } %>
-      </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Status</th>
+                        <th>Shipping Address</th>
+                        <th>Total</th>
+                        <th>Order Items</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (orders && orders.length> 0) { %>
+                        <% orders.forEach(order=> { %>
+                            <tr>
+                                <td>
+                                    <%= order._id %>
+                                </td>
+                                <td>
+                                    <%= order.status %>
+                                </td>
+                                <td>
+                                    <%= order.shippingAddress %>
+                                </td>
+                                <td>$<%= order.totalPrice.toFixed(2) %>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <% order.items.forEach(item=> { %>
+                                            <li>
+                                                <strong>Product:</strong>
+                                                <%= item.product.name %><br>
+                                                    <strong>Price:</strong> $<%= item.price.toFixed(2) %><br>
+                                                        <strong>Quantity:</strong>
+                                                        <%= item.quantity %>
+                                            </li>
+                                            <% }) %>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="5" class="text-center">No orders available</td>
+                                    </tr>
+                                    <% } %>
+                </tbody>
+            </table>
+        </div>
     </main>
+
 
     <!--========== FOOTER ==========-->
     <footer class="footer">
