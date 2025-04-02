@@ -84,12 +84,8 @@ exports.getOrders = async (req, res) => {
         // Fetch orders for the authenticated user
         const orders = await Order.find({ user: req.user._id }).populate('items.product');
 
-        if (!orders || orders.length === 0) {
-            return res.status(404).json({ message: 'No orders found for this user.' });
-        }
-
         // Render the myOrders view in the front/user folder
-        res.render('front/user/myOrders', { orders });
+        res.render('front/user/myOrders', { orders: orders || [] });
 
     } catch (error) {
         console.error(error);

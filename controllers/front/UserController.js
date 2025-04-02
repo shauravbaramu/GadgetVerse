@@ -7,14 +7,15 @@ exports.updateProfile = async (req, res) => {
             return res.redirect("/login");
         }
 
-        const { first_name, last_name, phone, address } = req.body;
+        const { first_name, last_name, email, phone, address } = req.body;
         const userId = req.session.user.id;
 
-        await User.findByIdAndUpdate(userId, { first_name, last_name, phone, address });
+        await User.findByIdAndUpdate(userId, { first_name, last_name, email, phone, address });
 
         // Update session user data
         req.session.user.first_name = first_name;
         req.session.user.last_name = last_name;
+        req.session.user.email = email;
         req.session.user.phone = phone;
         req.session.user.address = address;
 
