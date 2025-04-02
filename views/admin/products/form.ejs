@@ -27,9 +27,12 @@
     <label for="category">Category <span class="text-danger">*</span></label>
     <select name="category" id="category" class="form-control" required>
       <option value="">Select Category</option>
+      <% categories %>
       <% if (categories) { %>
-        <% categories.forEach(function(cat) { %>
-          <option value="<%= cat._id %>" <%= (old && old.category == cat._id) || (item && item.category && (item.category._id.toString() === cat._id.toString())) ? 'selected' : '' %>><%= cat.name %></option>
+        <% categories.forEach(function (cat) { %>
+          <option value="<%= cat._id %>" <%= (old && old.category == cat._id) || (item && item.category && (item.category._id.toString() === cat._id.toString())) ? 'selected' : '' %>>
+            <%= cat.name %>
+          </option>
         <% }); %>
       <% } %>
     </select>
