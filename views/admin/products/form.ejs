@@ -35,22 +35,57 @@
     </select>
   </div>
   <div class="col-md-6">
-    <label for="image">Image</label>
-    <input type="file" name="image" class="form-control" id="imageInput" accept="image/*"/>
-    <!-- Preview Container -->
-    <div id="imagePreview" class="<%= (item && item.image) ? '' : 'd-none' %>" style="margin-top: 10px;">
-      <img id="previewImg" src="<%= (item && item.image) ? item.image : '' %>" alt="Preview" style="max-width: 300px; max-height:300px; object-fit: cover;" />
-      <button type="button" id="removePreview" class="btn btn-sm btn-danger" style="margin-left: 10px;">Remove</button>
-    </div>
-  </div>
-
-  <div class="col-md-6">
     <label for="isFeatured">Featured Product</label>
     <div class="form-check">
       <input type="checkbox" name="isFeatured" id="isFeatured" class="form-check-input"
              <%= (old && old.isFeatured === 'on') || (item && item.isFeatured) ? 'checked' : '' %>>
       <label class="form-check-label" for="isFeatured">Mark as Featured</label>
     </div>
+    </div>
+  
+</div>
+<div class="form-group row">
+  <div class="col-md-6">
+    <label for="image">Image</label>
+    <input type="file" name="image" class="form-control" id="imageInput" accept="image/*" />
+    <!-- Preview Container -->
+    <div id="imagePreview" class="<%= (item && item.image) ? '' : 'd-none' %>" style="margin-top: 10px; position: relative; display: inline-block;">
+      <img id="previewImg" src="<%= (item && item.image) ? item.image : '' %>" alt="Preview" style="width: 100%; max-width: 300px; max-height: 300px; object-fit: cover; border-radius: 5px;" />
+      <button
+        type="button"
+        id="removeMainImage"
+        class="btn btn-sm btn-danger"
+        style="position: absolute; top: 0; right: 0; padding: 5px 10px;"
+      >
+        &times;
+      </button>
+    </div>
+    <!-- Hidden input to track the main image marked for deletion -->
+    <input type="hidden" name="deletedMainImage" id="deletedMainImage" value="" />
+  </div>
+
+  <div class="col-md-6">
+    <label for="gallery">Gallery Images</label>
+    <input type="file" name="gallery" id="galleryInput" class="form-control" accept="image/*" multiple />
+    <div id="galleryPreview" style="margin-top: 10px;">
+      <% if (item && item.gallery && item.gallery.length > 0) { %>
+        <% item.gallery.forEach((image, index) => { %>
+          <div class="gallery-item" style="display: inline-block; margin: 5px; position: relative;">
+            <img src="<%= image %>" alt="Gallery Image" style="width: 100px; height: 100px; object-fit: cover;" />
+            <button
+              type="button"
+              class="btn btn-sm btn-danger remove-gallery-image"
+              data-image="<%= image %>"
+              style="position: absolute; top: 0; right: 0;"
+            >
+              &times;
+            </button>
+          </div>
+        <% }); %>
+      <% } %>
+    </div>
+    <!-- Hidden input to track images marked for deletion -->
+    <input type="hidden" name="deletedGalleryImages" id="deletedGalleryImages" value="" />
   </div>
 
 </div>
@@ -60,13 +95,3 @@
     <textarea name="description" id="description" class="form-control" placeholder="Enter Product Description" rows="4"><%= old.description || (item ? item.description : '') %></textarea>
   </div>
 </div>
-<!-- <div class="form-group row">
-  <div class="col-md-6">
-    <label for="isFeatured">Featured Product</label>
-    <div class="form-check">
-      <input type="checkbox" name="isFeatured" id="isFeatured" class="form-check-input"
-             <%= (old && old.isFeatured === 'on') || (item && item.isFeatured) ? 'checked' : '' %>>
-      <label class="form-check-label" for="isFeatured">Mark as Featured</label>
-    </div>
-  </div>
-</div> -->

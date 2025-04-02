@@ -29,7 +29,7 @@
             <form action="/products" method="get" id="searchForm">
                 <div class="search-bar">
                     <input type="text" id="searchBar" name="search" placeholder="Search products..."
-                        value="<%= searchQuery %>">
+                        value="<%= searchQuery = 0 %>">
                     <button type="submit" class="search-button">
                         <i class="fa fa-search"></i>
                     </button>
@@ -72,8 +72,8 @@
                                     <img src="/front/img/user-icon.png" alt="user" class="user-icon">
                                     <span>
                                         <%= user.first_name %>
-                                    </span>
-                                    <i class="fa fa-caret-down"></i>
+                                    </span> 
+                                    <i class="fa fa-caret-down ml-1"></i>
                                 </a>
                                 <!-- Dropdown Menu -->
                                 <ul class="user-dropdown">

@@ -65,6 +65,20 @@
                 <% } %>
               </p>
             </div>
+
+            <div class="col-md-6 my-2">
+              <p>
+                <strong>Gallery:</strong><br />
+                <% if (item.gallery && item.gallery.length > 0) { %>
+                  <% item.gallery.forEach((image) => { %>
+                    <img src="<%= image %>" alt="Gallery Image" class="mr-2" style="width: 100px; height: 100px; object-fit: cover; margin: 5px;" />
+                  <% }); %>
+                <% } else { %>
+                  <span class="text-danger">No gallery images available.</span>
+                <% } %>
+              </p>
+            </div>
+
             <div class="col-md-6 my-2">
               <p>
                 <strong>Featured:</strong> 

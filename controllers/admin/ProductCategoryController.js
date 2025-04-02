@@ -153,30 +153,35 @@ class ProductCategoryController extends BaseController {
       });
     }
     try {
-      // Get the existing document first
       const oldItem = await this.Model.findById(req.params.id);
       if (!oldItem) return res.status(404).send("Not found");
 
-      // If a new file is uploaded, remove the old file (if exists) and update the image field.
-      if (req.file) {
+      // Handle main image update
+      if (req.body.deletedMainImage) {
+        // Delete the old main image from the server
+        const oldFilePath = path.join(__dirname, "../../", oldItem.image);
+        if (fs.existsSync(oldFilePath)) {
+          fs.unlinkSync(oldFilePath);
+        }
+        req.body.image = ""; // Remove the image from the database
+      } else if (req.files && req.files.image) {
         if (oldItem.image) {
-          // Construct the absolute path to the old file.
-          const oldFilePath = path.join(__dirname, '../../', oldItem.image);
+          const oldFilePath = path.join(__dirname, "../../", oldItem.image);
           if (fs.existsSync(oldFilePath)) {
             fs.unlinkSync(oldFilePath);
           }
         }
-        // Set the new image path (adjust according to your file serving configuration)
-        req.body.image = `/uploads/productCategory/${req.file.filename}`;
+        req.body.image = `/uploads/productCategories/${req.files.image[0].filename}`;
       } else {
-        // If no new file was uploaded, optionally ensure we don't overwrite the image field
         req.body.image = oldItem.image;
       }
 
-      const item = await this.Model.findByIdAndUpdate(req.params.id, req.body, {
+      // Update the category
+      const updatedItem = await this.Model.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
         runValidators: true,
       });
+
       req.flash("success", `${this.title} updated successfully.`);
       return res.redirect(`/${this.route}`);
     } catch (err) {

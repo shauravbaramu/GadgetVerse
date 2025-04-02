@@ -214,7 +214,7 @@
 
         <div class="product-details-container">
           <div class="product-image">
-            <img src="<%= product.image %>" alt="<%= product.name %>" />
+            <img src="<%= product.image || '/admin/img/placeholder.png' %>" alt="<%= product.name %>" />
           </div>
 
           <div class="product-info">
@@ -552,6 +552,7 @@
       </div>
     </footer>
 
+    <input type="hidden" value="<%= user %>" id="loggedInUser">
     <!-- Include jQuery -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
@@ -565,10 +566,69 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xzoom/1.0.14/xzoom.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <script src="/front/js/cart.js"></script>
+
+    <script>
+      function addToCart(productId, productName, productPrice, productImage, productStock) {
+          // Get the logged-in user value from the hidden input field
+          const loggedInUser = document.getElementById('loggedInUser').value;
+  
+          // Check if the user is logged in
+          if (!loggedInUser || loggedInUser === "null") {
+              // If the user is not logged in, show a SweetAlert message
+              Swal.fire({
+                  title: "Login Required",
+                  text: "You need to log in before adding items to the cart.",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonText: "Login",
+                  cancelButtonText: "Cancel",
+                  confirmButtonColor: "#5772C1",
+                  cancelButtonColor: "#797272",
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                      // Redirect to the login page if "Login" is clicked
+                      window.location.href = "/login";
+                  }
+              });
+          } else {
+              // If the user is logged in, proceed with adding the product to the cart
+              $.ajax({
+                  url: "/cart/add",
+                  method: "POST",
+                  data: {
+                      productId: productId,
+                      productName: productName,
+                      productPrice: productPrice,
+                      productImage: productImage,
+                      productStock: productStock,
+                  },
+                  success: function (response) {
+                      Swal.fire({
+                          title: "Added to Cart",
+                          text: `${productName} has been added to your cart.`,
+                          icon: "success",
+                          confirmButtonColor: "#5772C1",
+                      });
+                      // Update cart count (if applicable)
+                      $("#cart-count").text(response.cartCount).show();
+                  },
+                  error: function (error) {
+                      Swal.fire({
+                          title: "Error",
+                          text: "Failed to add the product to the cart. Please try again.",
+                          icon: "error",
+                          confirmButtonColor: "#5772C1",
+                      });
+                  },
+              });
+          }
+      }
+  </script>
   </body>
 </html>

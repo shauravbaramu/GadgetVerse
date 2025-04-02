@@ -10,6 +10,7 @@ const ProductSchema = new mongoose.Schema(
     stock: { type: Number, default: 0 },
     sku: { type: String, trim: true },
     image: { type: String },
+    gallery: [{ type: String }],
     isFeatured: { type: Boolean, default: false }
   },
   { timestamps: true }

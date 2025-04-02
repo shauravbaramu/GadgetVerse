@@ -108,8 +108,13 @@ class ProductController extends BaseController {
       });
     }
     try {
-      if (req.file) {
-        req.body.image = `/uploads/products/${req.file.filename}`;
+      if (req.files) {
+        if (req.files.image) {
+          req.body.image = `/uploads/products/${req.files.image[0].filename}`;
+        }
+        if (req.files.gallery) {
+          req.body.gallery = req.files.gallery.map((file) => `/uploads/products/${file.filename}`);
+        }
       }
       req.body.isFeatured = req.body.isFeatured === "on"; // Convert checkbox value to boolean
       const item = new this.Model(req.body);
@@ -168,24 +173,52 @@ class ProductController extends BaseController {
     try {
       const oldItem = await this.Model.findById(req.params.id);
       if (!oldItem) return res.status(404).send("Not found");
-
-      if (req.file) {
+  
+      // Handle main image update
+      if (req.body.deletedMainImage) {
+        // Delete the old main image from the server
+        const oldFilePath = path.join(__dirname, "../../", oldItem.image);
+        if (fs.existsSync(oldFilePath)) {
+          fs.unlinkSync(oldFilePath);
+        }
+        req.body.image = ""; // Remove the image from the database
+      } else if (req.files && req.files.image) {
         if (oldItem.image) {
           const oldFilePath = path.join(__dirname, "../../", oldItem.image);
           if (fs.existsSync(oldFilePath)) {
             fs.unlinkSync(oldFilePath);
           }
         }
-        req.body.image = `/uploads/products/${req.file.filename}`;
+        req.body.image = `/uploads/products/${req.files.image[0].filename}`;
       } else {
         req.body.image = oldItem.image;
       }
-
-      req.body.isFeatured = req.body.isFeatured === "on"; // Convert checkbox value to boolean
-      const item = await this.Model.findByIdAndUpdate(req.params.id, req.body, {
+  
+      // Handle gallery images update (already implemented)
+      if (req.files && req.files.gallery) {
+        req.body.gallery = req.files.gallery.map((file) => `/uploads/products/${file.filename}`);
+      } else {
+        req.body.gallery = oldItem.gallery;
+      }
+  
+      // Handle deletion of gallery images (already implemented)
+      if (req.body.deletedGalleryImages) {
+        const imagesToDelete = req.body.deletedGalleryImages.split(",");
+        imagesToDelete.forEach((imagePath) => {
+          const fullPath = path.join(__dirname, "../../", imagePath);
+          if (fs.existsSync(fullPath)) {
+            fs.unlinkSync(fullPath);
+          }
+          req.body.gallery = req.body.gallery.filter((img) => img !== imagePath);
+        });
+      }
+  
+      // Update the product
+      const updatedItem = await this.Model.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
         runValidators: true,
       });
+  
       req.flash("success", `${this.title} updated successfully.`);
       return res.redirect(`/${this.route}`);
     } catch (err) {
@@ -195,6 +228,40 @@ class ProductController extends BaseController {
         errors,
         item: req.body,
       });
+    }
+  }
+
+  async delete(req, res) {
+    try {
+      const item = await this.Model.findById(req.params.id);
+      if (!item) return res.status(404).send("Product not found");
+  
+      // Delete the main image if it exists
+      if (item.image) {
+        const imagePath = path.join(__dirname, "../../", item.image);
+        if (fs.existsSync(imagePath)) {
+          fs.unlinkSync(imagePath);
+        }
+      }
+  
+      // Delete gallery images if they exist
+      if (item.gallery && item.gallery.length > 0) {
+        item.gallery.forEach((galleryImage) => {
+          const galleryImagePath = path.join(__dirname, "../../", galleryImage);
+          if (fs.existsSync(galleryImagePath)) {
+            fs.unlinkSync(galleryImagePath);
+          }
+        });
+      }
+  
+      // Delete the product from the database
+      await this.Model.findByIdAndDelete(req.params.id);
+  
+      req.flash("success", `${this.title} deleted successfully.`);
+      return res.redirect(`/${this.route}`);
+    } catch (err) {
+      req.flash("error", "Failed to delete the product.");
+      return res.redirect(`/${this.route}`);
     }
   }
 }

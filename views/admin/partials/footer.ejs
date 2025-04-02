@@ -21,22 +21,95 @@
       const imageInput = document.getElementById("imageInput");
       const imagePreview = document.getElementById("imagePreview");
       const previewImg = document.getElementById("previewImg");
-      const removePreview = document.getElementById("removePreview");
-    
+      const removeMainImage = document.getElementById("removeMainImage");
+      const deletedMainImageInput = document.getElementById("deletedMainImage");
+  
       // Show preview when a new image is selected
       imageInput.addEventListener("change", function (event) {
         const file = event.target.files[0];
         if (file) {
           previewImg.src = URL.createObjectURL(file); // Set the new preview image
           imagePreview.classList.remove("d-none"); // Show the preview container
+          deletedMainImageInput.value = ""; // Clear the deleted image input
         }
       });
-    
-      // Remove the preview and reset the input
-      removePreview.addEventListener("click", function () {
+  
+      // Remove the main image and mark it for deletion
+      removeMainImage.addEventListener("click", function () {
+        if (previewImg.src) {
+          deletedMainImageInput.value = previewImg.src; // Mark the image for deletion
+        }
         imageInput.value = ""; // Clear the file input
         previewImg.src = ""; // Reset the preview image
         imagePreview.classList.add("d-none"); // Hide the preview container
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const galleryInput = document.getElementById("galleryInput");
+      const galleryPreview = document.getElementById("galleryPreview");
+      const deletedGalleryImagesInput = document.getElementById("deletedGalleryImages");
+  
+      // Create a DataTransfer object to manage the file list
+      const dataTransfer = new DataTransfer();
+  
+      // Handle adding new gallery images
+      galleryInput.addEventListener("change", function (event) {
+        Array.from(event.target.files).forEach((file) => {
+          // Add the file to the DataTransfer object
+          dataTransfer.items.add(file);
+  
+          // Create a preview for the file
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const div = document.createElement("div");
+            div.classList.add("gallery-item");
+            div.style.display = "inline-block";
+            div.style.margin = "5px";
+            div.style.position = "relative";
+  
+            const img = document.createElement("img");
+            img.src = e.target.result;
+            img.style.width = "100px";
+            img.style.height = "100px";
+            img.style.objectFit = "cover";
+  
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.classList.add("btn", "btn-sm", "btn-danger");
+            removeBtn.style.position = "absolute";
+            removeBtn.style.top = "0";
+            removeBtn.style.right = "0";
+            removeBtn.innerHTML = "&times;";
+  
+            // Handle removing the image
+            removeBtn.addEventListener("click", function () {
+              // Remove the file from the DataTransfer object
+              const index = Array.from(dataTransfer.files).findIndex(
+                (f) => f.name === file.name && f.size === file.size
+              );
+              if (index !== -1) {
+                dataTransfer.items.remove(index);
+              }
+  
+              // Update the input's file list
+              galleryInput.files = dataTransfer.files;
+  
+              // Remove the preview from the DOM
+              div.remove();
+            });
+  
+            div.appendChild(img);
+            div.appendChild(removeBtn);
+            galleryPreview.appendChild(div);
+          };
+          reader.readAsDataURL(file);
+        });
+  
+        // Update the input's file list
+        galleryInput.files = dataTransfer.files;
       });
     });
   </script>
