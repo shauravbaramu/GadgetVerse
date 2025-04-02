@@ -11,67 +11,11 @@
     integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="/front/css/styles.css" />
+  <link rel="stylesheet" href="/front/css/products.css" />
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-  <style>
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 300px));
-      gap: 20px;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .product-item {
-      background: #fff;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      transition: transform 0.3s ease-in-out;
-      max-width: 300px;
-      width: 100%;
-    }
-
-    .product-item:hover {
-      transform: scale(1.05);
-    }
-
-    .product-item img {
-      width: 100%;
-      height: 200px;
-      object-fit: contain;
-      border-radius: 5px;
-    }
-
-    .product-title {
-      font-size: 18px;
-      margin: 10px 0;
-    }
-
-    .product-price {
-      font-size: 16px;
-      font-weight: bold;
-      color: #27ae60;
-    }
-
-    .button {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 15px;
-      background: #007bff;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-    }
-
-    .button:hover {
-      background: #0056b3;
-    }
-  </style>
 </head>
 
 <body>
@@ -131,7 +75,7 @@
                       <span>
                         <%= user.first_name %>
                       </span>
-                      <i class="fa fa-caret-down"></i>
+                      <i class="ml-2 fa fa-caret-down"></i>
                     </a>
                     <!-- Dropdown Menu -->
                     <ul class="user-dropdown">
@@ -210,7 +154,7 @@
         <h2 class="section-title about__initial">Featured Products</h2>
 
         <% if (featuredProducts && featuredProducts.length> 0) { %>
-          <div class="product-grid">
+          <div class="featured-product-grid">
             <% featuredProducts.forEach(product=> { %>
               <div class="product-item">
                 <img src="<%= product.image || '/front/img/placeholder.png' %>" alt="<%= product.name %>" />
