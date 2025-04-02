@@ -69,41 +69,41 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   $(function () {
-    var table = $('#data-table').DataTable({
+    var table = $("#data-table").DataTable({
       processing: true,
       serverSide: true,
       ajax: "/admin/orders/",
       columns: [
-        { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-        { data: 'user', name: 'user' },
+        { data: "DT_RowIndex", name: "DT_RowIndex" },
+        { data: "user", name: "user" },
         {
-          data: 'status',
-          name: 'status',
+          data: "status",
+          name: "status",
           orderable: false,
           searchable: false,
           render: function (data, type, row) {
             return `
               <select class="form-control status-dropdown" data-id="${row.id}">
-                <option value="pending" ${data === 'Pending' ? 'selected' : ''}>Pending</option>
-                <option value="processing" ${data === 'Processing' ? 'selected' : ''}>Processing</option>
-                <option value="shipped" ${data === 'Shipped' ? 'selected' : ''}>Shipped</option>
-                <option value="delivered" ${data === 'Delivered' ? 'selected' : ''}>Delivered</option>
-                <option value="cancelled" ${data === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                <option value="pending" ${data === "Pending" ? "selected" : ""}>Pending</option>
+                <option value="processing" ${data === "Processing" ? "selected" : ""}>Processing</option>
+                <option value="shipped" ${data === "Shipped" ? "selected" : ""}>Shipped</option>
+                <option value="delivered" ${data === "Delivered" ? "selected" : ""}>Delivered</option>
+                <option value="cancelled" ${data === "Cancelled" ? "selected" : ""}>Cancelled</option>
               </select>
             `;
-          }
+          },
         },
-        { data: 'totalPrice', name: 'totalPrice' },
-        { data: 'createdAt', name: 'createdAt' },
-        { data: 'action', name: 'action', orderable: false, searchable: false }
-      ]
+        { data: "totalPrice", name: "totalPrice" },
+        { data: "createdAt", name: "createdAt" },
+        { data: "action", name: "action", orderable: false, searchable: false },
+      ],
     });
-
+  
     // Handle status change
     $(document).on("change", ".status-dropdown", function () {
       const id = $(this).data("id");
       const status = $(this).val();
-
+  
       $.ajax({
         url: "/admin/orders/update-status",
         method: "POST",
@@ -117,10 +117,10 @@
         },
         error: function (xhr) {
           Swal.fire("Error", xhr.responseJSON.message || "An error occurred", "error");
-        }
+        },
       });
     });
-
+  
     // SweetAlert confirmation for delete
     $(document).on("click", ".btn-delete", function (e) {
       e.preventDefault();
@@ -134,9 +134,7 @@
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          $(document).find("#delete-form").submit();
-        } else if (result.isDismissed) {
-          return false;
+          $(this).closest("form").submit();
         }
       });
     });

@@ -54,10 +54,23 @@ app.use(session({
 
 // Set up flash middleware
 app.use(flash());
+
+// Make flash messages available in all views
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
+});
+
 // Set EJS as templating engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.use((req, res, next) => {
+  res.locals.admin = req.session.adminUser || null; // Pass the logged-in admin's data to all views
+  next();
+});
 
 app.use((req, res, next) => {
   res.locals.admin = req.session.adminUser || null; // Pass the logged-in admin's data to all views

@@ -51,4 +51,7 @@ router.use('/products', require('./products'));
 // Mount Orders routes
 router.use('/orders', require('./orders'));
 
+// Mount Contact us routes
+router.use('/contacts', require('./contacts'));
+
 module.exports = router;

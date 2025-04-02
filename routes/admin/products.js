@@ -18,7 +18,22 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + '-' + file.originalname);
   }
 });
-const upload = multer({ storage: storage });
+// const upload = multer({ storage: storage });
+
+const upload = multer({
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+    const fileTypes = /jpeg|jpg|png|gif/;
+    const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = fileTypes.test(file.mimetype);
+
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb("Error: Images Only!");
+    }
+  },
+});
 
 // List products
 router.get('/', (req, res) => ProductController.index(req, res));
@@ -27,7 +42,8 @@ router.get('/', (req, res) => ProductController.index(req, res));
 router.get('/create', (req, res) => ProductController.create(req, res));
 
 // Store product
-router.post('/store', upload.single('image'), (req, res) => ProductController.store(req, res));
+// router.post('/store', upload.single('image'), (req, res) => ProductController.store(req, res));
+router.post('/store', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'gallery', maxCount: 10 }]), (req, res) => ProductController.store(req, res));
 
 // Show product details
 router.get('/show/:id', (req, res) => ProductController.show(req, res));
@@ -36,7 +52,7 @@ router.get('/show/:id', (req, res) => ProductController.show(req, res));
 router.get('/edit/:id', (req, res) => ProductController.edit(req, res));
 
 // Update product
-router.post('/update/:id', upload.single('image'), (req, res) => ProductController.update(req, res));
+router.post('/update/:id', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'gallery', maxCount: 10 }]), (req, res) => ProductController.update(req, res));
 
 // Delete product
 router.post('/destroy/:id', (req, res) => ProductController.delete(req, res));

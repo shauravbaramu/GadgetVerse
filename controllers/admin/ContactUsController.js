@@ -1,15 +1,15 @@
 const BaseController = require("./BaseController");
-const User = require("../../models/User");
+const Contact = require("../../models/ContactUs");
 const path = require("path");
 const ejs = require("ejs");
 
-class UserController extends BaseController {
+class ContactUsController extends BaseController {
   constructor() {
-    super(User, {
-      title: "User",
-      subTitle: "Manage Users",
-      resources: "admin::users.",
-      route: "admin/users/",
+    super(Contact, {
+      title: "Contact us",
+      subTitle: "Manage Contact Messages",
+      resources: "admin::contacts.",
+      route: "admin/contacts/",
     });
   }
 
@@ -26,23 +26,18 @@ class UserController extends BaseController {
         const query = searchValue
           ? {
               $or: [
-                { first_name: { $regex: searchValue, $options: "i" } },
+                { name: { $regex: searchValue, $options: "i" } },
                 { email: { $regex: searchValue, $options: "i" } },
-                { phone: { $regex: searchValue, $options: "i" } },
-                { address: { $regex: searchValue, $options: "i" } },
               ],
             }
           : {};
   
         // Get total records and filtered records
-        const totalRecords = await this.Model.countDocuments({ role: "user" });
-        const filteredRecords = await this.Model.countDocuments({
-          role: "user",
-          ...query,
-        });
+        const totalRecords = await this.Model.countDocuments();
+        const filteredRecords = await this.Model.countDocuments(query);
   
         // Fetch the filtered data with pagination
-        const items = await this.Model.find({ role: "user", ...query })
+        const items = await this.Model.find(query)
           .skip(start)
           .limit(length)
           .lean();
@@ -50,20 +45,18 @@ class UserController extends BaseController {
         // Format the data for DataTables
         const data = await Promise.all(
           items.map(async (item, index) => {
-            // Render the action buttons using the partial view
             const actionPartialPath = path.join(
               __dirname,
-              "../../views/admin/users/index_actions.ejs"
+              "../../views/admin/contacts/index_actions.ejs"
             );
             const actionHtml = await ejs.renderFile(actionPartialPath, { item });
   
             return {
               id: item._id,
               DT_RowIndex: start + index + 1,
-              first_name: item.first_name,
+              name: item.name,
               email: item.email,
-              phone: item.phone,
-              address: item.address,
+              createdAt: new Date(item.createdAt).toLocaleString(),
               action: actionHtml,
             };
           })
@@ -78,15 +71,10 @@ class UserController extends BaseController {
         });
       } else {
         // Regular page load: render the view
-        const items = await this.Model.find({ role: "user" });
+        const items = await this.Model.find();
         let crudInfo = this.crudInfo();
-        return res.render(`${this.route}index`, {
-          crudInfo,
-          items,
-          hideCreate: true,
-          success: req.flash("success"),
-          error: req.flash("error"),
-        });
+        const success = req.flash("success");
+        return res.render(`${this.route}index`, { crudInfo, items, success });
       }
     } catch (err) {
       console.error("Error in index method:", err);
@@ -94,46 +82,24 @@ class UserController extends BaseController {
     }
   }
 
-  // Show method to display user details
   async show(req, res) {
     try {
-      const item = await this.Model.findById(req.params.id).lean();
-      if (!item) {
-        return res.status(404).send("User not found");
-      }
+      const item = await this.Model.findById(req.params.id);
+      if (!item) return res.status(404).send("Not found");
       let crudInfo = this.crudInfo();
-      return res.render(`${this.route}show`, {
-        crudInfo,
-        item,
-        hideEdit: true,
-      });
+      crudInfo.item = item;
+      return res.render(`${this.route}show`, { crudInfo, item });
     } catch (err) {
       return res.status(500).send(err.message);
     }
   }
 
-  // Delete method to remove a user
   async delete(req, res) {
     try {
       const item = await this.Model.findById(req.params.id);
-      if (!item) return res.status(404).send("User not found");
-
-      // Check if the user is an admin
-      if (item.role === "admin") {
-        req.flash("error", "Admins cannot be deleted.");
-        return res.redirect(`/${this.route}`);
-      }
-
-      // Delete the user's orders
-      await Order.deleteMany({ user: item._id });
-
-      // Delete the user
+      if (!item) return res.status(404).send("Not found");
       await this.Model.findByIdAndDelete(req.params.id);
-
-      req.flash(
-        "success",
-        `${this.title} and associated orders deleted successfully.`
-      );
+      req.flash("success", `${this.title} deleted successfully.`);
       return res.redirect(`/${this.route}`);
     } catch (err) {
       return res.status(500).send(err.message);
@@ -141,4 +107,4 @@ class UserController extends BaseController {
   }
 }
 
-module.exports = new UserController();
+module.exports = new ContactUsController();

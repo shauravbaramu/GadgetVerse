@@ -1,6 +1,6 @@
-<%- include('../partials/header', { title: crudInfo.title }) %> <%-
-include('../partials/sidebar', { activePage: 'admin/users/index' }) %> <%-
-include('../partials/topnav') %>
+<%- include('../partials/header', { title: crudInfo.title }) %>
+<%- include('../partials/sidebar', { activePage: 'admin/contacts/index' }) %>
+<%- include('../partials/topnav') %>
 
 <div class="content-wrapper">
   <!-- Content Header -->
@@ -15,65 +15,46 @@ include('../partials/topnav') %>
   </section>
 
   <!-- Main Content -->
-  <div class="content">
-    <% if(typeof success !== 'undefined' && success.length > 0) { %>
-    <div class="alert alert-success alert-block p-3">
-      <button type="button" class="close" data-dismiss="alert">×</button>
-      <%= success %>
-    </div>
-    <% } %>
-    <% if(typeof error !== 'undefined' && error.length > 0) { %>
-      <div class="alert alert-danger alert-block p-3">
+  <section class="content">
+    <div class="container-fluid">
+      <% if (typeof success !== 'undefined' && success.length > 0) { %>
+      <div class="alert alert-success alert-block p-3">
         <button type="button" class="close" data-dismiss="alert">×</button>
-        <%= error %>
+        <%= success %>
       </div>
       <% } %>
-    <div class="row">
-      <section class="col-12 content">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col">
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="card-title"><%= crudInfo.title %> | Index</h3>
-                  <% if(typeof hideCreate === 'undefined' && !hideCreate) { %>
-                  <div class="float-right">
-                    <a
-                      href="/<%= crudInfo.route %>create"
-                      class="btn btn-primary btn-sm float-right"
-                    >
-                      <i class="fa fa-plus"></i>
-                      <span class="kt-hidden-mobile"> Add</span>
-                    </a>
+      <div class="row">
+        <section class="col-12 content">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title"><%= crudInfo.title %> | Index</h3>
                   </div>
-                  <% } %>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table" id="data-table">
-                      <thead>
-                        <tr class="text-left text-capitalize">
-                          <th>#id</th>
-                          <th>First Name</th>
-                          <th>Email</th>
-                          <th>Phone</th>
-                          <th>Address</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-                    </table>
+                  <!-- /.card-header -->
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-striped" id="data-table">
+                        <thead>
+                          <tr class="text-left text-capitalize">
+                            <th>#id</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Created At</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                      </table>
+                    </div>
                   </div>
                 </div>
-                <!-- /.card-body -->
               </div>
-              <!-- /.card -->
             </div>
           </div>
-        </div>
-      </section>
-    </div>
-  </div>
+  </section>
+</div>
+</div>
 </div>
 
 <%- include('../partials/footer') %>
@@ -89,16 +70,15 @@ include('../partials/topnav') %>
     var table = $("#data-table").DataTable({
       processing: true,
       serverSide: true,
-      ajax: "/admin/users/",
+      ajax: "/admin/contacts/",
       columns: [
         { data: "DT_RowIndex", name: "DT_RowIndex" },
-        { data: "first_name", name: "first_name" },
+        { data: "name", name: "name" },
         { data: "email", name: "email" },
-        { data: "phone", name: "phone" },
-        { data: "address", name: "address" },
+        { data: "createdAt", name: "createdAt" },
         { data: "action", name: "action", orderable: false, searchable: false },
       ],
-      order: [[1, "asc"]], // Default sorting by the "first_name" column
+      order: [[1, "asc"]], // Default sorting by the "name" column
       language: {
         emptyTable: "No data available in table",
         info: "Showing _START_ to _END_ of _TOTAL_ entries",
@@ -136,7 +116,4 @@ include('../partials/topnav') %>
       });
     });
   });
-  setTimeout(function () {
-    $(".alert").hide();
-  }, 3000);
 </script>

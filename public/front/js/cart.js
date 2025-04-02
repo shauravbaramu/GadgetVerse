@@ -1,140 +1,179 @@
-// Function to add products to the cart
-function addToCart(productId, productName, productPrice, productImage, productStock) {
-    // Retrieve the cart from local storage or initialize an empty array
-    let cart = JSON.parse(localStorage.getItem('cartProducts')) || [];
-
-    // Check if the product is already in the cart
-    let existingProduct = cart.find(item => item.productId === productId);
-
-    if (existingProduct) {
-        // If the product exists, increase the quantity if stock is available
-        if (existingProduct.quantity < productStock) {
-            existingProduct.quantity++;
-        } else {
-            alert('Stock limit reached');
-            return;
+$(document).ready(function () {
+    // Fetch and render cart items
+    function fetchCart() {
+      $.get("/cart/items", function (response) {
+        if (response.success) {
+          renderCart(response.cart);
         }
-    } else {
-        // If the product is not in the cart, add it
-        cart.push({
-            productId: productId,
-            name: productName,
-            price: productPrice,
-            image: productImage,
-            stock: productStock,
-            quantity: 1
+      });
+    }
+  
+    // Render cart items
+    function renderCart(cart) {
+      const { items, discount, deliveryCharge } = cart;
+      let subtotal = 0;
+  
+      $("#cart-items").empty();
+  
+      if (items.length > 0) {
+        items.forEach((product) => {
+          const productImage = product.image || "/admin/img/placeholder.png";
+          const productTotal = product.price * product.quantity;
+          subtotal += productTotal;
+  
+          const productDetails = `
+            <tr class="cart-item" data-id="${product.productId}">
+              <td><img src="${productImage}" alt="${product.name}" style="width: 50px; height: 50px; object-fit: cover;"></td>
+              <td>${product.name}</td>
+              <td>
+                <div class="quantity-wrapper">
+                  <button class="btn btn-sm btn-outline-secondary decrease" data-id="${product.productId}" data-action="decrease">
+                    <i class="fa fa-minus"></i>
+                  </button>
+                  <input type="text" class="form-control text-center quantity-input" value="${product.quantity}" readonly>
+                  <button class="btn btn-sm btn-outline-secondary increase" data-id="${product.productId}" data-action="increase">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </div>
+              </td>
+              <td>$${product.price.toFixed(2)}</td>
+              <td>
+                <button class="btn btn-sm btn-danger remove" data-id="${product.productId}">
+                  <i class="fa fa-trash"></i> Remove
+                </button>
+              </td>
+            </tr>
+          `;
+          $("#cart-items").append(productDetails);
         });
+  
+        $("#sub-total").text(`$${subtotal.toFixed(2)}`);
+        $("#discount-display").text(`$${discount.toFixed(2)}`);
+        $("#delivery-charge-display").text(`$${deliveryCharge.toFixed(2)}`);
+        const total = subtotal - discount + deliveryCharge;
+        $("#total").text(`$${total.toFixed(2)}`);
+  
+        // Enable the checkout button
+        $("#checkout-btn").removeClass("disabled").off("click");
+      } else {
+        $("#cart-items").html(`<tr><td colspan="5" class="text-center text-danger">Your cart is empty.</td></tr>`);
+  
+        // Disable the checkout button and show an alert when clicked
+        $("#checkout-btn").addClass("disabled").on("click", function (e) {
+          e.preventDefault();
+          Swal.fire({
+            title: "Cart is Empty",
+            text: "Please add items to your cart before proceeding to checkout.",
+            icon: "warning",
+            confirmButtonColor: "#5772C1",
+          });
+        });
+      }
     }
 
-    // Save the updated cart to local storage
-    localStorage.setItem('cartProducts', JSON.stringify(cart));
+    function updateCartCount() {
+        $.get("/cart/count", function (response) {
+          if (response.success) {
+            const cartCount = response.cartCount;
+            const cartCountElement = $("#cart-count");
+    
+            if (cartCount > 0) {
+              cartCountElement.text(cartCount).show(); // Update count and show badge
+            } else {
+              cartCountElement.hide(); // Hide badge if count is 0
+            }
+          }
+        });
+      }
 
-    // Update the cart count on the page
-    updateCartCount();
-}
-
-// Function to update the cart count displayed on the cart icon
-function updateCartCount() {
-    let cart = JSON.parse(localStorage.getItem('cartProducts')) || [];
-    let cartCount = cart.reduce((total, item) => total + item.quantity, 0);
-    let cartBadge = document.getElementById('cart-count');
-
-    if (cartCount > 0) {
-        cartBadge.style.display = 'inline-block';
-        cartBadge.textContent = cartCount;
-    } else {
-        cartBadge.style.display = 'none';
-    }
-}
-
-// Function to display the cart
-function displayCart() {
-    let cart = JSON.parse(localStorage.getItem('cartProducts')) || [];
-    let cartContainer = document.getElementById('cart-items');
-    let totalPrice = 0;
-
-    // Clear the cart container
-    cartContainer.innerHTML = '';
-
-    if (cart.length === 0) {
-        document.getElementById('empty-cart').classList.remove('d-none');
-        return;
-    }
-
-    // Hide the empty cart message if items are present
-    document.getElementById('empty-cart').classList.add('d-none');
-
-    // Iterate through the cart and render each item
-    cart.forEach(item => {
-        let productRow = document.createElement('tr');
-
-        productRow.innerHTML = `
-            <td><img src="${item.image}" alt="${item.name}" style="width: 50px; height: auto;"></td>
-            <td>${item.name}</td>
-            <td>
-                <input type="number" value="${item.quantity}" min="1" max="${item.stock}" 
-                       onchange="updateQuantity('${item.productId}', this.value)" class="form-control">
-            </td>
-            <td>$${item.price}</td>
-            <td><button onclick="removeItem('${item.productId}')">Remove</button></td>
-        `;
-
-        cartContainer.appendChild(productRow);
-        totalPrice += item.price * item.quantity;
+      updateCartCount();
+  
+    // Handle quantity update (increase or decrease)
+    $(document).on("click", ".decrease, .increase", function () {
+        const productId = $(this).data("id");
+        const action = $(this).data("action");
+      
+        $.post("/cart/update-quantity", { productId, action }, function (response) {
+          if (response.success) {
+            fetchCart(); // Re-fetch the cart to update the UI
+            setTimeout(updateCartCount, 500);
+          } else {
+            // Show SweetAlert error message
+            Swal.fire({
+              title: "Error",
+              text: response.message || "Failed to update quantity.",
+              icon: "error",
+              confirmButtonColor: "#5772C1",
+            });
+          }
+        }).fail(function (xhr) {
+          // Handle server errors (e.g., 400 Bad Request)
+          const errorMessage = xhr.responseJSON?.message || "An error occurred while updating the quantity.";
+          Swal.fire({
+            title: "Error",
+            text: errorMessage,
+            icon: "error",
+            confirmButtonColor: "#5772C1",
+          });
+        });
+      });
+  
+    // Handle item removal
+    $(document).on("click", ".remove", function () {
+      const productId = $(this).data("id");
+  
+      $.post("/cart/remove", { productId }, function (response) {
+        if (response.success) {
+          fetchCart(); // Re-fetch the cart to update the UI
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: response.message || "Failed to remove item from cart.",
+            icon: "error",
+            confirmButtonColor: "#5772C1",
+          });
+        }
+      });
     });
-
-    // Update total price in the summary
-    document.getElementById('sub-total').textContent = `$${totalPrice.toFixed(2)}`;
-    document.getElementById('total').textContent = `$${(totalPrice + 10).toFixed(2)}`; // Add $10 delivery charge
-}
-
-// Function to update the quantity of a product in the cart
-function updateQuantity(productId, action) {
-    let cart = JSON.parse(localStorage.getItem('cartProducts')) || [];
-    let product = cart.find(item => item.productId === productId);
-
-    if (!product) return;
-
-    if (action === 'increase' && product.quantity < product.stock) {
-        product.quantity++;
-    } else if (action === 'decrease' && product.quantity > 1) {
-        product.quantity--;
-    }
-
-    // Save the updated cart
-    localStorage.setItem('cartProducts', JSON.stringify(cart));
-
-    // Update the quantity displayed on the page
-    document.getElementById(`quantity-${productId}`).textContent = product.quantity;
-
-    // Update cart count
-    updateCartCount();
-
-    // Re-render the cart page
-    displayCart();
-}
-
-// Function to remove an item from the cart
-function removeItem(productId) {
-    let cart = JSON.parse(localStorage.getItem('cartProducts')) || [];
-    cart = cart.filter(item => item.productId !== productId);
-
-    // Save the updated cart
-    localStorage.setItem('cartProducts', JSON.stringify(cart));
-
-    // Update cart count
-    updateCartCount();
-
-    // Re-render the cart page
-    displayCart();
-}
-
-// Update cart count on page load
-window.onload = function () {
-    updateCartCount(); // Update the cart count on page load
-
-    // If the page is the cart page, display the cart
-    if (window.location.pathname === '/cart') {
-        displayCart();
-    }
-};
+  
+    // Handle discount and delivery charge editing
+    $(document).on("click", "#discount-display, #delivery-charge-display", function () {
+      const inputId = $(this).data("input-id");
+      $(`#${inputId}`).removeClass("d-none").focus();
+      $(this).addClass("d-none");
+    });
+  
+    $(document).on("blur keyup", "#discount-input, #delivery-charge-input", function (e) {
+      if (e.type === "blur" || e.key === "Enter") {
+        const inputId = $(this).attr("id");
+        const displayId = $(this).data("display-id");
+        const value = parseFloat($(this).val()) || 0;
+  
+        // Update the display value
+        $(`#${displayId}`).text(`$${value.toFixed(2)}`).removeClass("d-none");
+        $(this).addClass("d-none");
+  
+        // Recalculate the total
+        const discount = parseFloat($("#discount-input").val()) || 0;
+        const deliveryCharge = parseFloat($("#delivery-charge-input").val()) || 0;
+        const subtotal = parseFloat($("#sub-total").text().replace("$", "")) || 0;
+        const total = subtotal - discount + deliveryCharge;
+        $("#total").text(`$${total.toFixed(2)}`);
+  
+        // Optionally, send the updated values to the server
+        $.post("/cart/update-settings", { discount, deliveryCharge }, function (response) {
+          if (!response.success) {
+            Swal.fire({
+              title: "Error",
+              text: response.message || "Failed to update cart settings.",
+              icon: "error",
+              confirmButtonColor: "#5772C1",
+            });
+          }
+        });
+      }
+    });
+  
+    // Initialize cart
+    fetchCart();
+  });

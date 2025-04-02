@@ -38,10 +38,43 @@
         margin: 0 auto;
       }
 
-      .product-image img {
+      /* .product-image img {
         width: 400px;
         height: auto;
         border-radius: 8px;
+      } */
+
+      .xzoom-container {
+        position: relative;
+        text-align: center;
+      }
+
+      .xzoom {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 8px;
+        border: 2px solid #5772c1;
+      }
+
+      .xzoom-thumbs {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .xzoom-thumbs img {
+        width: 60px;
+        height: 60px;
+        border-radius: 5px;
+        border: 2px solid #5772c1;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .xzoom-thumbs img:hover {
+        transform: scale(1.1);
+        border-color: #5772c1;
       }
 
       .product-info {
@@ -89,10 +122,19 @@
           align-items: center;
         }
 
-        .product-image img {
+        .xzoom {
+          width: 100%;
+        }
+
+        .xzoom-thumbs img {
+          width: 50px;
+          height: 50px;
+        }
+
+        /* .product-image img {
           width: 100%;
           max-width: 400px;
-        }
+        } */
       }
     </style>
   </head>
@@ -107,22 +149,6 @@
           GadgetVerse
           <!-- Website logo image -->
         </a>
-
-        <!-- Search bar for products -->
-        <!-- <div class="search-bar">
-          <input
-            type="text"
-            id="searchBar"
-            name="search"
-            placeholder="Search products..."
-          />
-          <button type="button" class="search-button">
-            <i class="fa fa-search"></i>
-          </button>
-          <div id="searchDropdown" class="search-dropdown">
-          </div>
-        </div> -->
-
         <!-- Navigation items container -->
         <div class="nav__menu" id="nav-menu">
           <!-- List of navigation links -->
@@ -162,8 +188,6 @@
                 </a>
               </li>
               <% } %>
-
-
 
             <!-- User login/logout -->
             <li class="nav__item">
@@ -223,9 +247,37 @@
         </div>
 
         <div class="product-details-container">
-          <div class="product-image">
-            <img src="<%= product.image %>" alt="<%= product.name %>" />
-          </div>
+          <div class="product-details-container">
+            <!-- Product Image Section -->
+            <div class="product-image">
+              <div class="xzoom-container">
+                <img
+                  class="xzoom"
+                  id="xzoom-default"
+                  src="<%= product.image || '/admin/img/placeholder.png' %>"
+                  xoriginal="<%= product.image || '/admin/img/placeholder.png' %>"
+                  alt="<%= product.name %>"
+                />
+              </div>
+    
+              <!-- Gallery Thumbnails -->
+              <div class="xzoom-thumbs">
+                <% if (product.gallery && product.gallery.length > 0) { %>
+                  <% product.gallery.forEach((image) => { %>
+                    <a href="<%= image %>">
+                      <img
+                        class="xzoom-gallery"
+                        src="<%= image %>"
+                        xpreview="<%= image %>"
+                        alt="<%= product.name %>"
+                      />
+                    </a>
+                  <% }); %>
+                <% } else { %>
+                  <p style="color: red;">No additional images available.</p>
+                <% } %>
+              </div>
+            </div>
 
           <div class="product-info">
             <h1><%= product.name %></h1>
@@ -562,6 +614,7 @@
       </div>
     </footer>
 
+    <input type="hidden" value="<%= user %>" id="loggedInUser">
     <!-- Include jQuery -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
@@ -575,10 +628,78 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xzoom/1.0.14/xzoom.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <script src="/front/js/cart.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        $(".xzoom, .xzoom-gallery").xzoom({
+          zoomWidth: 400,
+          title: true,
+          tint: "#333",
+          Xoffset: 15,
+        });
+      });
+
+      function addToCart(productId, productName, productPrice, productImage, productStock) {
+          // Get the logged-in user value from the hidden input field
+          const loggedInUser = document.getElementById('loggedInUser').value;
+  
+          // Check if the user is logged in
+          if (!loggedInUser || loggedInUser === "null") {
+              // If the user is not logged in, show a SweetAlert message
+              Swal.fire({
+                  title: "Login Required",
+                  text: "You need to log in before adding items to the cart.",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonText: "Login",
+                  cancelButtonText: "Cancel",
+                  confirmButtonColor: "#5772C1",
+                  cancelButtonColor: "#797272",
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                      // Redirect to the login page if "Login" is clicked
+                      window.location.href = "/login";
+                  }
+              });
+          } else {
+              // If the user is logged in, proceed with adding the product to the cart
+              $.ajax({
+                  url: "/cart/add",
+                  method: "POST",
+                  data: {
+                      productId: productId,
+                      productName: productName,
+                      productPrice: productPrice,
+                      productImage: productImage,
+                      productStock: productStock,
+                  },
+                  success: function (response) {
+                      Swal.fire({
+                          title: "Added to Cart",
+                          text: `${productName} has been added to your cart.`,
+                          icon: "success",
+                          confirmButtonColor: "#5772C1",
+                      });
+                      // Update cart count (if applicable)
+                      $("#cart-count").text(response.cartCount).show();
+                  },
+                  error: function (error) {
+                      Swal.fire({
+                          title: "Error",
+                          text: "Failed to add the product to the cart. Please try again.",
+                          icon: "error",
+                          confirmButtonColor: "#5772C1",
+                      });
+                  },
+              });
+          }
+      }
+  </script>
   </body>
 </html>
