@@ -22,22 +22,25 @@
   <body>
     <!--========== HEADER ==========-->
     <header class="l-header" id="header">
-      <!-- =========Navbar====== -->
-      <nav class="nav bd-container">
-        <!-- ====== Logo of the website =======-->
-        <a href="/" class="nav__logo" id="logo">
-          GadgetVerse
-          <!-- Website logo image -->
-        </a>
-
-        <!-- Navigation items container -->
-        <div class="nav__menu" id="nav-menu">
-          <!-- List of navigation links -->
-          <ul class="nav__list">
-            <!-- Home link -->
-            <li class="nav__item">
-              <a href="/" class="nav__link">Home</a>
-            </li>
+        <!-- =========Navbar====== -->
+        <nav class="nav bd-container">
+          <!-- ====== Logo of the website =======-->
+          <a href="/" class="nav__logo" id="logo">
+            <img
+            src="/front/img/logo.png"
+            alt="logo"
+            class="nav__logo-img" >
+            <!-- Website logo image -->
+          </a>
+  
+          <!-- Navigation items container -->
+          <div class="nav__menu" id="nav-menu">
+            <!-- List of navigation links -->
+            <ul class="nav__list">
+              <!-- Home link -->
+              <li class="nav__item">
+                <a href="/" class="nav__link ">Home</a>
+              </li>
 
             <!-- Products link -->
             <li class="nav__item">
@@ -54,59 +57,62 @@
               <a href="/contactus" class="nav__link active-link">Contacts</a>
             </li>
 
-            <!-- Cart icon (only visible if user is logged in) -->
-            <% if (user) { %>
-            <li class="nav__item">
-              <a href="/cart" class="nav__link">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <span
-                  id="cart-count"
-                  class="badge badge-pill badge-danger position-absolute"
-                  style="display: none"
-                  >0</span
-                >
-              </a>
-            </li>
-            <% } %>
 
-            <!-- User login/logout -->
-            <li class="nav__item">
+             <!-- Cart icon (only visible if user is logged in) -->
               <% if (user) { %>
-              <!-- User Icon and Name -->
-              <div class="user-menu">
-                <a href="#" class="user-dropdown-toggle">
-                  <img
-                    src="/front/img/user-icon.png"
-                    alt="user"
-                    class="user-icon"
-                  />
-                  <span> <%= user.first_name %> </span>
-                  <i class="ml-2 fa fa-caret-down"></i>
-                </a>
-                <!-- Dropdown Menu -->
-                <ul class="user-dropdown">
-                  <li><a href="/profile">Profile</a></li>
-                  <li><a href="/my-orders">My Orders</a></li>
-                  <li><a href="/logout">Logout</a></li>
-                </ul>
-              </div>
-              <% } else { %>
-              <!-- Show Login Button if Not Logged In -->
-              <div class="login-btn" id="loginContainer">
-                <a href="/login" class="button" id="loginButton">Login</a>
-                <!-- Link to the login page with an id for styling or JavaScript interaction -->
-              </div>
-              <% } %>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Toggle button for mobile view -->
-        <div class="nav__toggle" id="nav-toggle">
-          <span>&#9776;</span>
-        </div>
-      </nav>
-    </header>
+                <li class="nav__item">
+                  <a href="/cart" class="nav__link">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span
+                      id="cart-count"
+                      class="badge badge-pill badge-danger position-absolute"
+                      style="display: none"
+                      >0</span
+                    >
+                  </a>
+                </li>
+                <% } %>
+  
+  
+  
+              <!-- User login/logout -->
+              <li class="nav__item">
+                <% if (user) { %>
+                <!-- User Icon and Name -->
+                <div class="user-menu">
+                  <a href="#" class="user-dropdown-toggle">
+                    <img
+                      src="/front/img/user-icon.png"
+                      alt="user"
+                      class="user-icon"
+                    />
+                    <span> <%= user.first_name %> </span>
+                    <i class="fa fa-caret-down" style="margin-left: 7px;"></i>
+                  </a>
+                  <!-- Dropdown Menu -->
+                  <ul class="user-dropdown">
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/my-orders">My Orders</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                  </ul>
+                </div>
+                <% } else { %>
+                <!-- Show Login Button if Not Logged In -->
+                <div class="login-btn" id="loginContainer">
+                  <a href="/login" class="button" id="loginButton">Login</a>
+                  <!-- Link to the login page with an id for styling or JavaScript interaction -->
+                </div>
+                <% } %>
+              </li>
+            </ul>
+          </div>
+  
+          <!-- Toggle button for mobile view -->
+          <div class="nav__toggle" id="nav-toggle">
+            <span>&#9776;</span>
+          </div>
+        </nav>
+      </header>
 
     <main>
       <!-- Page Header -->
@@ -121,187 +127,130 @@
         <div class="alert alert-danger mt-3"><%= error %></div>
         <% } %>
 
-        <!-- Contain both contact info and contact form  -->
-        <div class="contact-info-form">
-          <!-- Title for contact form -->
-          <div class="contact-form-left">
-            <div class="content">
-              <span class="section-subtitle">Get in Touch</span>
-              <p>
-                Please fill out the form below and submit if you have any
-                feedback or queries about our service.
-              </p>
+            <!-- Contain both contact info and contact form  -->
+            <div class="contact-info-form">
+                <!-- Title for contact form -->
+                <div class="contact-form-left">
+                    <div class="content">
+                        <span class="section-subtitle">Get in Touch</span>
+                        <p> Please fill out the form below and submit if you have any feedback or queries about our
+                            service.
+                        </p>
+                    </div>
+                    <!-- Detail about opening hour,phone ,email and address -->
+                    <div class="contact-info">
+                        <div class="box" id="opening-hour">
+                            <!-- svg image taken to reduce the size of webpage -->
+                            <div class="icon"><svg height="25" width="25" viewBox="0 0 19 19"
+                                    xmlns="http://www.w3.org/2000/svg" fill="#ffffff" stroke="">
+                                    <g stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g>
+                                        <path fill="#ffffff" fill-rule="evenodd"
+                                            d="M207.960546,159.843246 L210.399107,161.251151 C210.637153,161.388586 210.71416,161.70086 210.580127,161.933013 C210.442056,162.172159 210.144067,162.258604 209.899107,162.117176 L207.419233,160.68542 C207.165323,160.8826 206.846372,161 206.5,161 C205.671573,161 205,160.328427 205,159.5 C205,158.846891 205.417404,158.291271 206,158.085353 L206,153.503423 C206,153.22539 206.231934,153 206.5,153 C206.776142,153 207,153.232903 207,153.503423 L207,158.085353 C207.582596,158.291271 208,158.846891 208,159.5 C208,159.6181 207.986351,159.733013 207.960546,159.843246 Z M206.5,169 C211.746705,169 216,164.746705 216,159.5 C216,154.253295 211.746705,150 206.5,150 C201.253295,150 197,154.253295 197,159.5 C197,164.746705 201.253295,169 206.5,169 Z"
+                                            transform="translate(-197 -150)"></path>
+                                    </g>
+                                </svg></div>
+                            <div class="text">
+                                <h3>Opening Hours</h3>
+                                <p>Sat To Sun<br>9 a.m - 10 p.m</p>
+                            </div>
+                        </div>
+                        <div class="box">
+                            <div class="icon">
+                                <svg height="25" width="25" fill="#ffffff" version="1.1"
+                                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    viewBox="0 0 395.71 395.71" xml:space="preserve" stroke="#ffffff">
+                                    <g stroke-width="0"></g>
+                                    <g stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g >
+                                        <g>
+                                            <path
+                                                d="M197.849,0C122.131,0,60.531,61.609,60.531,137.329c0,72.887,124.591,243.177,129.896,250.388l4.951,6.738 c0.579,0.792,1.501,1.255,2.471,1.255c0.985,0,1.901-0.463,2.486-1.255l4.948-6.738c5.308-7.211,129.896-177.501,129.896-250.388 C335.179,61.609,273.569,0,197.849,0z M197.849,88.138c27.13,0,49.191,22.062,49.191,49.191c0,27.115-22.062,49.191-49.191,49.191 c-27.114,0-49.191-22.076-49.191-49.191C148.658,110.2,170.734,88.138,197.849,88.138z">
+                                            </path>
+                                        </g>
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class="text">
+                                <h3>Address</h3>
+                                <p>271 Yorkland Blvd, North York</p>
+                            </div>
+                        </div>
+                        <div class="box">
+                            <div class="icon"><svg height="25" width="25" fill="#ffffff" viewBox="0 0 32 32"
+                                    version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
+                                    <g stroke-width="0"></g>
+                                    <g stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <title>phone</title>
+                                        <path
+                                            d="M0 10.375c0 0.938 0.344 1.969 0.781 3.063s1 2.125 1.438 2.906c1.188 2.063 2.719 4.094 4.469 5.781s3.813 3.094 6.125 3.938c1.344 0.531 2.688 1.125 4.188 1.125 0.75 0 1.813-0.281 2.781-0.688 0.938-0.406 1.781-1.031 2.094-1.781 0.125-0.281 0.281-0.656 0.375-1.094 0.094-0.406 0.156-0.813 0.156-1.094 0-0.156 0-0.313-0.031-0.344-0.094-0.188-0.313-0.344-0.563-0.5-0.563-0.281-0.656-0.375-1.5-0.875-0.875-0.5-1.781-1.063-2.563-1.469-0.375-0.219-0.625-0.313-0.719-0.313-0.5 0-1.125 0.688-1.656 1.438-0.563 0.75-1.188 1.438-1.625 1.438-0.219 0-0.438-0.094-0.688-0.25s-0.5-0.281-0.656-0.375c-2.75-1.563-4.594-3.406-6.156-6.125-0.188-0.313-0.625-0.969-0.625-1.313 0-0.406 0.563-0.875 1.125-1.375 0.531-0.469 1.094-1.031 1.094-1.719 0-0.094-0.063-0.375-0.188-0.781-0.281-0.813-0.656-1.75-0.969-2.656-0.156-0.438-0.281-0.75-0.313-0.906-0.063-0.094-0.094-0.219-0.125-0.375s-0.094-0.281-0.125-0.406c-0.094-0.281-0.25-0.5-0.406-0.625-0.156-0.063-0.531-0.156-0.906-0.188-0.375 0-0.813-0.031-1-0.031-0.094 0-0.219 0-0.344 0.031h-0.406c-1 0.438-1.719 1.313-2.25 2.344-0.5 1.031-0.813 2.188-0.813 3.219z">
+                                        </path>
+                                    </g>
+                                </svg></div>
+                            <div class="text">
+                                <h3>Phone</h3>
+                                <a href="tel:+14374324650">+1 437 432 4650 </a>
+                            </div>
+                        </div>
+                        <div class="box">
+                            <div class="icon"><svg height="25" width="25" fill="#ffffff" viewBox="0 0 1920 1920"
+                                    xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g >
+                                        <path
+                                            d="M1920 428.266v1189.54l-464.16-580.146-88.203 70.585 468.679 585.904H83.684l468.679-585.904-88.202-70.585L0 1617.805V428.265l959.944 832.441L1920 428.266ZM1919.932 226v52.627l-959.943 832.44L.045 278.628V226h1919.887Z"
+                                            fill-rule="evenodd"></path>
+                                    </g>
+                                </svg></div>
+                            <div class="text">
+                                <h3>Email</h3>
+                                <a href="mailto:himalayn@gmail.com">
+                                    gadgetverse2025@gmail.com</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Contact form -->
+                <div class="contact-form">
+                    <form method="post" action="/contact/store">
+                        <!-- heading for form -->
+                        <h2 class="section-title">Send Message</h2>
+                            <div class="form-group">
+                                <!-- Shows the label for form -->
+                                <label for="name">Name:</label>
+                                <!-- required validates this form and wont let to submit if any required field is left empty -->
+                                <input type="text" id="name" name="name" minlength="3" maxlength="20" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message:</label>
+                                <!-- textarea used to allow user write more than one line of sentences -->
+                                <textarea id="message" name="message" required minlength="10" placeholder="Leave us a message"></textarea>
+                            </div>
+                            <!-- Submit button which does nothing for now -->
+                            <div class="form-group">
+                                <input type="submit" value="Submit" class="button" style="width: 100px;">
+                            </div>
+                        </form>
+                </div>
             </div>
-            <!-- Detail about opening hour,phone ,email and address -->
-            <div class="contact-info">
-              <div class="box" id="opening-hour">
-                <!-- svg image taken to reduce the size of webpage -->
-                <div class="icon">
-                  <svg
-                    height="25"
-                    width="25"
-                    viewBox="0 0 19 19"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="#ffffff"
-                    stroke="#069c54"
-                  >
-                    <g stroke-width="0"></g>
-                    <g
-                      id="SVGRepo_tracerCarrier"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></g>
-                    <g>
-                      <path
-                        fill="#ffffff"
-                        fill-rule="evenodd"
-                        d="M207.960546,159.843246 L210.399107,161.251151 C210.637153,161.388586 210.71416,161.70086 210.580127,161.933013 C210.442056,162.172159 210.144067,162.258604 209.899107,162.117176 L207.419233,160.68542 C207.165323,160.8826 206.846372,161 206.5,161 C205.671573,161 205,160.328427 205,159.5 C205,158.846891 205.417404,158.291271 206,158.085353 L206,153.503423 C206,153.22539 206.231934,153 206.5,153 C206.776142,153 207,153.232903 207,153.503423 L207,158.085353 C207.582596,158.291271 208,158.846891 208,159.5 C208,159.6181 207.986351,159.733013 207.960546,159.843246 Z M206.5,169 C211.746705,169 216,164.746705 216,159.5 C216,154.253295 211.746705,150 206.5,150 C201.253295,150 197,154.253295 197,159.5 C197,164.746705 201.253295,169 206.5,169 Z"
-                        transform="translate(-197 -150)"
-                      ></path>
-                    </g>
-                  </svg>
-                </div>
-                <div class="text">
-                  <h3>Opening Hours</h3>
-                  <p>Sat To Sun<br />9 a.m - 10 p.m</p>
-                </div>
-              </div>
-              <div class="box">
-                <div class="icon">
-                  <svg
-                    height="25"
-                    width="25"
-                    fill="#ffffff"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    viewBox="0 0 395.71 395.71"
-                    xml:space="preserve"
-                    stroke="#ffffff"
-                  >
-                    <g stroke-width="0"></g>
-                    <g stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g>
-                      <g>
-                        <path
-                          d="M197.849,0C122.131,0,60.531,61.609,60.531,137.329c0,72.887,124.591,243.177,129.896,250.388l4.951,6.738 c0.579,0.792,1.501,1.255,2.471,1.255c0.985,0,1.901-0.463,2.486-1.255l4.948-6.738c5.308-7.211,129.896-177.501,129.896-250.388 C335.179,61.609,273.569,0,197.849,0z M197.849,88.138c27.13,0,49.191,22.062,49.191,49.191c0,27.115-22.062,49.191-49.191,49.191 c-27.114,0-49.191-22.076-49.191-49.191C148.658,110.2,170.734,88.138,197.849,88.138z"
-                        ></path>
-                      </g>
-                    </g>
-                  </svg>
-                </div>
-                <div class="text">
-                  <h3>Address</h3>
-                  <p>271 Yorkland Blvd, North York</p>
-                </div>
-              </div>
-              <div class="box">
-                <div class="icon">
-                  <svg
-                    height="25"
-                    width="25"
-                    fill="#ffffff"
-                    viewBox="0 0 32 32"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    stroke="#ffffff"
-                  >
-                    <g stroke-width="0"></g>
-                    <g stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                      <title>phone</title>
-                      <path
-                        d="M0 10.375c0 0.938 0.344 1.969 0.781 3.063s1 2.125 1.438 2.906c1.188 2.063 2.719 4.094 4.469 5.781s3.813 3.094 6.125 3.938c1.344 0.531 2.688 1.125 4.188 1.125 0.75 0 1.813-0.281 2.781-0.688 0.938-0.406 1.781-1.031 2.094-1.781 0.125-0.281 0.281-0.656 0.375-1.094 0.094-0.406 0.156-0.813 0.156-1.094 0-0.156 0-0.313-0.031-0.344-0.094-0.188-0.313-0.344-0.563-0.5-0.563-0.281-0.656-0.375-1.5-0.875-0.875-0.5-1.781-1.063-2.563-1.469-0.375-0.219-0.625-0.313-0.719-0.313-0.5 0-1.125 0.688-1.656 1.438-0.563 0.75-1.188 1.438-1.625 1.438-0.219 0-0.438-0.094-0.688-0.25s-0.5-0.281-0.656-0.375c-2.75-1.563-4.594-3.406-6.156-6.125-0.188-0.313-0.625-0.969-0.625-1.313 0-0.406 0.563-0.875 1.125-1.375 0.531-0.469 1.094-1.031 1.094-1.719 0-0.094-0.063-0.375-0.188-0.781-0.281-0.813-0.656-1.75-0.969-2.656-0.156-0.438-0.281-0.75-0.313-0.906-0.063-0.094-0.094-0.219-0.125-0.375s-0.094-0.281-0.125-0.406c-0.094-0.281-0.25-0.5-0.406-0.625-0.156-0.063-0.531-0.156-0.906-0.188-0.375 0-0.813-0.031-1-0.031-0.094 0-0.219 0-0.344 0.031h-0.406c-1 0.438-1.719 1.313-2.25 2.344-0.5 1.031-0.813 2.188-0.813 3.219z"
-                      ></path>
-                    </g>
-                  </svg>
-                </div>
-                <div class="text">
-                  <h3>Phone</h3>
-                  <a href="tel:+14374324650">+1 437 432 4650 </a>
-                </div>
-              </div>
-              <div class="box">
-                <div class="icon">
-                  <svg
-                    height="25"
-                    width="25"
-                    fill="#ffffff"
-                    viewBox="0 0 1920 1920"
-                    xmlns="http://www.w3.org/2000/svg"
-                    stroke="#ffffff"
-                  >
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g>
-                      <path
-                        d="M1920 428.266v1189.54l-464.16-580.146-88.203 70.585 468.679 585.904H83.684l468.679-585.904-88.202-70.585L0 1617.805V428.265l959.944 832.441L1920 428.266ZM1919.932 226v52.627l-959.943 832.44L.045 278.628V226h1919.887Z"
-                        fill-rule="evenodd"
-                      ></path>
-                    </g>
-                  </svg>
-                </div>
-                <div class="text">
-                  <h3>Email</h3>
-                  <a href="mailto:himalayn@gmail.com">
-                    gadgetverse2025@gmail.com</a
-                  >
-                </div>
-              </div>
+            <div class="location-map section">
+                <!-- heading for map -->
+                <h2 class="section-title">Find Us here</h2>
+                <!-- iframe used to load the map in webpage -->
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2880.9557582979846!2d-79.335466!3d43.7737772!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4d3bca1a3f78f%3A0x815365ed6c3b957e!2sLambton%20College%20In%20Toronto!5e0!3m2!1sen!2sca!4v1710703786898!5m2!1sen!2sca"
+                    style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
-          </div>
-          <!-- Contact form -->
-          <div class="contact-form">
-            <form method="post" action="/contact/store">
-              <!-- heading for form -->
-              <h2 class="section-title">Send Message</h2>
-              <div class="form-group">
-                <!-- Shows the label for form -->
-                <label for="name">Name:</label>
-                <!-- required validates this form and wont let to submit if any required field is left empty -->
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  minlength="3"
-                  maxlength="20"
-                  required
-                />
-              </div>
-              <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required />
-              </div>
-              <div class="form-group">
-                <label for="message">Message:</label>
-                <!-- textarea used to allow user write more than one line of sentences -->
-                <textarea
-                  id="message"
-                  name="message"
-                  required
-                  minlength="10"
-                ></textarea>
-              </div>
-              <!-- Submit button which does nothing for now -->
-              <div class="form-group">
-                <input type="submit" value="Submit" class="button" />
-              </div>
-            </form>
-          </div>
         </div>
-        <div class="location-map section">
-          <!-- heading for map -->
-          <h2 class="section-title">Find Us here</h2>
-          <!-- iframe used to load the map in webpage -->
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2880.9557582979846!2d-79.335466!3d43.7737772!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4d3bca1a3f78f%3A0x815365ed6c3b957e!2sLambton%20College%20In%20Toronto!5e0!3m2!1sen!2sca!4v1710703786898!5m2!1sen!2sca"
-            style="border: 0"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
-        </div>
-      </div>
     </main>
 
     <!--========== FOOTER ==========-->

@@ -23,7 +23,7 @@ $(document).ready(function () {
 
         const productDetails = `
             <tr class="cart-item" data-id="${product.productId}">
-              <td><img src="${productImage}" alt="${product.name}" style="width: 60px; height: 60px; object-fit: cover;"></td>
+              <td><img src="${productImage}" alt="${product.name}" style="width: 50px; height: 50px; object-fit: cover;"></td>
               <td>${product.name}</td>
               <td>
                 <div class="quantity-wrapper">

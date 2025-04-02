@@ -146,7 +146,10 @@
       <nav class="nav bd-container">
         <!-- ====== Logo of the website =======-->
         <a href="/" class="nav__logo" id="logo">
-          GadgetVerse
+          <img
+            src="/front/img/logo.png"
+            alt="logo"
+            class="nav__logo-img" >
           <!-- Website logo image -->
         </a>
         <!-- Navigation items container -->
@@ -201,7 +204,7 @@
                     class="user-icon"
                   />
                   <span> <%= user.first_name %> </span>
-                  <i class="ml-2 fa fa-caret-down"></i>
+                  <i class="fa fa-caret-down" style="margin-left: 7px;"></i>
                 </a>
                 <!-- Dropdown Menu -->
                 <ul class="user-dropdown">
@@ -289,13 +292,17 @@
             <p class="product-stock">Stock: <%= product.stock %> available</p>
 
             <div>
-              <a
-                class="add-to-cart-btn button"
-                href="javascript:void(0);"
-                onclick="addToCart('<%= product._id %>', '<%= product.name %>', '<%= product.price %>', '<%= product.image %>', '<%= product.stock %>')"
-              >
-                Add to Cart
-              </a>
+              <% if (product.stock > 0) { %>
+                <a
+                  class="add-to-cart-btn button"
+                  href="javascript:void(0);"
+                  onclick="addToCart('<%= product._id %>', '<%= product.name %>', '<%= product.price %>', '<%= product.image %>', '<%= product.stock %>')"
+                >
+                  Add to Cart
+                </a>
+              <% } else { %>
+                <span class="text-danger">Out of Stock</span>
+              <% } %>
               <a href="/products" class="back-to-products-btn button"
                 >Back to Products</a
               >

@@ -168,9 +168,14 @@ img {
 }
 
 /* Logo image styling */
-#logo-img {
-  height: 50%;
-  width: 50%;
+/* Responsive logo styling */
+.nav__logo-img {
+  max-width: 100px; /* Maximum width for larger screens */
+  width: 100%; /* Ensure it scales down proportionally */
+  height: auto; /* Maintain aspect ratio */
+}
+.nav__logo-img {
+  max-width: 80px; /* Smaller size for tablets */
 }
 
 /* Styles for the search bar container */
@@ -684,6 +689,10 @@ footer {
   font-size: 1.2rem;
 }
 
+.contact-info .box .icon{
+  background: #5772C1 !important;
+}
+
 .contact-form {
   margin-top: 2rem;
 }
@@ -720,6 +729,8 @@ footer {
   background-color: #333;
 }
 
+
+
 /* Responsive Design */
 @media screen and (max-width: 768px) {
   .contact-row {
@@ -741,6 +752,9 @@ footer {
 
   .nav__logo {
     text-decoration: none;
+  }
+  .nav__logo-img {
+    max-width: 80px;
   }
 
   .nav__menu {
@@ -1064,6 +1078,9 @@ footer {
     display: none;
     /* Hide toggle button on larger screens */
   }
+  .nav__logo-img {
+    max-width: 70px; /* Smaller size for tablets */
+  }
 
   .nav__menu {
     display: flex;
@@ -1186,7 +1203,7 @@ footer {
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: #333;
+  color: #5772c1;
 }
 
 .user-dropdown-toggle img {
@@ -1208,6 +1225,8 @@ footer {
   min-width: 150px;
   z-index: 1000;
 }
+
+
 
 .user-dropdown li {
   padding: 8px 15px;
@@ -1262,3 +1281,22 @@ footer {
 .search-item-name {
   font-size: 16px;
 }
+
+/* User dropdown menu background and text color */
+.user-dropdown {
+  color: #5772c1; /* Change background color */
+  background-color: #fff; /* Change text color */
+}
+
+.user-dropdown li a {
+  color: #5772c1; /* Change link text color */
+}
+
+.user-dropdown li a:hover {
+  color: #495fa1; /* Change hover background color */
+  background-color: #fff !important;
+}
+
+
+
+

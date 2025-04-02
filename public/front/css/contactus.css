@@ -25,7 +25,7 @@ March 25, 2024 */
 .contact-info .box .icon {
     min-width: 60px;
     height: 60px;
-    background: #48b781;
+    background: #5772C1;
     display: flex;
     /* horizontal center */
     justify-content: center;
@@ -48,7 +48,7 @@ March 25, 2024 */
 }
 
 .contact-info .box .text a:hover {
-    color: #069c54;
+    color: #5772C1;
 }
 
 /* styles for contact form */
@@ -71,6 +71,7 @@ label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    text-align: left;
 }
 
 
@@ -102,8 +103,8 @@ textarea {
 input[type="submit"] {
     display: inline-block;
     background-color: #fff;
-    border: #069c54 solid 1px;
-    color: #069c54;
+    border: #5772C1 solid 1px;
+    color: #5772C1;
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
     transition: 0.3s;
@@ -112,7 +113,7 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-    background-color: #048654;
+    background-color: #5772C1;
     color: white;
 }
 
