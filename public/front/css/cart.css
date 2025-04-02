@@ -81,3 +81,42 @@
     font-size: 16px;
     margin-bottom: 30px;
 }
+
+/* Title Styling */
+.cart-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .cart-subtitle {
+    font-size: 1rem;
+    color: #666;
+  }
+
+/* Quantity Wrapper */
+.quantity-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+  
+  .quantity-wrapper .btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 14px;
+  }
+  
+  .quantity-wrapper .quantity-input {
+    width: 50px;
+    height: 32px;
+    text-align: center;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }

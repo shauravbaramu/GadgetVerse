@@ -3,11 +3,13 @@ const router = express.Router();
 const authController = require('../../controllers/front/auth/AuthController');
 const productController = require('../../controllers/front/ProductController');
 const HomeController = require('../../controllers/front/HomeController');
-const { ensureAuthenticatedUser } = require('../../middlewares/auth');
+const { ensureAuthenticatedUser } = require("../../middlewares/auth");
 const { createOrder } = require("../../controllers/front/OrderController");
 const userController = require("../../controllers/front/UserController");
 const orderController = require('../../controllers/front/OrderController');
 const contactController = require('../../controllers/front/ContactController');
+const CartController = require("../../controllers/front/CartController");
+
 
 // home page route
 // router.get('/', (req, res) => {
@@ -42,9 +44,20 @@ router.get("/search-products", productController.searchProducts);
 
 router.get("/product-details", productController.getProductDetails);
 
-router.get('/cart', (req, res) => {
-  res.render('front/cart', { user: req.session.user });
-});
+// router.get('/cart', (req, res) => {
+//   res.render('front/cart', { user: req.session.user });
+// });
+
+// Cart routes
+router.get("/cart", ensureAuthenticatedUser, (req, res) => res.render("front/cart", { user: req.user }));
+router.get("/cart/items", ensureAuthenticatedUser, CartController.getCart);
+router.post("/cart/add", ensureAuthenticatedUser, CartController.addToCart);
+router.post("/cart/update-quantity", ensureAuthenticatedUser, CartController.updateQuantity);
+router.post("/cart/remove", ensureAuthenticatedUser, CartController.removeFromCart);
+router.post("/cart/update-settings", ensureAuthenticatedUser, CartController.updateCartSettings);
+router.get("/cart/count", ensureAuthenticatedUser, CartController.getCartCount);
+
+module.exports = router;
 
 // Render Checkout Page
 router.get('/checkout', (req, res) => {
