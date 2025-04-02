@@ -170,12 +170,17 @@ img {
 /* Logo image styling */
 /* Responsive logo styling */
 .nav__logo-img {
-  max-width: 100px; /* Maximum width for larger screens */
-  width: 100%; /* Ensure it scales down proportionally */
-  height: auto; /* Maintain aspect ratio */
+  max-width: 100px;
+  /* Maximum width for larger screens */
+  width: 100%;
+  /* Ensure it scales down proportionally */
+  height: auto;
+  /* Maintain aspect ratio */
 }
+
 .nav__logo-img {
-  max-width: 80px; /* Smaller size for tablets */
+  max-width: 80px;
+  /* Smaller size for tablets */
 }
 
 /* Styles for the search bar container */
@@ -689,7 +694,7 @@ footer {
   font-size: 1.2rem;
 }
 
-.contact-info .box .icon{
+.contact-info .box .icon {
   background: #5772C1 !important;
 }
 
@@ -753,6 +758,7 @@ footer {
   .nav__logo {
     text-decoration: none;
   }
+
   .nav__logo-img {
     max-width: 80px;
   }
@@ -1078,8 +1084,10 @@ footer {
     display: none;
     /* Hide toggle button on larger screens */
   }
+
   .nav__logo-img {
-    max-width: 70px; /* Smaller size for tablets */
+    max-width: 70px;
+    /* Smaller size for tablets */
   }
 
   .nav__menu {
@@ -1284,19 +1292,181 @@ footer {
 
 /* User dropdown menu background and text color */
 .user-dropdown {
-  color: #5772c1; /* Change background color */
-  background-color: #fff; /* Change text color */
+  color: #5772c1;
+  /* Change background color */
+  background-color: #fff;
+  /* Change text color */
 }
 
 .user-dropdown li a {
-  color: #5772c1; /* Change link text color */
+  color: #5772c1;
+  /* Change link text color */
 }
 
 .user-dropdown li a:hover {
-  color: #495fa1; /* Change hover background color */
+  color: #495fa1;
+  /* Change hover background color */
   background-color: #fff !important;
 }
 
 
+/* Order Card */
+.order-card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 20px auto;
+}
 
+.order-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
 
+.order-info p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+/* Status Styling */
+.status {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.status.pending {
+  color: #ff9800;
+}
+
+.status.processing {
+  color: #2196f3;
+}
+
+.status.shipped {
+  color: #4caf50;
+}
+
+.status.delivered {
+  color: #388e3c;
+}
+
+.status.cancelled {
+  color: #e53935;
+}
+
+.total-price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #e53935;
+}
+
+/* Order Items Table */
+.order-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.order-items-table th,
+.order-items-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.order-items-table th {
+  background: #5772C1;
+  color: white;
+  font-weight: bold;
+}
+
+.order-items-table tr:hover {
+  background: #f1f1f1;
+}
+
+/* Responsive Table Scroll */
+.order-items-table-container {
+  overflow-x: auto;
+}
+
+.product-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+/* Back Button */
+.back-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 15px;
+  background: #5772C1;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: 0.3s;
+  border: 1px solid transparent;
+}
+
+.back-button:hover {
+  background: transparent;
+  color: #5772C1;
+  border: 1px solid #5772C1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .order-card {
+    padding: 1.5rem;
+    max-width: 95%;
+  }
+
+  .order-title {
+    font-size: 20px;
+  }
+
+  .order-info p {
+    font-size: 14px;
+  }
+
+  .order-items-table th,
+  .order-items-table td {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .product-image {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-card {
+    padding: 1rem;
+  }
+
+  .order-title {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .order-info p {
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .order-items-table-container {
+    overflow-x: auto;
+  }
+
+  .back-button {
+    width: 100%;
+    text-align: center;
+  }
+}

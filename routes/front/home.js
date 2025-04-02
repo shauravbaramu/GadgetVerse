@@ -108,6 +108,9 @@ router.get('/order/success/:orderId', async (req, res) => {
 
 router.get('/my-orders', ensureAuthenticatedUser, orderController.getOrders);
 
+// View Order Details
+router.get('/my-orders/:orderId', ensureAuthenticatedUser, orderController.getOrderDetails);
+
 router.get('/search', productController.searchProducts);
 
 router.get("/contactus", (req, res) => contactController.showContactPage(req, res));
