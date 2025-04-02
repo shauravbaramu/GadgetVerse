@@ -112,6 +112,7 @@ class ProductController extends BaseController {
         crudInfo,
         errors: req.flash("errors"),
         categories,
+        old:{},
       });
     } catch (err) {
       return res.status(500).send(err.message);
@@ -121,55 +122,61 @@ class ProductController extends BaseController {
   async store(req, res) {
     let errors = [];
     if (!req.body.name || req.body.name.trim() === "") {
-      errors.push({ msg: "Product name is required" });
+        errors.push({ msg: "Product name is required" });
     }
     if (!req.body.price || isNaN(req.body.price)) {
-      errors.push({ msg: "Valid price is required" });
+        errors.push({ msg: "Valid price is required" });
     }
     if (!req.body.category) {
-      errors.push({ msg: "Category is required" });
+        errors.push({ msg: "Category is required" });
     }
     if (!req.body.stock || parseInt(req.body.stock) <= 0) {
-      errors.push({ msg: "Stock must be greater than 0" });
+        errors.push({ msg: "Stock must be greater than 0" });
     }
 
     if (errors.length > 0) {
-      return res.render(`${this.route}create`, {
-        crudInfo: this.crudInfo(),
-        errors,
-        item: req.body,
-        categories: req.categories || [],
-      });
+        try {
+            const categories = await ProductCategory.find().lean(); // Fetch categories
+            return res.render(`${this.route}create`, {
+                crudInfo: this.crudInfo(),
+                errors,
+                old: req.body, // Pass old input values
+                categories, // Pass categories to the view
+            });
+        } catch (fetchErr) {
+            return res.status(500).send(fetchErr.message);
+        }
     }
+
     try {
-      if (req.files) {
-        if (req.files.image) {
-          req.body.image = `/uploads/products/${req.files.image[0].filename}`;
+        if (req.files) {
+            if (req.files.image) {
+                req.body.image = `/uploads/products/${req.files.image[0].filename}`;
+            }
+            if (req.files.gallery) {
+                req.body.gallery = req.files.gallery.map((file) => `/uploads/products/${file.filename}`);
+            }
         }
-        if (req.files.gallery) {
-          req.body.gallery = req.files.gallery.map((file) => `/uploads/products/${file.filename}`);
-        }
-      }
-      req.body.isFeatured = req.body.isFeatured === "on"; // Convert checkbox value to boolean
-      const item = new this.Model(req.body);
-      await item.save();
-      req.flash("success", `${this.title} created successfully.`);
-      return res.redirect(`/${this.route}`);
+        req.body.isFeatured = req.body.isFeatured === "on"; // Convert checkbox value to boolean
+        const item = new this.Model(req.body);
+        await item.save();
+        req.flash("success", `${this.title} created successfully.`);
+        return res.redirect(`/${this.route}`);
     } catch (err) {
-      errors.push({ msg: err.message });
-      try {
-        const categories = await ProductCategory.find().lean(); // Fetch categories for re-rendering
-        return res.render(`${this.route}create`, {
-            crudInfo: this.crudInfo(),
-            errors,
-            item: req.body, // Pass the current input values back to the form
-            categories: req.categories || [],
-        });
-    } catch (fetchErr) {
-        return res.status(500).send(fetchErr.message);
+        errors.push({ msg: err.message });
+        try {
+            const categories = await ProductCategory.find().lean(); // Fetch categories
+            return res.render(`${this.route}create`, {
+                crudInfo: this.crudInfo(),
+                errors,
+                old: req.body, // Pass old input values
+                categories, // Pass categories to the view
+            });
+        } catch (fetchErr) {
+            return res.status(500).send(fetchErr.message);
+        }
     }
-    }
-  }
+}
 
   async show(req, res) {
     try {
