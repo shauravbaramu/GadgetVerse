@@ -1,9 +1,4 @@
-u/* Ronish Shivakoti
-March 25, 2024 */
 
-#page-header {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836');
-}
 
 .content .section-subtitle {
     text-align: left;
@@ -131,6 +126,13 @@ input[type="submit"]:hover {
     height: 400px;
 }
 
+/* Style for error message */
+.error-message {
+  font-size: 14px;
+  color: red;
+  margin-top: 5px;
+  display: block;
+}
 
 /* Tablet Styles */
 @media screen and (min-width: 769px) and (max-width: 1280px) {

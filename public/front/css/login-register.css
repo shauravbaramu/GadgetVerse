@@ -369,3 +369,11 @@ input:focus {
 .forgot-password a:hover {
     text-decoration: underline;
 }
+
+/* Style for smaller alert boxes */
+.alert {
+  font-size: 14px; /* Reduce the font size */
+  padding: 8px 12px; /* Reduce padding */
+  margin: 10px 0; /* Adjust margin */
+  border-radius: 5px; /* Optional: Add rounded corners */
+}
