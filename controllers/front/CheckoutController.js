@@ -3,6 +3,7 @@ const Product = require("../../models/Product");
 const Order = require("../../models/Order");
 const Notification = require("../../models/Notification");
 const User = require("../../models/User");
+const sendEmail = require("../../utils/mailer");
 
 class CheckoutController {
   // Render the checkout page
@@ -68,77 +69,59 @@ class CheckoutController {
     }
   }
 
+  async placeOrder(req, res) {
+    try {
+      const userId = req.user._id;
+      const { shippingAddress, paymentMethod } = req.body;
 
-async placeOrder(req, res) {
-  try {
-    const userId = req.user._id; // Assuming `req.user` contains the authenticated user
-    const { shippingAddress, paymentMethod } = req.body;
+      // Fetch the user's cart and calculate the subTotal
+      const cartItems = await Cart.find({ user: userId }).populate("product").lean();
+      const subTotal = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
-    // Fetch the user's cart
-    const cartItems = await Cart.find({ user: userId }).populate("product").lean();
+      // Define a delivery charge (if applicable)
+      const deliveryCharge = 10.0; // Example delivery charge
+      const totalPrice = subTotal + deliveryCharge;
 
-    if (cartItems.length === 0) {
-      return res.status(400).send("Your cart is empty.");
+      // Create the order
+      const order = new Order({
+        user: userId,
+        items: cartItems.map((item) => ({
+          product: item.product._id,
+          quantity: item.quantity,
+          price: item.product.price,
+        })),
+        shippingAddress,
+        paymentMethod,
+        subTotal,
+        deliveryCharge,
+        totalPrice, // Include the calculated totalPrice
+        status: "pending",
+      });
+      await order.save();
+
+      // Clear the user's cart
+      await Cart.deleteMany({ user: userId });
+
+      // Send email to the user
+      const emailSubject = "Order Confirmation - GadgetVerse";
+      const templatePath = "orderConfirmation.ejs";
+      const templateData = {
+        user: req.user,
+        items: cartItems,
+        subTotal,
+        deliveryCharge,
+        total: totalPrice,
+      };
+
+      await sendEmail(req.user.email, emailSubject, templatePath, templateData);
+
+      // Redirect to success page
+      res.redirect(`/checkout/success?orderId=${order._id}`);
+    } catch (err) {
+      console.error("Error placing order:", err);
+      res.status(500).send("Failed to place order.");
     }
-
-    // Prepare order items
-    const items = cartItems.map((item) => ({
-      product: item.product._id,
-      quantity: item.quantity,
-      price: item.product.price, // Price at the time of order
-    }));
-
-    // Calculate totals
-    const subTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const discount = 0; // Add logic for discounts if applicable
-    const deliveryCharge = 10; // Fixed delivery charge
-    const totalPrice = subTotal + deliveryCharge - discount;
-
-    // Create a new order
-    const order = new Order({
-      user: userId,
-      items,
-      shippingAddress,
-      status: "pending",
-      discount,
-      deliveryCharge,
-      subTotal,
-      totalPrice,
-    });
-
-    await order.save();
-
-    // Clear the user's cart
-    await Cart.deleteMany({ user: userId });
-
-    // Send a notification to the admin
-     // Fetch the admin user with the role "admin"
-     const admin = await User.findOne({ role: "admin" });
-
-     if (!admin) {
-       console.error("No admin found in the database.");
-       return res.status(500).send("No admin available to receive notifications.");
-     }
- 
-     // Use the admin's ID
-     const adminId = admin._id;
-     
-    // Create a notification for the admin
-    const notificationMessage = `New order placed.`;
-    const notification = new Notification({
-      admin: adminId,
-      message: notificationMessage,
-      link: `/admin/orders/show/${order._id}`, // Link to the order details page
-    });
-    await notification.save();
-
-    // Redirect to success page
-    res.redirect(`/checkout/success?orderId=${order._id}`);
-  } catch (err) {
-    console.error("Error placing order:", err);
-    res.status(500).send("Failed to place order.");
   }
-}
 }
 
 module.exports = new CheckoutController();

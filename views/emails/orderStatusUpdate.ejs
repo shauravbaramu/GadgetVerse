@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+    h2 {
+      color: #007bff;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Your order status has been updated</h2>
+    <p>Hi <%= user.first_name %>,</p>
+    <p>Your order status has been updated to: <strong><%= status %></strong>.</p>
+    <p>You can view your order details <a href="<%= orderLink %>">here</a>.</p>
+    <p>Thank you for shopping with GadgetVerse!</p>
+    <div class="footer">
+      <p>&copy; 2025 GadgetVerse. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>
