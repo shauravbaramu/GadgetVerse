@@ -1393,7 +1393,7 @@ footer {
   overflow-x: auto;
 }
 
-.product-image {
+.order-product-image {
   width: 60px;
   height: 60px;
   object-fit: cover;
@@ -1440,7 +1440,7 @@ footer {
     font-size: 14px;
   }
 
-  .product-image {
+  .order-product-image {
     width: 50px;
     height: 50px;
   }
