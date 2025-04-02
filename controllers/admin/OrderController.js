@@ -2,6 +2,7 @@ const BaseController = require("./BaseController");
 const Order = require("../../models/Order");
 const path = require("path");
 const ejs = require("ejs");
+const sendEmail = require("../../utils/mailer");
 
 class OrderController extends BaseController {
   constructor() {
@@ -142,13 +143,25 @@ class OrderController extends BaseController {
     }
 
     try {
-      const item = await this.Model.findById(req.params.id);
+      const item = await this.Model.findById(req.params.id).populate("user");
       if (!item) return res.status(404).send("Order not found");
 
+      // Update the status
       item.status = req.body.status;
       await item.save();
 
-      req.flash("success", `${this.title} status updated successfully.`);
+      // Send email to the user
+      const emailSubject = "Order Status Update - GadgetVerse";
+      const templatePath = "orderStatusUpdate.ejs"; // Path to the EJS template
+      const templateData = {
+        user: item.user,
+        status: req.body.status,
+        orderLink: `${req.protocol}://${req.get("host")}/my-orders/${item._id}`, // Link to the order details
+      };
+
+      await sendEmail(item.user.email, emailSubject, templatePath, templateData);
+
+      req.flash("success", `${this.title} status updated successfully and email sent to the user.`);
       return res.redirect(`/${this.route}`);
     } catch (err) {
       errors.push({ msg: err.message });
@@ -180,36 +193,36 @@ class OrderController extends BaseController {
       const { id, status } = req.body;
 
       // Validate the status
-      if (
-        ![
-          "pending",
-          "processing",
-          "shipped",
-          "delivered",
-          "cancelled",
-        ].includes(status)
-      ) {
-        return res
-          .status(400)
-          .json({ success: false, message: "Invalid status" });
+      if (!["pending", "processing", "shipped", "delivered", "cancelled"].includes(status)) {
+        return res.status(400).json({ success: false, message: "Invalid status" });
       }
 
-      const item = await this.Model.findById(id);
+      const item = await this.Model.findById(id).populate("user");
       if (!item) {
-        return res
-          .status(404)
-          .json({ success: false, message: "Order not found" });
+        return res.status(404).json({ success: false, message: "Order not found" });
       }
 
       // Update the status
       item.status = status;
       await item.save();
 
+      // Send email to the user
+      const emailSubject = "Order Status Update - GadgetVerse";
+      const templatePath = "orderStatusUpdate.ejs"; // Path to the EJS template
+      const templateData = {
+        user: item.user,
+        status,
+        orderLink: `${req.protocol}://${req.get("host")}/my-orders/${item._id}`, // Link to the order details
+      };
+
+      await sendEmail(item.user.email, emailSubject, templatePath, templateData);
+
       return res.json({
         success: true,
-        message: "Order status updated successfully",
+        message: "Order status updated successfully and email sent to the user.",
       });
     } catch (err) {
+      console.error("Error updating order status:", err);
       return res.status(500).json({ success: false, message: err.message });
     }
   }

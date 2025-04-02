@@ -39,6 +39,9 @@ router.get('/change-password', ensureAuthenticated, (req, res) => profileControl
 // Handle Change Password Form Submission
 router.post('/change-password', ensureAuthenticated, (req, res) => profileController.changePassword(req, res));
 
+// Mount Notifications routes
+router.use('/notifications', ensureAuthenticated, require('./notifications'));
+
 // Mount Users routes
 router.use('/users', require('./users'));
 
@@ -53,5 +56,6 @@ router.use('/orders', require('./orders'));
 
 // Mount Contact us routes
 router.use('/contacts', require('./contacts'));
+
 
 module.exports = router;

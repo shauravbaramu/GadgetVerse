@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      text-align: center; /* Center the text */
+    }
+    h2 {
+      color: #007bff;
+    }
+    ul {
+      padding-left: 0; /* Remove default padding for centering */
+      list-style: none; /* Remove bullet points */
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Thank you for your order!</h2>
+    <p>Hi <%= user.first_name %>,</p>
+    <p>Your order has been placed successfully. Here are the details:</p>
+    <ul>
+      <% items.forEach(function(item) { %>
+        <li><%= item.product.name %> - Quantity: <%= item.quantity %> - Price: $<%= item.product.price %></li>
+      <% }); %>
+    </ul>
+    <p>Total: $<%= total %></p>
+    <p>We will notify you once your order is shipped.</p>
+    <p>Thank you for shopping with GadgetVerse!</p>
+    <div class="footer">
+      <p>&copy; 2025 GadgetVerse. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>
