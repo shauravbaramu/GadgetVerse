@@ -8,7 +8,8 @@ class NotificationController {
       const notifications = await Notification.find({ admin: adminId })
         .sort({ createdAt: -1 })
         .limit(10); // Fetch the latest 10 notifications
-      res.json({ success: true, notifications });
+      const unreadCount = await Notification.countDocuments({ admin: adminId, read: false });
+      res.json({ success: true, notifications, unreadCount });
     } catch (err) {
       console.error("Error fetching notifications:", err);
       res.status(500).json({ success: false, message: "Failed to fetch notifications." });
@@ -20,7 +21,8 @@ class NotificationController {
     try {
       const adminId = req.session.adminUser._id;
       await Notification.updateMany({ admin: adminId, read: false }, { read: true });
-      res.json({ success: true, message: "All notifications marked as read." });
+      const unreadCount = await Notification.countDocuments({ admin: adminId, read: false });
+      res.json({ success: true, unreadCount });
     } catch (err) {
       console.error("Error marking notifications as read:", err);
       res.status(500).json({ success: false, message: "Failed to mark notifications as read." });
@@ -44,14 +46,14 @@ class NotificationController {
   async markAsReadAndRedirect(req, res) {
     try {
       const notificationId = req.params.id;
-  
+
       // Mark the notification as read
       await Notification.findByIdAndUpdate(notificationId, { read: true });
-  
+
       // Fetch the updated unread count
       const adminId = req.session.adminUser._id;
       const unreadCount = await Notification.countDocuments({ admin: adminId, read: false });
-  
+
       // Redirect to the notification's link
       const notification = await Notification.findById(notificationId);
       if (notification) {

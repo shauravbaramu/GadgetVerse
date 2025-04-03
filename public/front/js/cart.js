@@ -125,6 +125,7 @@ $(document).ready(function () {
     $.post("/cart/remove", { productId }, function (response) {
       if (response.success) {
         fetchCart(); // Re-fetch the cart to update the UI
+        setTimeout(updateCartCount, 500);
       } else {
         Swal.fire({
           title: "Error",

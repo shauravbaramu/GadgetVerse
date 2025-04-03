@@ -5,7 +5,7 @@ function fetchNotifications() {
     success: function (response) {
       if (response.success) {
         const notifications = response.notifications;
-        const notificationCount = notifications.length;
+        const notificationCount = response.unreadCount; // Updated to use unreadCount from the response
         const notificationDropdown = $("#notification-dropdown");
         const notificationCountBadge = $("#notification-count");
 
@@ -18,7 +18,7 @@ function fetchNotifications() {
 
         // Update dropdown
         notificationDropdown.empty();
-        if (notificationCount > 0) {
+        if (notifications.length > 0) {
           notifications.forEach((notification) => {
             notificationDropdown.append(`
               <a href="#" class="dropdown-item text-wrap notification-link" data-id="${notification._id}" data-link="${notification.link}" style="white-space: normal;">
@@ -57,6 +57,8 @@ $(document).on("click", "#mark-all-read", function (e) {
     method: "POST",
     success: function (response) {
       if (response.success) {
+        const notificationCountBadge = $("#notification-count");
+        notificationCountBadge.hide(); // Hide the badge since all are read
         fetchNotifications(); // Refresh notifications
       }
     },

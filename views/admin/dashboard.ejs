@@ -82,10 +82,10 @@
         <div class="col-lg-6 col-12">
           <div class="card">
             <div class="card-header bg-info">
-              <h3 class="card-title">Income vs Expenses</h3>
+              <h3 class="card-title">Top Selling Product Categories</h3>
             </div>
             <div class="card-body">
-              <canvas id="incomeExpenseChart"></canvas>
+              <canvas id="topCategoriesChart" style="max-height: 200px;"></canvas>
             </div>
           </div>
         </div>
@@ -95,7 +95,19 @@
               <h3 class="card-title">Orders by Status</h3>
             </div>
             <div class="card-body">
-              <canvas id="orderStatusChart"></canvas>
+              <canvas id="orderStatusChart" style="max-height: 200px;"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 col-12">
+          <div class="card">
+            <div class="card-header bg-secondary">
+              <h3 class="card-title">Monthly Income</h3>
+            </div>
+            <div class="card-body">
+              <canvas id="monthlyChart" style="max-height: 200px;"></canvas>
             </div>
           </div>
         </div>
@@ -115,16 +127,16 @@
   $(document).ready(function () {
     // Fetch chart data via AJAX
     $.get('/admin/dashboard/chart-data', function (data) {
-      // Income vs Expenses Chart
-      const incomeExpenseCtx = document.getElementById('incomeExpenseChart').getContext('2d');
-      new Chart(incomeExpenseCtx, {
+      // Top Selling Product Categories Chart
+      const topCategoriesCtx = document.getElementById('topCategoriesChart').getContext('2d');
+      new Chart(topCategoriesCtx, {
         type: 'bar',
         data: {
-          labels: ['Income', 'Expenses'],
+          labels: data.topCategories.labels,
           datasets: [{
-            label: 'Amount (in $)',
-            data: [data.income, data.expenses],
-            backgroundColor: ['#28a745', '#dc3545']
+            label: 'Total Sold',
+            data: data.topCategories.data,
+            backgroundColor: '#007bff'
           }]
         },
         options: {
@@ -156,6 +168,29 @@
           responsive: true,
           plugins: {
             legend: { position: 'bottom' }
+          }
+        }
+      });
+
+      // Monthly Income Chart
+      const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+      new Chart(monthlyCtx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          datasets: [
+            {
+              label: 'Income',
+              data: data.monthlyIncome,
+              borderColor: '#28a745',
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'top' }
           }
         }
       });

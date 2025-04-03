@@ -115,6 +115,15 @@ class CheckoutController {
 
       await sendEmail(req.user.email, emailSubject, templatePath, templateData);
 
+      // Send notification to the admin
+      const adminUsers = await User.find({ role: "admin" }); // Assuming admins have a role field
+      const notifications = adminUsers.map((admin) => ({
+        admin: admin._id,
+        message: `New order placed.`,
+        link: `/admin/orders/show/${order._id}`, // Link to the order details page
+      }));
+      await Notification.insertMany(notifications);
+
       // Redirect to success page
       res.redirect(`/checkout/success?orderId=${order._id}`);
     } catch (err) {
