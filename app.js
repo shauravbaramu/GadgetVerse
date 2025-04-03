@@ -9,6 +9,7 @@ const MongoStore = require('connect-mongo');
 require('dotenv').config();
 
 const app = express();
+const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 3000;
 
 //front routes
@@ -125,4 +126,4 @@ app.use((req, res, next) => {
 // });
 
 // Start the server
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, HOST, () => console.log(`Server running on port ${PORT}`));
