@@ -406,6 +406,12 @@ footer {
   overflow-x: hidden;
 }
 
+/* CSS for footer logo */
+.footer__logo {
+  width: 80px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+}
+
 /* Center align footer content */
 .footer__wrapper {
   text-align: center;
