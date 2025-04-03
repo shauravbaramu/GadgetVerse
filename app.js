@@ -7,6 +7,7 @@ const flash = require('connect-flash');
 const seedAdmin = require("./seeders/AdminSeeder");
 const MongoStore = require('connect-mongo');
 require('dotenv').config();
+const bcrypt = require('bcryptjs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
