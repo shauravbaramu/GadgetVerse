@@ -236,7 +236,7 @@ class ProductCategoryController extends BaseController {
 
       await this.Model.findByIdAndDelete(req.params.id);
       req.flash("success", `${this.title} deleted successfully.`);
-      return res.redirect(`/${this.route}index`);
+      return res.redirect(`/${this.route}`);
     } catch (err) {
       return res.status(500).send(err.message);
     }
