@@ -232,7 +232,7 @@ class ProductCategoryController extends BaseController {
         }
       }
       
-      await Product.deleteMany({ user: item._id });
+      // await Product.deleteMany({ user: item._id });
 
       await this.Model.findByIdAndDelete(req.params.id);
       req.flash("success", `${this.title} deleted successfully.`);

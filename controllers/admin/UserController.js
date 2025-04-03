@@ -125,7 +125,7 @@ class UserController extends BaseController {
       }
 
       // Delete the user's orders
-      await Order.deleteMany({ user: item._id });
+      // await Order.deleteMany({ user: item._id });
 
       // Delete the user
       await this.Model.findByIdAndDelete(req.params.id);
