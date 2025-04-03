@@ -74,11 +74,6 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-  res.locals.admin = req.session.adminUser || null; // Pass the logged-in admin's data to all views
-  next();
-});
-
-app.use((req, res, next) => {
   res.locals.user = req.session.user || null; // User is accessible in all views
   next();
 });
