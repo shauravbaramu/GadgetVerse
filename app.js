@@ -25,32 +25,57 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
 // Connect to MongoDB
+// mongoose
+//   .connect(`${process.env.DB_CONNECTION}://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+//   })
+//   .then(async () => {
+//     console.log("Connected to MongoDB")
+
+//     // Seed the admin user
+//     await seedAdmin();
+//   })
+//   .catch(err => console.error(err));
+
+// Connect to MongoDB Atlas
 mongoose
-  .connect(`${process.env.DB_CONNECTION}://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`, {
+  .connect(`${process.env.DB_CONNECTION}://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   })
   .then(async () => {
-    console.log("Connected to MongoDB")
+    console.log("Connected to MongoDB Atlas");
 
     // Seed the admin user
     await seedAdmin();
   })
-  .catch(err => console.error(err));
+  .catch(err => console.error("MongoDB connection error:", err));
 
 // Set up sessions middleware (configure as needed)
+// app.use(session({
+//   secret: process.env.SESSION_SECRET,
+//   resave: false,
+//   saveUninitialized: false,
+//   store: MongoStore.create({
+//     mongoUrl: `${process.env.DB_CONNECTION}://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
+//   }),
+//   cookie: {
+//     maxAge: 1000 * 60 * 60 * 24, // 1 day (default session duration)
+//   },
+// })
+// );
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
-    mongoUrl: `${process.env.DB_CONNECTION}://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
+    mongoUrl: `${process.env.DB_CONNECTION}://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}?retryWrites=true&w=majority`,
   }),
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24, // 1 day (default session duration)
+    maxAge: 1000 * 60 * 60 * 24, // 1 day
   },
-})
-);
+}));
 
 // Set up flash middleware
 app.use(flash());
