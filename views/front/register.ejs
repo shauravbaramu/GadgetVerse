@@ -11,7 +11,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/front/css/styles.css">
     <link rel="stylesheet" href="/front/css/login-register.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
@@ -32,6 +32,8 @@
                     <h3>GadgetVerse</h3>
                     <span>Already have an account? <a href="/login">Login</a></span>
                 </div>
+
+                <div class="password-container">
                 <% if (typeof errors !=='undefined' && errors.length> 0) { %> <% errors.forEach(function (error) { %>
                         <div class="alert alert-danger">
                             <%= error.msg %>
@@ -43,6 +45,7 @@
                                         <%= success %>
                                     </div>
                                     <% } %>
+                                    </div>
                                         <!-- Register form -->
                                         <form id="registerForm" action="/register" method="POST">
                                             <!-- Full Name and Last Name on the same line -->

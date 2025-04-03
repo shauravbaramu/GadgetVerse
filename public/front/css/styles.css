@@ -79,6 +79,10 @@ img {
   margin-bottom: 15%;
   background-color: transparent !important;
 }
+.home_button {
+  border: 1.6px solid #ffffff !important;
+  background: none !important;
+}
 
 /* Home button hover effect */
 .home_button:hover {
@@ -1110,6 +1114,11 @@ footer {
   .home__container,
   .about__container {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .home_button {
+    border: 1.6px solid #ffffff !important;
+    background: none !important;
   }
 
 }

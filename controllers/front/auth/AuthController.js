@@ -29,8 +29,8 @@ class AuthController {
             errors.push({ msg: "Passwords do not match" });
         }
 
-        if (password.length < 6) {
-            errors.push({ msg: "Password must be at least 6 characters long" });
+        if (password.length < 8) {
+            errors.push({ msg: "Password must be at least 8 characters long" });
         }
 
         if (errors.length > 0) {
