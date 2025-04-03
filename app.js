@@ -7,7 +7,6 @@ const flash = require('connect-flash');
 const seedAdmin = require("./seeders/AdminSeeder");
 const MongoStore = require('connect-mongo');
 require('dotenv').config();
-const bcrypt = require('bcryptjs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -26,13 +25,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
 // Connect to MongoDB
-// mongoose
-//   .connect(`${process.env.DB_CONNECTION}://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-//   })
 mongoose
-  .connect(`${process.env.DB_CONNECTION}://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}?retryWrites=true&w=majority`, {
+  .connect(`${process.env.DB_CONNECTION}://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -49,11 +43,8 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
-  // store: MongoStore.create({
-  //   mongoUrl: `${process.env.DB_CONNECTION}://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
-  // }),
   store: MongoStore.create({
-    mongoUrl: `${process.env.DB_CONNECTION}://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+    mongoUrl: `${process.env.DB_CONNECTION}://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
   }),
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, // 1 day (default session duration)
@@ -75,11 +66,6 @@ app.use((req, res, next) => {
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-app.use((req, res, next) => {
-  res.locals.admin = req.session.adminUser || null; // Pass the logged-in admin's data to all views
-  next();
-});
 
 app.use((req, res, next) => {
   res.locals.admin = req.session.adminUser || null; // Pass the logged-in admin's data to all views

@@ -100,7 +100,7 @@ class ProfileController {
 
     try {
       // Find the logged-in user
-      const user = await User.findById(req.user.id);
+      const user = await User.findById(req.session.adminUser.id);
       if (!user) {
         req.flash("errors", [{ msg: "User not found" }]);
         return res.redirect("/admin/change-password");
