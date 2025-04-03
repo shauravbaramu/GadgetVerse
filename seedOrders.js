@@ -5,7 +5,7 @@ const User = require("./models/User"); // Assuming you have a User model
 
 // Connect to the database
 mongoose
-  .connect(`mongodb://127.0.0.1:27017/gadgetVerse`)
+  .connect(`mongodb+srv://shaurav:shaurav@cluster0.wqzbx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`)
   .then(() => console.log("Database connected successfully"))
   .catch((err) => {
     console.error("Database connection error:", err.message);
