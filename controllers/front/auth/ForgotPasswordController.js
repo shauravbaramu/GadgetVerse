@@ -1,7 +1,7 @@
 const User = require("../../../models/User");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const path = require("path");
 const ejs = require("ejs");
 

@@ -6,6 +6,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const seedAdmin = require("./seeders/AdminSeeder");
 const MongoStore = require('connect-mongo');
+const bcrypt = require("bcryptjs");
 require('dotenv').config();
 
 const app = express();
